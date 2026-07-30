@@ -1,0 +1,86 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 50px;
+    background:#fff;
+    box-shadow:0 2px 10px rgba(0,0,0,.1);
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+.logo-section{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo-section img{
+    width:65px;
+}
+
+.logo-section h2{
+    font-size:20px;
+    color:#153b6d;
+}
+
+.logo-section p{
+    color:#d89a22;
+    font-weight:600;
+}
+
+.menu{
+    display:flex;
+    gap:35px;
+    list-style:none;
+    font-weight:600;
+}
+
+.menu li{
+    cursor:pointer;
+    transition:.3s;
+}
+
+.menu li:hover{
+    color:#d89a22;
+}
+
+.login{
+    position:relative;
+}
+
+.login-btn{
+    background:#153b6d;
+    color:white;
+    border:none;
+    padding:10px 22px;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+.dropdown{
+    position:absolute;
+    top:45px;
+    right:0;
+    background:white;
+    box-shadow:0 3px 12px rgba(0,0,0,.2);
+    width:170px;
+}
+
+.dropdown a{
+    display:block;
+    padding:12px;
+    color:black;
+    text-decoration:none;
+}
+
+.dropdown a:hover{
+    background:#f5f5f5;
+}
