@@ -4,5 +4,8 @@
   "scripts": {
     "frontend": "npm --prefix frontend run dev",
     "backend": "npm --prefix backend run dev"
+  },
+  "dependencies": {
+    "react-icons": "^5.7.0"
   }
 }

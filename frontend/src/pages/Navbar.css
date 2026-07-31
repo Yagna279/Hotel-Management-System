@@ -5,82 +5,164 @@
 }
 
 .navbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:15px 50px;
-    background:#fff;
-    box-shadow:0 2px 10px rgba(0,0,0,.1);
-    position:sticky;
+    position:fixed;
     top:0;
-    z-index:100;
+    left:0;
+    width:100%;
+    height:90px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 40px;
+
+    background:rgba(255,255,255,0.95);
+    backdrop-filter:blur(10px);
+
+    box-shadow:0 2px 15px rgba(0,0,0,0.08);
+    z-index:1000;
 }
+
+/* ================= Logo ================= */
 
 .logo-section{
     display:flex;
     align-items:center;
     gap:12px;
+    min-width:280px;
 }
 
 .logo-section img{
-    width:65px;
+    width:55px;
+    height:55px;
+    border-radius:50%;
 }
 
-.logo-section h2{
-    font-size:20px;
-    color:#153b6d;
-}
-
-.logo-section p{
-    color:#d89a22;
+.logo-text h2{
+    font-size:16px;      /* Reduced from 20px */
+    color:#17376E;
+    margin:0;
     font-weight:600;
+    line-height:1.2;
 }
 
-.menu{
+.logo-text p{
+    font-size:12px;      /* Reduced from 14px */
+    color:#D89A22;
+    margin-top:2px;
+    font-weight:500;
+}
+
+/* ================= Navigation ================= */
+
+.nav-links{
+    width:850px;              /* Increased from 820px */
     display:flex;
-    gap:35px;
-    list-style:none;
-    font-weight:600;
+    justify-content:space-evenly;
+    align-items:center;
+
+    background:#fff;
+    height:60px;              /* Slightly taller */
+    padding:0 20px;
+
+    border-radius:30px;
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
 }
 
-.menu li{
+.nav-links span{
     cursor:pointer;
-    transition:.3s;
+    color:#333;
+
+    font-size:17px;           /* Increased from 15px */
+    font-weight:600;          /* Slightly bolder */
+
+    white-space:nowrap;
+    letter-spacing:0.3px;
+    transition:all 0.3s ease;
 }
 
-.menu li:hover{
-    color:#d89a22;
+.nav-links span:hover{
+
+    color:#34425b;
 }
 
-.login{
+/* ================= Login ================= */
+
+.nav-actions{
+
     position:relative;
+
+    min-width:180px;
+
+    display:flex;
+
+    justify-content:flex-end;
 }
 
 .login-btn{
-    background:#153b6d;
-    color:white;
+
+    background:#17376E;
+
+    color:#fff;
+
     border:none;
-    padding:10px 22px;
-    border-radius:6px;
+
+    padding:12px 26px;
+
+    border-radius:12px;
+
     cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    transition:.3s;
 }
 
+.login-btn:hover{
+
+    background:#0f2d5d;
+}
+
+/* ================= Dropdown ================= */
+
 .dropdown{
+
     position:absolute;
-    top:45px;
+
+    top:60px;
+
     right:0;
-    background:white;
-    box-shadow:0 3px 12px rgba(0,0,0,.2);
-    width:170px;
+
+    width:190px;
+
+    background:#fff;
+
+    border-radius:12px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+
+    overflow:hidden;
 }
 
 .dropdown a{
+
     display:block;
-    padding:12px;
-    color:black;
+
+    padding:14px 18px;
+
     text-decoration:none;
+
+    color:#333;
+
+    transition:.3s;
 }
 
 .dropdown a:hover{
-    background:#f5f5f5;
+
+    background:#17376E;
+
+    color:#fff;
 }

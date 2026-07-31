@@ -1,70 +1,119 @@
-body{
-    font-family:Arial, Helvetica, sans-serif;
-    background:#f8f8f8;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-.hero{
-    height:90vh;
-    background:linear-gradient(to right,#153b6d,#1d4f91);
-    color:white;
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f8fafc;
+    color:#333;
+    overflow-x:hidden;
+}
+
+/* ================= Sections ================= */
+
+.section{
+    width:100%;
+    padding:60px 80px;
+   /* Reduced from 120px */
+
     display:flex;
     flex-direction:column;
     justify-content:center;
     align-items:center;
+
     text-align:center;
+
+    background:#fff;
 }
 
-.hero h1{
-    font-size:55px;
+.section:nth-child(even){
+    background:#f8fafc;
 }
 
-.hero p{
-    width:700px;
-    max-width:90%;
-    margin:20px 0;
+/* ================= Heading ================= */
+
+.section h2{
+    font-size:36px;
+    font-weight:700;
+    color:#17376E;
+    margin-bottom:18px;
+}
+
+/* ================= Paragraph ================= */
+
+.section p{
+    width:75%;
+    max-width:900px;
+
     font-size:20px;
+    line-height:1.8;
+
+    color:#6b7280;
+
+    margin-bottom:40px;
 }
 
-.hero-buttons{
-    display:flex;
-    gap:20px;
-}
-
-.demo-btn{
-    background:#d89a22;
-    color:white;
-    border:none;
-    padding:14px 30px;
-    border-radius:5px;
-    cursor:pointer;
-}
-
-.learn-btn{
-    background:white;
-    color:#153b6d;
-    border:none;
-    padding:14px 30px;
-    border-radius:5px;
-    cursor:pointer;
-}
-
-.section{
-    padding:80px 60px;
-    text-align:center;
-}
+/* ================= Cards ================= */
 
 .cards{
+    width:100%;
+
     display:flex;
     justify-content:center;
-    gap:30px;
+    align-items:center;
+
+    gap:35px;
+
     flex-wrap:wrap;
-    margin-top:40px;
+
+    margin-top:50px;
 }
 
+/* ================= Individual Card ================= */
+
 .card{
-    background:white;
-    width:250px;
-    padding:30px;
-    border-radius:10px;
-    box-shadow:0 5px 15px rgba(0,0,0,.1);
+    width:280px;
+    min-height:220px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:35px 25px;
+
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+
+    transition:all .3s ease;
+
+    cursor:pointer;
+}
+
+.card:hover{
+    transform:translateY(-10px);
+    box-shadow:0 18px 40px rgba(0,0,0,.15);
+}
+
+.card h3{
+    color:#17376E;
+    font-size:26px;
+    margin-bottom:15px;
+}
+
+.card p{
+    width:100%;
+    margin:0;
+    color:#6b7280;
+    font-size:17px;
+    line-height:1.6;
 }

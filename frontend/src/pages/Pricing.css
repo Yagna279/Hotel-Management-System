@@ -1,0 +1,201 @@
+.pricing{
+    width:100%;
+    padding:100px 80px;
+    background:#ffffff;
+}
+
+.pricing-header{
+    text-align:center;
+    margin-bottom:60px;
+}
+
+.pricing-tag{
+    display:inline-block;
+    padding:8px 18px;
+    background:#eef4ff;
+    color:#17376E;
+    border-radius:30px;
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:20px;
+    letter-spacing:1px;
+}
+
+.pricing-header h2{
+    font-size:42px;
+    color:#17376E;
+    margin-bottom:20px;
+}
+
+.pricing-header p{
+    max-width:700px;
+    margin:auto;
+    color:#6b7280;
+    font-size:18px;
+    line-height:1.8;
+}
+
+/* ================= Cards ================= */
+
+.pricing-cards{
+    display:flex;
+    justify-content:center;
+    align-items:stretch;
+    gap:35px;
+    flex-wrap:wrap;
+}
+
+/* ================= Individual Card ================= */
+
+.price-card{
+    width:340px;
+    background:#fff;
+    border-radius:20px;
+    padding:40px 30px;
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+    transition:all .3s ease;
+    position:relative;
+    text-align:center;
+}
+
+.price-card:hover{
+    transform:translateY(-10px);
+    box-shadow:0 20px 45px rgba(23,55,110,.15);
+}
+
+.price-card h3{
+    color:#17376E;
+    font-size:26px;
+    margin-bottom:18px;
+}
+
+.price-card h1{
+    font-size:48px;
+    color:#17376E;
+    margin-bottom:25px;
+}
+
+.price-card h1 span{
+    font-size:18px;
+    color:#6b7280;
+}
+
+.price-card ul{
+    list-style:none;
+    padding:0;
+    margin:0 0 30px;
+}
+
+.price-card ul li{
+    padding:12px 0;
+    color:#555;
+    border-bottom:1px solid #f0f0f0;
+    font-size:16px;
+}
+
+.price-card ul li:last-child{
+    border-bottom:none;
+}
+
+/* ================= Button ================= */
+
+.price-card button{
+    width:100%;
+    padding:15px;
+    background:#17376E;
+    color:#fff;
+    border:none;
+    border-radius:12px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.price-card button:hover{
+    background:#D89A22;
+}
+
+/* ================= Featured Card ================= */
+
+.featured{
+    border:3px solid #17376E;
+    transform:scale(1.05);
+}
+
+.featured:hover{
+    transform:scale(1.05) translateY(-10px);
+}
+
+.popular{
+    position:absolute;
+    top:-15px;
+    left:50%;
+    transform:translateX(-50%);
+    background:#D89A22;
+    color:#fff;
+    padding:8px 18px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:600;
+}
+
+/* ================= Responsive ================= */
+
+@media(max-width:1100px){
+
+    .pricing{
+        padding:80px 40px;
+    }
+
+    .pricing-cards{
+        gap:25px;
+    }
+
+}
+
+@media(max-width:900px){
+
+    .pricing-cards{
+        flex-direction:column;
+        align-items:center;
+    }
+
+    .price-card{
+        width:100%;
+        max-width:400px;
+    }
+
+    .featured{
+        transform:none;
+    }
+
+    .featured:hover{
+        transform:translateY(-10px);
+    }
+
+}
+
+@media(max-width:600px){
+
+    .pricing{
+        padding:60px 20px;
+    }
+
+    .pricing-header h2{
+        font-size:34px;
+    }
+
+    .pricing-header p{
+        font-size:16px;
+    }
+
+    .price-card{
+        padding:30px 20px;
+    }
+
+    .price-card h1{
+        font-size:40px;
+    }
+
+}

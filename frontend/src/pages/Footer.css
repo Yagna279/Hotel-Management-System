@@ -1,0 +1,175 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+.footer{
+    background:#111827;
+    color:#fff;
+    padding:70px 80px 25px;
+}
+
+.footer-container{
+    max-width:1400px;
+    margin:auto;
+
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr;
+    gap:90px;
+}
+
+/* COMPANY */
+
+.company-column{
+    max-width:460px;
+}
+
+.footer-logo{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.footer-logo img{
+    width:58px;
+    height:58px;
+    object-fit:contain;
+}
+
+.footer-logo-text{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.footer-logo-text h3{
+    margin:0;
+    font-size:18px;
+    font-weight:700;
+    color:#fff;
+    line-height:1.2;
+}
+
+.footer-logo-text p{
+    margin-top:4px;
+    color:#D89A22;
+    font-size:14px;
+    font-weight:600;
+}
+
+.footer-text{
+    color:#d1d5db;
+    font-size:16px;
+    line-height:1.8;
+}
+
+/* HEADINGS */
+
+.footer-column h4{
+    font-size:24px;
+    margin-bottom:25px;
+    color:#fff;
+}
+
+/* LINKS */
+
+.footer-column a{
+    display:block;
+    text-decoration:none;
+    color:#d1d5db;
+    margin-bottom:15px;
+    transition:.3s;
+    font-size:16px;
+}
+
+.footer-column a:hover{
+    color:#D89A22;
+}
+
+.footer-column p{
+    color:#d1d5db;
+    line-height:1.8;
+}
+
+/* Divider */
+
+.footer hr{
+    border:none;
+    border-top:1px solid rgba(255,255,255,.12);
+    margin:40px 0 25px;
+}
+
+/* Bottom */
+
+.footer-bottom{
+    max-width:1400px;
+    margin:auto;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.footer-bottom p{
+    color:#c7c7c7;
+}
+
+.footer-links{
+    display:flex;
+    gap:25px;
+}
+
+.footer-links a{
+    color:#d1d5db;
+    text-decoration:none;
+}
+
+.footer-links a:hover{
+    color:#D89A22;
+}
+
+/* Responsive */
+
+@media(max-width:900px){
+
+.footer{
+    padding:50px 30px;
+}
+
+.footer-container{
+    grid-template-columns:1fr;
+    gap:45px;
+}
+
+.footer-bottom{
+    flex-direction:column;
+    gap:20px;
+    text-align:center;
+}
+
+.footer-links{
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+}
+.footer-icon{
+    color:#D89A22;
+    margin-right:10px;
+    font-size:16px;
+    vertical-align:middle;
+}
+
+.footer-address{
+    display:flex;
+    align-items:flex-start;
+    gap: 1px;
+    color:#d1d5db;
+    line-height:1.5;
+}
+
+.footer-address span{
+    display:block;
+}
