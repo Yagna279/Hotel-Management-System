@@ -79,24 +79,28 @@
 }
 
 .demo-btn{
-    display:block;
-    margin:0 auto;          /* Centers the button */
+    width:220px;      /* Change to 180px, 200px, or 240px as needed */
+    height:52px;
 
     background:#17376E;
     color:#fff;
 
     border:none;
-
-    padding:16px 36px;
-
     border-radius:12px;
 
-    cursor:pointer;
-
-    font-size:18px;
+    font-size:17px;
     font-weight:600;
 
-    transition:0.3s;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.demo-btn:hover{
+    background:#D89A22;
+}
+
+.demo-btn:hover{
+    background:#D89A22;
 }
 
 .demo-btn:hover{
