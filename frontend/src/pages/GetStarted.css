@@ -1,0 +1,33 @@
+.password-box{
+    position:relative;
+    width:100%;
+}
+
+.password-box input{
+    width:100%;
+    height:55px;
+    padding:0 50px 0 18px;
+    border:1px solid #d1d5db;
+    border-radius:14px;
+    font-size:16px;
+    outline:none;
+}
+
+.password-box input:focus{
+    border-color:#2563EB;
+    box-shadow:0 0 0 5px rgba(37,99,235,.15);
+}
+
+.eye-icon{
+    position:absolute;
+    right:18px;
+    top:50%;
+    transform:translateY(-50%);
+    cursor:pointer;
+    color:#666;
+    font-size:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:999;
+}

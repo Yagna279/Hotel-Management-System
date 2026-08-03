@@ -40,7 +40,7 @@
 }
 
 .logo-text h2{
-    font-size:16px;      /* Reduced from 20px */
+    font-size:16px;
     color:#17376E;
     margin:0;
     font-weight:600;
@@ -48,7 +48,7 @@
 }
 
 .logo-text p{
-    font-size:12px;      /* Reduced from 14px */
+    font-size:12px;
     color:#D89A22;
     margin-top:2px;
     font-weight:500;
@@ -57,13 +57,13 @@
 /* ================= Navigation ================= */
 
 .nav-links{
-    width:850px;              /* Increased from 820px */
+    width:760px;
     display:flex;
     justify-content:space-evenly;
     align-items:center;
 
     background:#fff;
-    height:60px;              /* Slightly taller */
+    height:60px;
     padding:0 20px;
 
     border-radius:30px;
@@ -73,96 +73,85 @@
 .nav-links span{
     cursor:pointer;
     color:#333;
-
-    font-size:17px;           /* Increased from 15px */
-    font-weight:600;          /* Slightly bolder */
-
+    font-size:17px;
+    font-weight:600;
     white-space:nowrap;
-    letter-spacing:0.3px;
-    transition:all 0.3s ease;
+    letter-spacing:.3px;
+    transition:.3s;
 }
 
 .nav-links span:hover{
+    color:#17376E;
+}
 
-    color:#34425b;
+/* ================= Right Side Buttons ================= */
+
+.nav-buttons{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+/* ================= Get Started ================= */
+
+.get-started-btn{
+    background:#D89A22;
+    color:#fff;
+    text-decoration:none;
+    padding:12px 28px;
+    border-radius:12px;
+    font-size:15px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.get-started-btn:hover{
+    background:#b67d15;
 }
 
 /* ================= Login ================= */
 
-.nav-actions{
-
-    position:relative;
-
-    min-width:180px;
+.login-btn{
+    background:#17376E;
+    color:#fff;
+    text-decoration:none;
+    padding:12px 28px;
+    border-radius:12px;
+    font-size:15px;
+    font-weight:600;
+    transition:.3s;
 
     display:flex;
-
-    justify-content:flex-end;
-}
-
-.login-btn{
-
-    background:#17376E;
-
-    color:#fff;
-
-    border:none;
-
-    padding:12px 26px;
-
-    border-radius:12px;
-
-    cursor:pointer;
-
-    font-size:15px;
-
-    font-weight:600;
-
-    transition:.3s;
+    align-items:center;
+    justify-content:center;
 }
 
 .login-btn:hover{
-
     background:#0f2d5d;
 }
 
 /* ================= Dropdown ================= */
 
 .dropdown{
-
     position:absolute;
-
     top:60px;
-
     right:0;
-
     width:190px;
-
     background:#fff;
-
     border-radius:12px;
-
     box-shadow:0 10px 25px rgba(0,0,0,.15);
-
     overflow:hidden;
 }
 
 .dropdown a{
-
     display:block;
-
     padding:14px 18px;
-
     text-decoration:none;
-
     color:#333;
-
     transition:.3s;
 }
 
 .dropdown a:hover{
-
     background:#17376E;
-
     color:#fff;
 }

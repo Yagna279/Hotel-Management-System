@@ -32,15 +32,22 @@ function Navbar() {
         <span onClick={() => scrollToSection("home")}>Home</span>
         <span onClick={() => scrollToSection("about")}>About</span>
         <span onClick={() => scrollToSection("services")}>Services</span>
-        <span onClick={() => scrollToSection("pricing")}>Pricing</span>
         <span onClick={() => scrollToSection("demo")}>Book Demo</span>
         <span onClick={() => scrollToSection("contact")}>Contact Us</span>
       </nav>
 
-      {/* Login Button */}
-      <Link to="/login" className="login-btn">
-        Login
-      </Link>
+      {/* Right Side Buttons */}
+      <div className="nav-buttons">
+
+        <Link to="/get-started" className="get-started-btn">
+          Get Started
+        </Link>
+
+        <Link to="/login" className="login-btn">
+          Login
+        </Link>
+
+      </div>
 
     </header>
   );
