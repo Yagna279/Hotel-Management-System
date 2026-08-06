@@ -1,0 +1,235 @@
+/* ================= HEADER ================= */
+
+.services-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+.services-header h1{
+    font-size:34px;
+    color:#17376E;
+    margin:0;
+}
+
+.services-header p{
+    margin-top:8px;
+    color:#777;
+}
+
+.add-service-btn{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:#17376E;
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    padding:12px 22px;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.add-service-btn:hover{
+    background:#2563EB;
+}
+
+/* ================= STATS ================= */
+
+.service-stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+    margin-bottom:30px;
+}
+
+.service-card{
+    background:#fff;
+    border-radius:18px;
+    padding:25px;
+    text-align:center;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.service-card:hover{
+    transform:translateY(-5px);
+}
+
+.service-icon{
+    font-size:42px;
+    margin-bottom:15px;
+}
+
+.service-card h2{
+    color:#17376E;
+    font-size:32px;
+    margin-bottom:10px;
+}
+
+.service-card p{
+    color:#777;
+}
+
+/* ================= COLORS ================= */
+
+.blue{
+    color:#2563EB;
+}
+
+.green{
+    color:#10B981;
+}
+
+.orange{
+    color:#F59E0B;
+}
+
+.purple{
+    color:#8B5CF6;
+}
+
+/* ================= TABLE ================= */
+
+.services-table-card{
+    background:#fff;
+    padding:25px;
+    border-radius:18px;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+    margin-bottom:30px;
+}
+
+.services-table-card table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.services-table-card th{
+    background:#17376E;
+    color:white;
+    padding:15px;
+    text-align:left;
+}
+
+.services-table-card td{
+    padding:15px;
+    border-bottom:1px solid #eee;
+}
+
+.services-table-card tr:hover{
+    background:#F8FAFC;
+}
+
+/* ================= STATUS ================= */
+
+.status{
+    color:white;
+    padding:7px 18px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:600;
+}
+
+.confirmed{
+    background:#10B981;
+}
+
+.pending{
+    background:#F59E0B;
+}
+
+.checked{
+    background:#2563EB;
+}
+
+/* ================= BUTTON ================= */
+
+.edit-btn{
+    background:#17376E;
+    color:white;
+    border:none;
+    border-radius:8px;
+    padding:8px 16px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.edit-btn:hover{
+    background:#2563EB;
+}
+
+/* ================= SERVICE GRID ================= */
+
+.service-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+}
+
+.service-box{
+    background:white;
+    border-radius:18px;
+    padding:30px;
+    text-align:center;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.service-box:hover{
+    transform:translateY(-5px);
+}
+
+.grid-icon{
+    font-size:45px;
+    color:#17376E;
+    margin-bottom:18px;
+}
+
+.service-box h3{
+    color:#17376E;
+    margin-bottom:10px;
+}
+
+.service-box p{
+    color:#777;
+    font-size:14px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:1200px){
+
+    .service-stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .service-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:768px){
+
+    .services-header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:20px;
+    }
+
+    .service-stats{
+        grid-template-columns:1fr;
+    }
+
+    .service-grid{
+        grid-template-columns:1fr;
+    }
+
+    .services-table-card{
+        overflow-x:auto;
+    }
+
+}

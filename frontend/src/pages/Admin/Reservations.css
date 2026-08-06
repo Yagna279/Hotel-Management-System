@@ -1,0 +1,723 @@
+/* =====================================================
+   RESERVATIONS PAGE
+===================================================== */
+
+.reservation-header{
+    margin-bottom:30px;
+}
+
+.reservation-header h1{
+    margin:0;
+    font-size:34px;
+    font-weight:700;
+    color:#17376E;
+}
+
+.reservation-header p{
+    margin-top:8px;
+    color:#64748B;
+    font-size:15px;
+}
+
+/* =====================================================
+   LAYOUT
+===================================================== */
+
+.reservation-layout{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:25px;
+    align-items:start;
+    margin-bottom:30px;
+}
+
+/* =====================================================
+   CALENDAR CARD
+===================================================== */
+
+.calendar-section{
+
+    background:#ffffff;
+
+    border-radius:22px;
+
+    padding:20px;
+
+    border:1px solid #E8EEF5;
+
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+
+}
+
+/* =====================================================
+   CUSTOM TOOLBAR
+===================================================== */
+
+.calendar-toolbar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+
+}
+
+.toolbar-left,
+.toolbar-right{
+
+    display:flex;
+
+    gap:10px;
+
+}
+
+.calendar-toolbar h2{
+
+    margin:0;
+
+    color:#17376E;
+
+    font-size:26px;
+
+    font-weight:700;
+
+}
+
+.calendar-toolbar button{
+
+    border:none;
+
+    background:#EEF4FF;
+
+    color:#17376E;
+
+    padding:8px 15px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+    transition:.25s;
+
+}
+
+.calendar-toolbar button:hover{
+
+    background:#2563EB;
+
+    color:white;
+
+}
+
+/* =====================================================
+   REACT BIG CALENDAR
+===================================================== */
+
+.rbc-calendar{
+
+    background:white;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    font-family:inherit;
+
+}
+
+/* Hide default toolbar */
+
+.rbc-toolbar{
+
+    display:none;
+
+}
+
+/* Header */
+
+.rbc-header{
+
+    background:linear-gradient(135deg,#17376E,#2563EB);
+
+    color:white;
+
+    padding:12px;
+
+    border:none !important;
+
+    font-weight:600;
+
+    font-size:14px;
+
+}
+
+/* Calendar Border */
+
+.rbc-month-view{
+
+    border:1px solid #E5E7EB;
+
+    border-radius:15px;
+
+    overflow:hidden;
+
+}
+
+/* Week */
+
+.rbc-month-row{
+
+    min-height:65px !important;
+
+}
+
+/* Date */
+
+.rbc-date-cell{
+
+    text-align:right;
+
+    padding:6px;
+
+}
+
+.rbc-date-cell a{
+
+    color:#17376E;
+
+    text-decoration:none;
+
+    font-weight:700;
+
+}
+
+/* Today */
+
+.rbc-today{
+
+    background:#EEF5FF !important;
+
+}
+
+/* Outside Month */
+
+.rbc-off-range-bg{
+
+    background:#FAFBFD;
+
+}
+
+.rbc-off-range .rbc-button-link{
+
+    color:#C0C7D3;
+
+}
+
+/* Hover */
+
+.rbc-day-bg{
+
+    transition:.25s;
+
+}
+
+.rbc-day-bg:hover{
+
+    background:#F4F8FF;
+
+}
+
+/* Grid */
+
+.rbc-month-row{
+
+    border-top:1px solid #EDF2F7;
+
+}
+
+.rbc-day-bg{
+
+    border-left:1px solid #EDF2F7 !important;
+
+}
+
+/* =====================================================
+   EVENTS
+===================================================== */
+
+.rbc-event{
+
+    background:transparent !important;
+
+    border:none !important;
+
+    box-shadow:none !important;
+
+    padding:0 !important;
+
+}
+
+.rbc-event-content{
+
+    display:flex;
+
+    justify-content:center;
+
+}
+
+.rbc-event-label{
+
+    display:none;
+
+}
+
+/* =====================================================
+   BOOKING BADGE
+===================================================== */
+
+.booking-badge{
+
+    width:24px;
+
+    height:24px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    margin:auto;
+
+    margin-top:3px;
+
+    color:white;
+
+    font-size:11px;
+
+    font-weight:700;
+
+    box-shadow:0 5px 12px rgba(0,0,0,.18);
+
+    transition:.25s;
+
+}
+
+.booking-badge:hover{
+
+    transform:scale(1.15);
+
+}
+
+/* Badge Colors */
+
+.booking-badge.confirmed{
+
+    background:linear-gradient(135deg,#2563EB,#60A5FA);
+
+}
+
+.booking-badge.checked{
+
+    background:linear-gradient(135deg,#10B981,#34D399);
+
+}
+
+.booking-badge.pending{
+
+    background:linear-gradient(135deg,#F59E0B,#FBBF24);
+
+}
+
+.booking-badge.cancelled{
+
+    background:linear-gradient(135deg,#EF4444,#F87171);
+
+}
+/* =====================================================
+   RESERVATION LIST
+===================================================== */
+
+.reservation-list{
+
+    background:#fff;
+
+    border-radius:22px;
+
+    padding:24px;
+
+    border:1px solid #E8EEF5;
+
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+
+}
+
+.reservation-list h2{
+
+    margin:0 0 20px;
+
+    color:#17376E;
+
+    font-size:24px;
+
+    font-weight:700;
+
+}
+
+.reservation-item{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:18px 22px;
+
+    margin-bottom:16px;
+
+    border-radius:16px;
+
+    background:#F8FAFC;
+
+    border:1px solid #EDF2F7;
+
+    transition:.3s;
+
+}
+
+.reservation-item:last-child{
+
+    margin-bottom:0;
+
+}
+
+.reservation-item:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+}
+
+.reservation-item h4{
+
+    margin:0;
+
+    color:#17376E;
+
+    font-size:17px;
+
+    font-weight:700;
+
+}
+
+.reservation-item p{
+
+    margin-top:6px;
+
+    color:#64748B;
+
+    font-size:14px;
+
+}
+
+/* =====================================================
+   STATUS BADGES
+===================================================== */
+
+.status{
+
+    padding:8px 18px;
+
+    border-radius:30px;
+
+    color:white;
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+.confirmed{
+
+    background:#2563EB;
+
+}
+
+.pending{
+
+    background:#F59E0B;
+
+}
+
+.checked{
+
+    background:#10B981;
+
+}
+
+/* =====================================================
+   RIGHT SIDEBAR
+===================================================== */
+
+.reservation-sidebar{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:18px;
+
+}
+
+/* =====================================================
+   DASHBOARD CARDS
+===================================================== */
+
+.reservation-card{
+
+    color:white;
+
+    border:none;
+
+    border-radius:20px;
+
+    padding:24px;
+
+    overflow:hidden;
+
+    transition:.35s;
+
+    box-shadow:0 12px 25px rgba(0,0,0,.12);
+
+}
+
+.reservation-card:hover{
+
+    transform:translateY(-6px);
+
+}
+
+.reservation-card:nth-child(1){
+
+    background:linear-gradient(135deg,#2563EB,#60A5FA);
+
+}
+
+.reservation-card:nth-child(2){
+
+    background:linear-gradient(135deg,#10B981,#34D399);
+
+}
+
+.reservation-card:nth-child(3){
+
+    background:linear-gradient(135deg,#F59E0B,#FBBF24);
+
+}
+
+.reservation-card:nth-child(4){
+
+    background:linear-gradient(135deg,#8B5CF6,#A855F7);
+
+}
+
+.reservation-card h2{
+
+    margin:18px 0 8px;
+
+    color:white;
+
+    font-size:30px;
+
+    font-weight:700;
+
+}
+
+.reservation-card p{
+
+    margin:0;
+
+    color:white;
+
+    font-size:14px;
+
+}
+
+/* =====================================================
+   ICON BOX
+===================================================== */
+
+.icon-box{
+
+    width:60px;
+
+    height:60px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    border-radius:18px;
+
+    background:rgba(255,255,255,.22);
+
+}
+
+.reservation-icon{
+
+    font-size:28px;
+
+    color:white;
+
+}
+
+/* =====================================================
+   SMOOTH EFFECTS
+===================================================== */
+
+.calendar-section,
+.reservation-card,
+.reservation-item{
+
+    transition:.3s;
+
+}
+
+.calendar-section:hover{
+
+    box-shadow:0 18px 40px rgba(0,0,0,.08);
+
+}
+
+/* =====================================================
+   SCROLLBAR
+===================================================== */
+
+::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#F5F7FA;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#CBD5E1;
+
+    border-radius:20px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:#94A3B8;
+
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:1200px){
+
+.reservation-layout{
+
+    grid-template-columns:1fr;
+
+}
+
+.reservation-sidebar{
+
+    grid-template-columns:repeat(2,1fr);
+
+}
+
+}
+
+@media(max-width:768px){
+
+.calendar-toolbar{
+
+    flex-direction:column;
+
+    gap:14px;
+
+}
+
+.toolbar-left,
+.toolbar-right{
+
+    justify-content:center;
+
+    flex-wrap:wrap;
+
+}
+
+.calendar-toolbar h2{
+
+    font-size:22px;
+
+}
+
+.reservation-sidebar{
+
+    grid-template-columns:1fr;
+
+}
+
+.reservation-item{
+
+    flex-direction:column;
+
+    align-items:flex-start;
+
+    gap:14px;
+
+}
+
+.reservation-card{
+
+    padding:22px;
+
+}
+
+.calendar-section{
+
+    padding:16px;
+
+}
+
+.rbc-month-row{
+
+    min-height:55px !important;
+
+}
+
+.booking-badge{
+
+    width:20px;
+
+    height:20px;
+
+    font-size:10px;
+
+}
+
+}

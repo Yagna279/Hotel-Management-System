@@ -27,7 +27,7 @@ function AdminDashboard() {
           {/* Heading */}
           <div className="dashboard-header">
             <h1>Dashboard</h1>
-            <p>Welcome back, Admin 👋</p>
+            <p>Welcome back, Admin! </p>
           </div>
 
           {/* Statistics Cards */}
