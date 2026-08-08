@@ -4,7 +4,7 @@ import {
   FaBell,
   FaUserCircle,
 } from "react-icons/fa";
-
+import "./Topbar.css";
 function Topbar() {
   return (
     <div className="topbar">

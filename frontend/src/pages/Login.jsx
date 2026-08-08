@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 
@@ -7,6 +7,7 @@ import "./Login.css";
 import logo from "../assets/shnoor-logo.jpeg";
 
 function Login() {
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,11 +15,9 @@ function Login() {
   // ================= EMAIL LOGIN =================
 
   const handleLogin = async (e) => {
-
     e.preventDefault();
 
     try {
-
       const response = await fetch(
         "http://localhost:5000/api/auth/login",
         {
@@ -36,34 +35,48 @@ function Login() {
       );
 
       const data = await response.json();
-
+      console.log("Response:", data);
+      console.log("Role:", data.user?.role);
       if (!response.ok) {
         alert(data.message);
         return;
       }
 
+      // Save Login Details
       localStorage.setItem("token", data.token);
+      localStorage.setItem(
+        "user",
+        JSON.stringify(data.user)
+      );
 
-      if (data.user.role === "admin") {
-        window.location.href = "/admin-dashboard";
-      } else {
-        window.location.href = "/customer-dashboard";
+      // ================= ROLE BASED ROUTING =================
+
+      switch (data.user.role.toUpperCase()) {
+        case "SUPER_ADMIN":
+          navigate("/super-admin-dashboard");
+          break;
+
+        case "ADMIN":
+          navigate("/admin-dashboard");
+          break;
+
+        case "CUSTOMER":
+          navigate("/customer-dashboard");
+          break;
+
+        default:
+          alert("Unknown User Role");
       }
 
     } catch (error) {
-
       console.error(error);
-
       alert("Server Error");
-
     }
-
   };
 
   // ================= GOOGLE LOGIN =================
 
   const handleGoogleSuccess = (credentialResponse) => {
-
     const user = jwtDecode(
       credentialResponse.credential
     );
@@ -77,12 +90,11 @@ function Login() {
       JSON.stringify(user)
     );
 
-    window.location.href = "/customer-dashboard";
-
+    // Google login is for customers
+    navigate("/customer-dashboard");
   };
 
   return (
-
     <div className="login-page">
 
       <div className="login-card">
@@ -108,19 +120,13 @@ function Login() {
             <label>Email Address</label>
 
             <input
-
               type="email"
-
               placeholder="Enter your email"
-
               value={email}
-
               onChange={(e) =>
                 setEmail(e.target.value)
               }
-
               required
-
             />
 
           </div>
@@ -132,19 +138,13 @@ function Login() {
             <label>Password</label>
 
             <input
-
               type="password"
-
               placeholder="Enter your password"
-
               value={password}
-
               onChange={(e) =>
                 setPassword(e.target.value)
               }
-
               required
-
             />
 
           </div>
@@ -174,7 +174,7 @@ function Login() {
 
           </div>
 
-          {/* Login */}
+          {/* Login Button */}
 
           <button
             type="submit"
@@ -193,7 +193,7 @@ function Login() {
 
         </div>
 
-        {/* Google */}
+        {/* Google Login */}
 
         <div
           style={{
@@ -203,15 +203,10 @@ function Login() {
         >
 
           <GoogleLogin
-
             onSuccess={handleGoogleSuccess}
-
             onError={() => {
-
               alert("Google Login Failed");
-
             }}
-
           />
 
         </div>
@@ -219,17 +214,13 @@ function Login() {
         {/* Footer */}
 
         <p className="login-footer">
-
           © 2026 SHNOOR International LLC
-
         </p>
 
       </div>
 
     </div>
-
   );
-
 }
 
 export default Login;

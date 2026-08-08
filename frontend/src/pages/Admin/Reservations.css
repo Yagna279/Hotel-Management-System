@@ -3,6 +3,9 @@
 ===================================================== */
 
 .reservation-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
     margin-bottom:30px;
 }
 
@@ -15,7 +18,7 @@
 
 .reservation-header p{
     margin-top:8px;
-    color:#64748B;
+    color:#5f6873;
     font-size:15px;
 }
 
@@ -36,17 +39,16 @@
 ===================================================== */
 
 .calendar-section{
-
     background:#ffffff;
-
     border-radius:22px;
-
-    padding:20px;
-
+    padding:22px;
     border:1px solid #E8EEF5;
-
     box-shadow:0 12px 30px rgba(0,0,0,.08);
+    transition:.3s;
+}
 
+.calendar-section:hover{
+    box-shadow:0 18px 40px rgba(0,0,0,.10);
 }
 
 /* =====================================================
@@ -54,64 +56,39 @@
 ===================================================== */
 
 .calendar-toolbar{
-
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
-
     margin-bottom:20px;
-
 }
 
 .toolbar-left,
 .toolbar-right{
-
     display:flex;
-
     gap:10px;
-
 }
 
 .calendar-toolbar h2{
-
     margin:0;
-
-    color:#17376E;
-
+    color:#23519f;
     font-size:26px;
-
     font-weight:700;
-
 }
 
 .calendar-toolbar button{
-
     border:none;
-
     background:#EEF4FF;
-
     color:#17376E;
-
     padding:8px 15px;
-
     border-radius:10px;
-
     cursor:pointer;
-
     font-weight:600;
-
-    transition:.25s;
-
+    transition:.3s;
 }
 
 .calendar-toolbar button:hover{
-
-    background:#2563EB;
-
-    color:white;
-
+    background:#819edd;
+    color:#fff;
 }
 
 /* =====================================================
@@ -119,131 +96,66 @@
 ===================================================== */
 
 .rbc-calendar{
-
-    background:white;
-
+    background:#fff;
     border-radius:18px;
-
     overflow:hidden;
-
     font-family:inherit;
-
 }
-
-/* Hide default toolbar */
 
 .rbc-toolbar{
-
     display:none;
-
 }
-
-/* Header */
-
-.rbc-header{
-
-    background:linear-gradient(135deg,#17376E,#2563EB);
-
-    color:white;
-
-    padding:12px;
-
-    border:none !important;
-
-    font-weight:600;
-
-    font-size:14px;
-
-}
-
-/* Calendar Border */
 
 .rbc-month-view{
-
     border:1px solid #E5E7EB;
-
     border-radius:15px;
-
     overflow:hidden;
-
 }
 
-/* Week */
+.rbc-header{
+    background:linear-gradient(135deg,#17376E,#7298ea);
+    color:#fff;
+    padding:12px;
+    border:none !important;
+    font-size:14px;
+    font-weight:600;
+}
 
 .rbc-month-row{
-
-    min-height:65px !important;
-
+    min-height:68px !important;
+    border-top:1px solid #EDF2F7;
 }
-
-/* Date */
-
-.rbc-date-cell{
-
-    text-align:right;
-
-    padding:6px;
-
-}
-
-.rbc-date-cell a{
-
-    color:#17376E;
-
-    text-decoration:none;
-
-    font-weight:700;
-
-}
-
-/* Today */
-
-.rbc-today{
-
-    background:#EEF5FF !important;
-
-}
-
-/* Outside Month */
-
-.rbc-off-range-bg{
-
-    background:#FAFBFD;
-
-}
-
-.rbc-off-range .rbc-button-link{
-
-    color:#C0C7D3;
-
-}
-
-/* Hover */
 
 .rbc-day-bg{
-
+    border-left:1px solid #EDF2F7 !important;
     transition:.25s;
-
 }
 
 .rbc-day-bg:hover{
-
-    background:#F4F8FF;
-
+    background:#F5F9FF;
 }
 
-/* Grid */
-
-.rbc-month-row{
-
-    border-top:1px solid #EDF2F7;
-
+.rbc-date-cell{
+    text-align:right;
+    padding:6px;
 }
 
-.rbc-day-bg{
+.rbc-date-cell a{
+    text-decoration:none;
+    color:#17376E;
+    font-weight:700;
+}
 
-    border-left:1px solid #EDF2F7 !important;
+.rbc-today{
+    background:#EEF5FF !important;
+}
 
+.rbc-off-range-bg{
+    background:#FAFBFD;
+}
+
+.rbc-off-range .rbc-button-link{
+    color:#C0C7D3;
 }
 
 /* =====================================================
@@ -251,336 +163,312 @@
 ===================================================== */
 
 .rbc-event{
-
     background:transparent !important;
-
     border:none !important;
-
     box-shadow:none !important;
-
     padding:0 !important;
-
 }
 
 .rbc-event-content{
-
     display:flex;
-
     justify-content:center;
-
 }
 
 .rbc-event-label{
-
     display:none;
-
 }
 
 /* =====================================================
-   BOOKING BADGE
+   BOOKING BADGES
 ===================================================== */
 
 .booking-badge{
-
     width:24px;
-
     height:24px;
-
     border-radius:50%;
-
     display:flex;
-
     justify-content:center;
-
     align-items:center;
-
     margin:auto;
-
     margin-top:3px;
-
-    color:white;
-
+    color:#fff;
     font-size:11px;
-
     font-weight:700;
-
     box-shadow:0 5px 12px rgba(0,0,0,.18);
-
     transition:.25s;
-
 }
 
 .booking-badge:hover{
-
     transform:scale(1.15);
-
 }
 
-/* Badge Colors */
-
 .booking-badge.confirmed{
-
     background:linear-gradient(135deg,#2563EB,#60A5FA);
-
 }
 
 .booking-badge.checked{
-
     background:linear-gradient(135deg,#10B981,#34D399);
-
 }
 
 .booking-badge.pending{
-
     background:linear-gradient(135deg,#F59E0B,#FBBF24);
-
 }
 
 .booking-badge.cancelled{
-
     background:linear-gradient(135deg,#EF4444,#F87171);
-
 }
-/* =====================================================
-   RESERVATION LIST
-===================================================== */
-
-.reservation-list{
-
-    background:#fff;
-
-    border-radius:22px;
-
-    padding:24px;
-
-    border:1px solid #E8EEF5;
-
-    box-shadow:0 12px 30px rgba(0,0,0,.08);
-
-}
-
-.reservation-list h2{
-
-    margin:0 0 20px;
-
-    color:#17376E;
-
-    font-size:24px;
-
-    font-weight:700;
-
-}
-
-.reservation-item{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    padding:18px 22px;
-
-    margin-bottom:16px;
-
-    border-radius:16px;
-
-    background:#F8FAFC;
-
-    border:1px solid #EDF2F7;
-
-    transition:.3s;
-
-}
-
-.reservation-item:last-child{
-
-    margin-bottom:0;
-
-}
-
-.reservation-item:hover{
-
-    transform:translateY(-4px);
-
-    box-shadow:0 10px 25px rgba(0,0,0,.08);
-
-}
-
-.reservation-item h4{
-
-    margin:0;
-
-    color:#17376E;
-
-    font-size:17px;
-
-    font-weight:700;
-
-}
-
-.reservation-item p{
-
-    margin-top:6px;
-
-    color:#64748B;
-
-    font-size:14px;
-
-}
-
-/* =====================================================
-   STATUS BADGES
-===================================================== */
-
-.status{
-
-    padding:8px 18px;
-
-    border-radius:30px;
-
-    color:white;
-
-    font-size:13px;
-
-    font-weight:600;
-
-}
-
-.confirmed{
-
-    background:#2563EB;
-
-}
-
-.pending{
-
-    background:#F59E0B;
-
-}
-
-.checked{
-
-    background:#10B981;
-
-}
-
 /* =====================================================
    RIGHT SIDEBAR
 ===================================================== */
 
 .reservation-sidebar{
-
     display:grid;
-
     grid-template-columns:repeat(2,1fr);
-
     gap:18px;
-
 }
 
 /* =====================================================
-   DASHBOARD CARDS
+   STATISTICS CARDS
 ===================================================== */
 
 .reservation-card{
-
-    color:white;
-
     border:none;
-
     border-radius:20px;
-
     padding:24px;
-
+    color:#fff;
     overflow:hidden;
-
     transition:.35s;
-
     box-shadow:0 12px 25px rgba(0,0,0,.12);
-
 }
 
 .reservation-card:hover{
-
     transform:translateY(-6px);
-
 }
 
 .reservation-card:nth-child(1){
-
-    background:linear-gradient(135deg,#2563EB,#60A5FA);
-
+    background:linear-gradient(135deg,#668de1,#60A5FA);
 }
 
 .reservation-card:nth-child(2){
-
-    background:linear-gradient(135deg,#10B981,#34D399);
-
+    background:linear-gradient(135deg,#bce6d8,#34D399);
 }
 
 .reservation-card:nth-child(3){
-
-    background:linear-gradient(135deg,#F59E0B,#FBBF24);
-
+    background:linear-gradient(135deg,#f0dfc3,#FBBF24);
 }
 
 .reservation-card:nth-child(4){
-
-    background:linear-gradient(135deg,#8B5CF6,#A855F7);
-
+    background:linear-gradient(135deg,#bda6f4,#A855F7);
 }
-
-.reservation-card h2{
-
-    margin:18px 0 8px;
-
-    color:white;
-
-    font-size:30px;
-
-    font-weight:700;
-
-}
-
-.reservation-card p{
-
-    margin:0;
-
-    color:white;
-
-    font-size:14px;
-
-}
-
-/* =====================================================
-   ICON BOX
-===================================================== */
 
 .icon-box{
-
     width:60px;
-
     height:60px;
-
     display:flex;
-
     justify-content:center;
-
     align-items:center;
-
     border-radius:18px;
-
     background:rgba(255,255,255,.22);
-
 }
 
 .reservation-icon{
-
     font-size:28px;
+    color:#fff;
+}
 
-    color:white;
+.reservation-card h2{
+    margin:18px 0 8px;
+    font-size:30px;
+    font-weight:700;
+    color:#fff;
+}
 
+.reservation-card p{
+    margin:0;
+    color:#fff;
+    font-size:14px;
+}
+
+/* =====================================================
+   TODAY'S RESERVATIONS TABLE
+===================================================== */
+
+.reservation-table{
+    background:#fcfcfbad;
+    border-radius:22px;
+    padding:25px;
+    border:1px solid #c7d9ee;
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+
+.table-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:22px;
+}
+
+.table-header h2{
+    margin:0;
+    color:#17376E;
+    font-size:24px;
+    font-weight:700;
+}
+
+.reservation-table table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.reservation-table thead{
+    background:#0258ec;
+}
+
+.reservation-table thead th{
+    color:#f3440e;
+    padding:16px;
+    text-align:left;
+    font-size:14px;
+    font-weight:600;
+}
+
+.reservation-table tbody td{
+    padding:18px 16px;
+    border-bottom:1px solid #EDF2F7;
+    color:#2c333d;
+    font-size:14px;
+    vertical-align:top;
+}
+
+.reservation-table tbody tr{
+    transition:.25s;
+}
+
+.reservation-table tbody tr:hover{
+    background:#F8FAFC;
+}
+
+.reservation-table tbody tr:last-child td{
+    border-bottom:none;
+}
+
+/* =====================================================
+   ROOM COLUMN
+===================================================== */
+
+.room-info{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+}
+
+.room-number{
+    font-weight:700;
+    color:#17376E;
+}
+
+.room-type{
+    font-size:13px;
+    color:#64748B;
+}
+/* =====================================================
+   STATUS DROPDOWN
+===================================================== */
+
+/* =====================================================
+   STATUS DROPDOWN
+===================================================== */
+
+.status-select{
+    width:160px;
+    padding:10px 14px;
+    border:1px solid #f2f4f7;
+    border-radius:10px;
+    background:#ffffff;
+    color:#0045bc;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    outline:none;
+
+    appearance:none;
+    -webkit-appearance:none;
+    -moz-appearance:none;
+
+    background-image:none;
+}
+
+.status-select::-ms-expand{
+    display:none;
+}
+
+.status-select:hover{
+    border-color:#2563EB;
+}
+
+.status-select:focus{
+    border-color:#2563EB;
+    box-shadow:0 0 0 3px rgba(37,99,235,.15);
+}
+
+/* Options */
+.status-select option{
+    background:#ffffff;
+    color:#17376E;
+}
+/* =====================================================
+   REMARKS COLUMN
+===================================================== */
+
+.remarks{
+    min-width:320px;
+    max-width:420px;
+    color:#64748B;
+    line-height:1.7;
+    font-size:14px;
+}
+
+.remarks p{
+    margin:0;
+}
+
+/* =====================================================
+   TABLE BADGES (OPTIONAL)
+===================================================== */
+
+.status-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:7px 14px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:600;
+}
+
+.status-confirmed{
+    background:#DBEAFE;
+    color:#1D4ED8;
+}
+
+.status-pending{
+    background:#FEF3C7;
+    color:#B45309;
+}
+
+.status-rejected{
+    background:#FEE2E2;
+    color:#DC2626;
+}
+
+.status-checkin{
+    background:#DCFCE7;
+    color:#15803D;
+}
+
+.status-checkout{
+    background:#EDE9FE;
+    color:#6D28D9;
 }
 
 /* =====================================================
@@ -589,16 +477,16 @@
 
 .calendar-section,
 .reservation-card,
-.reservation-item{
-
+.reservation-table{
     transition:.3s;
-
 }
 
 .calendar-section:hover{
-
     box-shadow:0 18px 40px rgba(0,0,0,.08);
+}
 
+.reservation-table:hover{
+    box-shadow:0 18px 40px rgba(0,0,0,.08);
 }
 
 /* =====================================================
@@ -606,118 +494,131 @@
 ===================================================== */
 
 ::-webkit-scrollbar{
-
     width:8px;
-
+    height:8px;
 }
 
 ::-webkit-scrollbar-track{
-
-    background:#F5F7FA;
-
+    background:#6fa4f3;
 }
 
 ::-webkit-scrollbar-thumb{
-
-    background:#CBD5E1;
-
+    background:#baea87;
     border-radius:20px;
-
 }
 
 ::-webkit-scrollbar-thumb:hover{
-
-    background:#94A3B8;
-
+    background:#97b8e7;
 }
 
 /* =====================================================
    RESPONSIVE
 ===================================================== */
 
-@media(max-width:1200px){
+@media (max-width:1200px){
 
-.reservation-layout{
+    .reservation-layout{
+        grid-template-columns:1fr;
+    }
 
-    grid-template-columns:1fr;
+    .reservation-sidebar{
+        grid-template-columns:repeat(2,1fr);
+    }
 
-}
-
-.reservation-sidebar{
-
-    grid-template-columns:repeat(2,1fr);
-
-}
-
-}
-
-@media(max-width:768px){
-
-.calendar-toolbar{
-
-    flex-direction:column;
-
-    gap:14px;
+    .reservation-table{
+        overflow-x:auto;
+    }
 
 }
 
-.toolbar-left,
-.toolbar-right{
+@media (max-width:992px){
 
-    justify-content:center;
+    .reservation-sidebar{
+        grid-template-columns:1fr 1fr;
+    }
 
-    flex-wrap:wrap;
-
-}
-
-.calendar-toolbar h2{
-
-    font-size:22px;
+    .remarks{
+        min-width:250px;
+    }
 
 }
 
-.reservation-sidebar{
+@media (max-width:768px){
 
-    grid-template-columns:1fr;
+    .calendar-toolbar{
+        flex-direction:column;
+        gap:14px;
+    }
+
+    .toolbar-left,
+    .toolbar-right{
+        justify-content:center;
+        flex-wrap:wrap;
+    }
+
+    .calendar-toolbar h2{
+        font-size:22px;
+    }
+
+    .reservation-sidebar{
+        grid-template-columns:1fr;
+    }
+
+    .reservation-card{
+        padding:22px;
+    }
+
+    .calendar-section{
+        padding:16px;
+    }
+
+    .reservation-table{
+        padding:18px;
+        overflow-x:auto;
+    }
+
+    .reservation-table table{
+        min-width:950px;
+    }
+
+    .remarks{
+        min-width:280px;
+    }
+
+    .status-select{
+        width:140px;
+    }
+
+    .rbc-month-row{
+        min-height:55px !important;
+    }
+
+    .booking-badge{
+        width:20px;
+        height:20px;
+        font-size:10px;
+    }
 
 }
 
-.reservation-item{
+@media (max-width:576px){
 
-    flex-direction:column;
+    .reservation-header h1{
+        font-size:28px;
+    }
 
-    align-items:flex-start;
+    .reservation-header p{
+        font-size:14px;
+    }
 
-    gap:14px;
+    .table-header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:10px;
+    }
 
-}
-
-.reservation-card{
-
-    padding:22px;
-
-}
-
-.calendar-section{
-
-    padding:16px;
-
-}
-
-.rbc-month-row{
-
-    min-height:55px !important;
-
-}
-
-.booking-badge{
-
-    width:20px;
-
-    height:20px;
-
-    font-size:10px;
-
-}
+    .reservation-table table{
+        min-width:1000px;
+    }
 
 }

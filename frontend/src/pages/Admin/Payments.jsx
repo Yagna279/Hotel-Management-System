@@ -35,7 +35,7 @@ function Payments() {
 
             <div>
               <h1>Payments</h1>
-              <p>Manage hotel payment transactions</p>
+              <p>Manage Hotel Payment Transactions</p>
             </div>
 
             <div className="payment-buttons">

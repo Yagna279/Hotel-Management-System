@@ -4,38 +4,43 @@ import Topbar from "./Topbar";
 import "./Admin.css";
 
 import {
-  FaBed,
   FaCalendarCheck,
   FaUsers,
   FaMoneyBillWave,
+  FaDoorOpen,
+  FaTools,
 } from "react-icons/fa";
+
+import { MdHotel } from "react-icons/md";
 
 function AdminDashboard() {
   return (
     <div className="admin-container">
-      {/* Sidebar */}
+
       <Sidebar />
 
-      {/* Main Content */}
       <div className="admin-main">
 
-        {/* Top Navigation */}
         <Topbar />
 
         <div className="admin-content">
 
-          {/* Heading */}
+          {/* Header */}
+
           <div className="dashboard-header">
             <h1>Dashboard</h1>
-            <p>Welcome back, Admin! </p>
+            <p>Welcome back, Admin</p>
           </div>
 
-          {/* Statistics Cards */}
+          {/* Statistics */}
+
           <div className="stats-grid">
 
+            {/* Total Rooms */}
+
             <div className="stat-card">
-              <div className="stat-icon blue">
-                <FaBed />
+              <div className="icon-box blue">
+                <MdHotel className="stat-icon" />
               </div>
 
               <div>
@@ -44,9 +49,11 @@ function AdminDashboard() {
               </div>
             </div>
 
+            {/* Reservations */}
+
             <div className="stat-card">
-              <div className="stat-icon green">
-                <FaCalendarCheck />
+              <div className="icon-box green">
+                <FaCalendarCheck className="stat-icon" />
               </div>
 
               <div>
@@ -55,9 +62,11 @@ function AdminDashboard() {
               </div>
             </div>
 
+            {/* Customers */}
+
             <div className="stat-card">
-              <div className="stat-icon orange">
-                <FaUsers />
+              <div className="icon-box orange">
+                <FaUsers className="stat-icon" />
               </div>
 
               <div>
@@ -66,13 +75,15 @@ function AdminDashboard() {
               </div>
             </div>
 
+            {/* Revenue */}
+
             <div className="stat-card">
-              <div className="stat-icon purple">
-                <FaMoneyBillWave />
+              <div className="icon-box purple">
+                <FaMoneyBillWave className="stat-icon" />
               </div>
 
               <div>
-                <h3>₹145677</h3>
+                <h3>₹1,45,677</h3>
                 <p>Total Revenue</p>
               </div>
             </div>
@@ -80,9 +91,11 @@ function AdminDashboard() {
           </div>
 
           {/* Bottom Section */}
+
           <div className="dashboard-bottom">
 
             {/* Recent Reservations */}
+
             <div className="dashboard-box">
 
               <h2>Recent Reservations</h2>
@@ -93,6 +106,7 @@ function AdminDashboard() {
                   <tr>
                     <th>Guest</th>
                     <th>Room</th>
+                    <th>Check In Date</th>
                     <th>Status</th>
                   </tr>
                 </thead>
@@ -102,6 +116,7 @@ function AdminDashboard() {
                   <tr>
                     <td>Yagna</td>
                     <td>101</td>
+                    <td>06 Aug 2026</td>
                     <td>
                       <span className="status confirmed">
                         Confirmed
@@ -112,6 +127,7 @@ function AdminDashboard() {
                   <tr>
                     <td>Dileep</td>
                     <td>205</td>
+                    <td>08 Aug 2026</td>
                     <td>
                       <span className="status pending">
                         Pending
@@ -122,6 +138,7 @@ function AdminDashboard() {
                   <tr>
                     <td>Dhoni</td>
                     <td>309</td>
+                    <td>10 Aug 2026</td>
                     <td>
                       <span className="status checked">
                         Checked In
@@ -134,27 +151,57 @@ function AdminDashboard() {
               </table>
 
             </div>
+                        {/* Room Status */}
 
-            {/* Room Status */}
             <div className="dashboard-box">
 
               <h2>Room Status</h2>
 
               <div className="room-status">
 
-                <div>
-                  <h3>120</h3>
-                  <p>Available</p>
+                {/* Available */}
+
+                <div className="status-card">
+
+                  <div className="status-icon-box green">
+                    <FaDoorOpen className="status-icon" />
+                  </div>
+
+                  <div className="status-info">
+                    <h3>120</h3>
+                    <p>Available</p>
+                  </div>
+
                 </div>
 
-                <div>
-                  <h3>25</h3>
-                  <p>Occupied</p>
+                {/* Occupied */}
+
+                <div className="status-card">
+
+                  <div className="status-icon-box orange">
+                    <MdHotel className="status-icon" />
+                  </div>
+
+                  <div className="status-info">
+                    <h3>25</h3>
+                    <p>Occupied</p>
+                  </div>
+
                 </div>
 
-                <div>
-                  <h3>5</h3>
-                  <p>Maintenance</p>
+                {/* Maintenance */}
+
+                <div className="status-card">
+
+                  <div className="status-icon-box red">
+                    <FaTools className="status-icon" />
+                  </div>
+
+                  <div className="status-info">
+                    <h3>5</h3>
+                    <p>Maintenance</p>
+                  </div>
+
                 </div>
 
               </div>
@@ -166,7 +213,9 @@ function AdminDashboard() {
         </div>
 
       </div>
+
     </div>
+
   );
 }
 

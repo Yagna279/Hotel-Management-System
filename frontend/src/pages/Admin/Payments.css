@@ -147,7 +147,7 @@
 }
 
 .payments-table th{
-    background:#17376E;
+    background:#052a6b;
     color:#fff;
     padding:15px;
     text-align:left;
@@ -174,7 +174,7 @@
 }
 
 .confirmed{
-    background:#10B981;
+    background:#037e55;
 }
 
 .pending{

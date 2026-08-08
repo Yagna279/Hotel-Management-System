@@ -1,0 +1,383 @@
+/* =====================================================
+   CUSTOMER SIDEBAR
+===================================================== */
+
+.customer-sidebar {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  width: 270px;
+  height: 100vh;
+
+  background: #ffffff;
+
+  border-right: 1px solid #e6ebf2;
+
+  display: flex;
+  flex-direction: column;
+
+  z-index: 1000;
+
+  box-sizing: border-box;
+}
+
+
+/* =====================================================
+   SIDEBAR HEADER
+===================================================== */
+
+.customer-sidebar-header {
+  height: 110px;
+
+  padding: 0 22px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  border-bottom: 1px solid #edf1f6;
+
+  flex-shrink: 0;
+
+  box-sizing: border-box;
+}
+
+
+/* =====================================================
+   LOGO
+===================================================== */
+
+.customer-sidebar-logo {
+  width: 58px;
+  height: 58px;
+
+  object-fit: contain;
+
+  flex-shrink: 0;
+}
+
+
+/* =====================================================
+   BRAND
+===================================================== */
+
+.customer-brand-text {
+  min-width: 0;
+}
+
+.customer-brand-text h2 {
+  margin: 0;
+
+  color: #17376e;
+
+  font-size: 21px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.4px;
+}
+
+.customer-brand-text p {
+  margin: 5px 0 0;
+
+  color: #7b8798;
+
+  font-size: 11px;
+
+  line-height: 1.3;
+
+  white-space: nowrap;
+}
+
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+.customer-navigation {
+  flex: 1;
+
+  padding: 28px 16px;
+
+  overflow-y: auto;
+
+  box-sizing: border-box;
+}
+
+
+/* =====================================================
+   NAVIGATION TITLE
+===================================================== */
+
+.customer-nav-title {
+  margin: 0 11px 13px;
+
+  color: #9aa5b5;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  letter-spacing: 1.2px;
+
+  text-transform: uppercase;
+}
+
+
+/* =====================================================
+   ACCOUNT TITLE
+===================================================== */
+
+.customer-account-title {
+  margin-top: 30px;
+}
+
+
+/* =====================================================
+   NAVIGATION LINK
+===================================================== */
+
+.customer-nav-link {
+  width: 100%;
+
+  height: 46px;
+
+  margin-bottom: 7px;
+
+  padding: 0 15px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  box-sizing: border-box;
+
+  border-radius: 11px;
+
+  color: #5f6b7e;
+
+  text-decoration: none;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  transition: all 0.2s ease;
+}
+
+
+/* =====================================================
+   ICON
+===================================================== */
+
+.customer-nav-link svg {
+  width: 18px;
+  min-width: 18px;
+
+  font-size: 17px;
+
+  color: #687588;
+
+  transition: 0.2s ease;
+}
+
+
+/* =====================================================
+   HOVER
+===================================================== */
+
+.customer-nav-link:hover {
+  background: #f2f5fa;
+
+  color: #17376e;
+
+  transform: translateX(2px);
+}
+
+.customer-nav-link:hover svg {
+  color: #17376e;
+}
+
+
+/* =====================================================
+   ACTIVE
+===================================================== */
+
+.customer-nav-link.active {
+  background: #17376e;
+
+  color: #ffffff;
+
+  box-shadow: 0 7px 16px rgba(23, 55, 110, 0.18);
+}
+
+.customer-nav-link.active svg {
+  color: #ffffff;
+}
+
+.customer-nav-link.active:hover {
+  background: #17376e;
+
+  color: #ffffff;
+
+  transform: none;
+}
+
+
+/* =====================================================
+   SIDEBAR FOOTER
+===================================================== */
+
+.customer-sidebar-footer {
+  padding: 18px;
+
+  border-top: 1px solid #edf1f6;
+
+  flex-shrink: 0;
+
+  box-sizing: border-box;
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+.customer-logout-btn {
+  width: 100%;
+
+  height: 48px;
+
+  border: none;
+
+  border-radius: 11px;
+
+  background: #fff0f0;
+
+  color: #ef4444;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  padding: 0 16px;
+
+  font-family: inherit;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.customer-logout-btn svg {
+  font-size: 16px;
+}
+
+.customer-logout-btn:hover {
+  background: #ffe2e2;
+
+  color: #dc2626;
+}
+
+
+/* =====================================================
+   SIDEBAR SCROLLBAR
+===================================================== */
+
+.customer-navigation::-webkit-scrollbar {
+  width: 4px;
+}
+
+.customer-navigation::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.customer-navigation::-webkit-scrollbar-thumb {
+  background: #dce2eb;
+
+  border-radius: 10px;
+}
+/* =====================================================
+   CUSTOMER LAYOUT
+===================================================== */
+
+.customer-layout {
+  min-height: 100vh;
+
+  width: 100%;
+
+  background: #f5f7fb;
+
+  box-sizing: border-box;
+}
+
+
+/* =====================================================
+   CUSTOMER MAIN
+===================================================== */
+
+.customer-main {
+  margin-left: 270px;
+
+  width: calc(100% - 270px);
+
+  min-height: 100vh;
+
+  background: #f5f7fb;
+
+  box-sizing: border-box;
+}
+
+
+/* =====================================================
+   CUSTOMER CONTENT
+===================================================== */
+
+.customer-content {
+  padding: 32px;
+
+  box-sizing: border-box;
+}
+
+
+/* =====================================================
+   DASHBOARD WELCOME
+===================================================== */
+
+.customer-welcome {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom: 25px;
+}
+
+.customer-welcome h1 {
+  margin: 0;
+
+  color: #17376e;
+
+  font-size: 32px;
+
+  font-weight: 750;
+}
+
+.customer-welcome p {
+  margin: 7px 0 0;
+
+  color: #7b8493;
+
+  font-size: 15px;
+}

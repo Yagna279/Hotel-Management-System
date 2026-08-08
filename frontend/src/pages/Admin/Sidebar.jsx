@@ -14,7 +14,7 @@ import {
   FaSignOutAlt,
 } from "react-icons/fa";
 
-import "./Admin.css";
+import "./Sidebar.css";
 
 function Sidebar() {
   const navigate = useNavigate();

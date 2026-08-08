@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
 
@@ -36,7 +36,7 @@ const localizer = dateFnsLocalizer({
 });
 
 /* ============================
-   EVENTS
+   CALENDAR EVENTS
 ============================ */
 
 const events = [
@@ -67,7 +67,7 @@ const events = [
 ];
 
 /* ============================
-   SMALL NUMBER BADGE
+   EVENT BADGE
 ============================ */
 
 const EventComponent = ({ event }) => (
@@ -77,7 +77,7 @@ const EventComponent = ({ event }) => (
 );
 
 /* ============================
-   EVENT COLORS
+   EVENT STYLE
 ============================ */
 
 const eventStyleGetter = () => ({
@@ -132,34 +132,57 @@ const CustomToolbar = ({ label, onNavigate, onView }) => (
 
   </div>
 );
+
 function Reservations() {
 
-  const reservations = [
+  const [reservations, setReservations] = useState([
     {
       name: "Yagna",
-      room: "Room 101 • Deluxe Room",
+      room: "101 - Deluxe Room",
+      date: "07 Aug 2026",
       status: "Confirmed",
-      className: "confirmed",
+      remarks:
+        "Guest requested an early check-in at 10:00 AM and a high-floor room with a city view.",
     },
     {
       name: "Dhoni",
-      room: "Room 205 • Suite Room",
+      room: "205 - Suite Room",
+      date: "07 Aug 2026",
       status: "Pending",
-      className: "pending",
+      remarks:
+        "Waiting for advance payment confirmation before assigning the room officially.",
     },
     {
       name: "Teja",
-      room: "Room 304 • Standard Room",
+      room: "304 - Standard Room",
+      date: "07 Aug 2026",
       status: "Checked In",
-      className: "checked",
+      remarks:
+        "Guest has successfully checked in and requested an extra blanket and breakfast.",
     },
     {
       name: "Dileep",
-      room: "Room 410 • Executive Room",
-      status: "Confirmed",
-      className: "confirmed",
+      room: "410 - Executive Room",
+      date: "07 Aug 2026",
+      status: "Checked Out",
+      remarks:
+        "Guest completed checkout successfully. Room is ready for housekeeping inspection.",
     },
-  ];
+    {
+      name: "Rahul",
+      room: "118 - Deluxe Room",
+      date: "07 Aug 2026",
+      status: "Rejected",
+      remarks:
+        "Reservation was cancelled because payment was not completed before the deadline.",
+    },
+  ]);
+
+  const handleStatusChange = (index, value) => {
+    const updated = [...reservations];
+    updated[index].status = value;
+    setReservations(updated);
+  };
 
   return (
     <div className="admin-container">
@@ -172,18 +195,17 @@ function Reservations() {
 
         <div className="admin-content">
 
-          {/* Header */}
-
           <div className="reservation-header">
 
             <div>
+
               <h1>Reservations</h1>
+
               <p>Manage Hotel Bookings Efficiently</p>
+
             </div>
 
           </div>
-
-          {/* Calendar + Stats */}
 
           <div className="reservation-layout">
 
@@ -209,7 +231,8 @@ function Reservations() {
 
             </div>
 
-            {/* Right Side Cards */}
+            {/* Right Side Cards continue in Part 2 */}
+                        {/* Right Side Cards */}
 
             <div className="reservation-sidebar">
 
@@ -265,42 +288,107 @@ function Reservations() {
 
           </div>
 
-          {/* Today's Reservations */}
+          {/* Today's Reservations Table */}
 
-          <div className="reservation-list">
+          <div className="reservation-table">
 
-            <h2>Today's Reservations</h2>
+            <div className="table-header">
 
-            {reservations.map((reservation, index) => (
+              <h2>Today's Reservations</h2>
 
-              <div
-                className="reservation-item"
-                key={index}
-              >
+            </div>
 
-                <div>
+            <table>
 
-                  <h4>{reservation.name}</h4>
+              <thead>
 
-                  <p>{reservation.room}</p>
+                <tr>
 
-                </div>
+                  <th>Name</th>
 
-                <span className={`status ${reservation.className}`}>
-                  {reservation.status}
-                </span>
+                  <th>Room</th>
 
-              </div>
+                  <th>Date</th>
 
-            ))}
+                  <th>Status</th>
+
+                  <th>Remarks</th>
+
+                </tr>
+
+              </thead>
+
+              <tbody>
+
+                {reservations.map((reservation, index) => (
+
+                  <tr key={index}>
+
+                    <td>
+
+                      <strong>{reservation.name}</strong>
+
+                    </td>
+
+                    <td>{reservation.room}</td>
+
+                    <td>{reservation.date}</td>
+
+                    <td>
+
+                      <select
+                        className="status-select"
+                        value={reservation.status}
+                        onChange={(e) =>
+                          handleStatusChange(index, e.target.value)
+                        }
+                      >
+
+                        <option value="Confirmed">
+                          Confirmed
+                        </option>
+
+                        <option value="Rejected">
+                          Rejected
+                        </option>
+
+                        <option value="Pending">
+                          Pending
+                        </option>
+
+                        <option value="Checked In">
+                          Checked In
+                        </option>
+
+                        <option value="Checked Out">
+                          Checked Out
+                        </option>
+
+                      </select>
+
+                    </td>
+
+                    <td className="remarks">
+
+                      {reservation.remarks}
+
+                    </td>
+
+                  </tr>
+
+                ))}
+
+              </tbody>
+
+            </table>
 
           </div>
-
-        </div>
+                  </div>
 
       </div>
 
     </div>
+
   );
 
 }

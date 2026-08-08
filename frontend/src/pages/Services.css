@@ -1,43 +1,66 @@
+/* =========================
+   SERVICES SECTION
+========================= */
+
 .services{
     width:100%;
     padding:100px 80px;
     background:#f8fafc;
 }
 
-/* Header */
+/* =========================
+   HEADER
+========================= */
 
 .services-header{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
     text-align:center;
+
     margin-bottom:60px;
 }
 
 .services-tag{
     display:inline-block;
-    padding:8px 18px;
+    padding:8px 20px;
+
     background:#eef4ff;
     color:#17376E;
+
     border-radius:30px;
+
     font-size:13px;
     font-weight:700;
     letter-spacing:1px;
-    margin-bottom:20px;
+
+    margin-bottom:18px;
 }
 
 .services-header h2{
     font-size:42px;
+    font-weight:700;
     color:#17376E;
+
     margin-bottom:20px;
+    line-height:1.2;
 }
 
 .services-header p{
-    max-width:700px;
-    margin:auto;
+    max-width:720px;
+
     color:#6b7280;
+
     font-size:18px;
     line-height:1.8;
+
+    margin:0 auto;
 }
 
-/* Grid */
+/* =========================
+   SERVICES GRID
+========================= */
 
 .services-grid{
     display:grid;
@@ -45,24 +68,35 @@
     gap:30px;
 }
 
-/* Card */
+/* =========================
+   CARD
+========================= */
 
 .service-card{
-    background:#fff;
+    background:#ffffff;
+
     border-radius:20px;
+
     padding:35px 30px;
+
     text-align:center;
+
     box-shadow:0 10px 30px rgba(0,0,0,.08);
-    transition:0.35s;
+
+    transition:.35s;
+
     cursor:pointer;
 }
 
 .service-card:hover{
     transform:translateY(-10px);
+
     box-shadow:0 20px 45px rgba(23,55,110,.15);
 }
 
-/* Icon */
+/* =========================
+   ICON
+========================= */
 
 .service-icon{
     width:75px;
@@ -81,55 +115,178 @@
 
     font-size:32px;
 
-    transition:.3s;
+    transition:.35s;
 }
 
 .service-card:hover .service-icon{
     background:#17376E;
-    color:#fff;
+    color:#ffffff;
+
     transform:scale(1.1) rotate(8deg);
 }
-
-/* Text */
+/* =========================
+   TEXT
+========================= */
 
 .service-card h3{
     color:#17376E;
     font-size:24px;
+    font-weight:700;
     margin-bottom:15px;
+    transition:.3s;
 }
 
 .service-card p{
     color:#6b7280;
     font-size:16px;
     line-height:1.8;
+    margin:0;
 }
 
-/* Responsive */
+/* Hover Text */
 
-@media(max-width:1000px){
-
-.services{
-    padding:70px 30px;
+.service-card:hover h3{
+    color:#2563EB;
 }
 
-.services-grid{
-    grid-template-columns:repeat(2,1fr);
+.service-card:hover p{
+    color:#475569;
 }
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+.service-card,
+.service-icon,
+.service-card h3,
+.service-card p{
+    transition:all .35s ease;
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width:1000px){
+
+    .services{
+        padding:80px 40px;
+    }
+
+    .services-header{
+        margin-bottom:50px;
+    }
+
+    .services-header h2{
+        font-size:36px;
+    }
+
+    .services-header p{
+        font-size:17px;
+        max-width:650px;
+    }
+
+    .services-grid{
+        grid-template-columns:repeat(2,1fr);
+        gap:25px;
+    }
+
+    .service-card{
+        padding:30px 25px;
+    }
 
 }
 
-@media(max-width:768px){
+/* =========================
+   MOBILE
+========================= */
 
-.services-grid{
-    grid-template-columns:1fr;
+@media (max-width:768px){
+
+    .services{
+        padding:70px 20px;
+    }
+
+    .services-header{
+        margin-bottom:40px;
+    }
+
+    .services-tag{
+        font-size:12px;
+        padding:7px 16px;
+    }
+
+    .services-header h2{
+        font-size:30px;
+    }
+
+    .services-header p{
+        font-size:16px;
+        line-height:1.7;
+    }
+
+    .services-grid{
+        grid-template-columns:1fr;
+        gap:20px;
+    }
+
+    .service-card{
+        padding:28px 22px;
+    }
+
+    .service-icon{
+        width:70px;
+        height:70px;
+        font-size:28px;
+    }
+
+    .service-card h3{
+        font-size:22px;
+    }
+
+    .service-card p{
+        font-size:15px;
+    }
+
 }
 
-.services-header h2{
-    font-size:34px;
-}
+/* =========================
+   SMALL MOBILE
+========================= */
 
-.services-header p{
-    font-size:16px;
-}
+@media (max-width:480px){
+
+    .services{
+        padding:60px 15px;
+    }
+
+    .services-header h2{
+        font-size:26px;
+    }
+
+    .services-header p{
+        font-size:15px;
+    }
+
+    .service-card{
+        border-radius:16px;
+        padding:24px 18px;
+    }
+
+    .service-icon{
+        width:65px;
+        height:65px;
+        font-size:26px;
+        margin-bottom:20px;
+    }
+
+    .service-card h3{
+        font-size:20px;
+    }
+
+    .service-card p{
+        font-size:14px;
+    }
 
 }

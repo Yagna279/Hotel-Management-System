@@ -18,9 +18,7 @@ function About() {
 
         <p>
           SHNOOR Hotel Management System is an all-in-one platform
-          designed to simplify Hotel operations. From Reservations
-          and Guest management to Billing, Housekeeping and Reports,
-          everything is managed from one secure Dashboard.
+          designed to simplify Hotel operations.
         </p>
 
       </div>
