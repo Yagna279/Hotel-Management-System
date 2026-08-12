@@ -1,0 +1,743 @@
+/* =====================================================
+   CUSTOMER ROOMS PAGE
+===================================================== */
+
+.customer-rooms-page {
+  min-height: 100vh;
+
+  background: #f5f7fb;
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.customer-rooms-main {
+  margin-left: 280px;
+
+  width: calc(100% - 280px);
+
+  min-height: 100vh;
+
+  box-sizing: border-box;
+}
+
+
+/* =====================================================
+   CONTENT
+===================================================== */
+
+.customer-rooms-content {
+  padding: 30px 32px 45px;
+
+  box-sizing: border-box;
+}
+
+
+/* =====================================================
+   PAGE HEADER
+===================================================== */
+
+.customer-rooms-header {
+  margin-bottom: 25px;
+}
+
+.customer-rooms-header h1 {
+  margin: 0;
+
+  color: #17376e;
+
+  font-size: 28px;
+
+  font-weight: 800;
+}
+
+.customer-rooms-header p {
+  margin: 7px 0 0;
+
+  color: #7d899b;
+
+  font-size: 14px;
+}
+
+
+/* =====================================================
+   TOOLBAR
+===================================================== */
+
+.customer-rooms-toolbar {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 18px;
+
+  margin-bottom: 20px;
+}
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+.customer-room-search {
+  width: 100%;
+
+  max-width: 480px;
+
+  height: 46px;
+
+  padding: 0 15px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border: 1px solid #e1e7ef;
+
+  border-radius: 11px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+}
+
+.customer-room-search svg {
+  color: #8996a9;
+
+  font-size: 14px;
+}
+
+.customer-room-search input {
+  width: 100%;
+
+  border: none;
+
+  outline: none;
+
+  background: transparent;
+
+  color: #344563;
+
+  font-family: inherit;
+
+  font-size: 13px;
+}
+
+.customer-room-search input::placeholder {
+  color: #9ca7b7;
+}
+
+
+/* =====================================================
+   FILTER
+===================================================== */
+
+.customer-room-filter {
+  height: 46px;
+
+  min-width: 165px;
+
+  padding: 0 13px;
+
+  background: #ffffff;
+
+  border: 1px solid #e1e7ef;
+
+  border-radius: 11px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+}
+
+.customer-room-filter svg {
+  color: #6d7b90;
+
+  font-size: 13px;
+}
+
+.customer-room-filter select {
+  width: 100%;
+
+  border: none;
+
+  outline: none;
+
+  background: transparent;
+
+  color: #4d5d74;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+
+/* =====================================================
+   RESULTS
+===================================================== */
+
+.customer-room-results {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom: 18px;
+
+  color: #8994a5;
+
+  font-size: 12px;
+}
+
+.customer-room-results strong {
+  color: #17376e;
+
+  font-weight: 800;
+}
+
+.customer-room-availability {
+  color: #16a34a;
+
+  font-weight: 600;
+}
+
+
+/* =====================================================
+   ROOM GRID
+===================================================== */
+
+.customer-room-grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  gap: 22px;
+}
+
+
+/* =====================================================
+   ROOM CARD
+===================================================== */
+
+.customer-room-card {
+  background: #ffffff;
+
+  border: 1px solid #e6ebf2;
+
+  border-radius: 17px;
+
+  overflow: hidden;
+
+  box-shadow: 0 6px 20px rgba(20, 45, 80, 0.05);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.customer-room-card:hover {
+  transform: translateY(-4px);
+
+  box-shadow: 0 13px 30px rgba(20, 45, 80, 0.10);
+}
+
+
+/* =====================================================
+   ROOM IMAGE
+===================================================== */
+
+.customer-room-image-wrapper {
+  height: 205px;
+
+  position: relative;
+
+  overflow: hidden;
+
+  background: #edf1f6;
+}
+
+.customer-room-image {
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: cover;
+
+  display: block;
+
+  transition: transform 0.4s ease;
+}
+
+.customer-room-card:hover .customer-room-image {
+  transform: scale(1.04);
+}
+
+
+/* =====================================================
+   AVAILABILITY BADGE
+===================================================== */
+
+.customer-room-availability-badge {
+  position: absolute;
+
+  top: 14px;
+
+  left: 14px;
+
+  padding: 7px 11px;
+
+  border-radius: 20px;
+
+  font-size: 10px;
+
+  font-weight: 700;
+}
+
+.customer-room-availability-badge.available {
+  background: #e8f8ef;
+
+  color: #15803d;
+}
+
+.customer-room-availability-badge.occupied {
+  background: #fff0f0;
+
+  color: #dc2626;
+}
+
+
+/* =====================================================
+   RATING
+===================================================== */
+
+.customer-room-rating {
+  position: absolute;
+
+  right: 14px;
+
+  top: 14px;
+
+  height: 30px;
+
+  padding: 0 9px;
+
+  border-radius: 8px;
+
+  background: rgba(255, 255, 255, 0.95);
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  color: #344563;
+
+  font-size: 11px;
+
+  font-weight: 700;
+}
+
+.customer-room-rating svg {
+  color: #f59e0b;
+
+  font-size: 10px;
+}
+
+
+/* =====================================================
+   ROOM DETAILS
+===================================================== */
+
+.customer-room-details {
+  padding: 19px;
+}
+
+
+/* =====================================================
+   TITLE ROW
+===================================================== */
+
+.customer-room-title-row {
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+
+  gap: 12px;
+}
+
+.customer-room-title-row h2 {
+  margin: 0;
+
+  color: #243b61;
+
+  font-size: 17px;
+
+  font-weight: 750;
+}
+
+.customer-room-title-row span {
+  display: block;
+
+  margin-top: 5px;
+
+  color: #929daf;
+
+  font-size: 11px;
+}
+
+
+/* =====================================================
+   PRICE
+===================================================== */
+
+.customer-room-price {
+  text-align: right;
+
+  flex-shrink: 0;
+}
+
+.customer-room-price strong {
+  display: inline;
+
+  color: #17376e;
+
+  font-size: 17px;
+
+  font-weight: 800;
+}
+
+.customer-room-price span {
+  display: inline;
+
+  margin-left: 3px;
+
+  color: #929daf;
+
+  font-size: 10px;
+}
+
+
+/* =====================================================
+   DESCRIPTION
+===================================================== */
+
+.customer-room-description {
+  min-height: 38px;
+
+  margin: 13px 0 15px;
+
+  color: #7b8798;
+
+  font-size: 11px;
+
+  line-height: 1.65;
+}
+
+
+/* =====================================================
+   ROOM FEATURES
+===================================================== */
+
+.customer-room-features {
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  padding: 13px 0;
+
+  border-top: 1px solid #edf1f6;
+
+  border-bottom: 1px solid #edf1f6;
+}
+
+.customer-room-features div {
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  color: #69778b;
+
+  font-size: 10px;
+
+  white-space: nowrap;
+}
+
+.customer-room-features svg {
+  color: #526985;
+
+  font-size: 12px;
+}
+
+.room-size-icon {
+  color: #526985;
+
+  font-size: 13px;
+
+  font-weight: 700;
+}
+
+
+/* =====================================================
+   AMENITIES
+===================================================== */
+
+.customer-room-amenities {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  margin: 14px 0;
+}
+
+.customer-room-amenities span {
+  width: 28px;
+
+  height: 28px;
+
+  border-radius: 7px;
+
+  background: #f1f5fb;
+
+  color: #596d89;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size: 11px;
+}
+
+.customer-room-amenities small {
+  margin-left: 3px;
+
+  color: #8995a7;
+
+  font-size: 10px;
+}
+
+
+/* =====================================================
+   BOOK BUTTON
+===================================================== */
+
+.customer-room-book-btn {
+  width: 100%;
+
+  height: 42px;
+
+  border: none;
+
+  border-radius: 9px;
+
+  background: #17376e;
+
+  color: #ffffff;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 9px;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.customer-room-book-btn svg {
+  font-size: 11px;
+}
+
+.customer-room-book-btn:hover {
+  background: #102d5c;
+
+  box-shadow: 0 6px 14px rgba(23, 55, 110, 0.18);
+}
+
+.customer-room-book-btn.disabled {
+  background: #e9edf3;
+
+  color: #9aa4b3;
+
+  cursor: not-allowed;
+
+  box-shadow: none;
+}
+
+
+/* =====================================================
+   NO ROOMS
+===================================================== */
+
+.customer-no-rooms {
+  min-height: 300px;
+
+  background: #ffffff;
+
+  border: 1px solid #e6ebf2;
+
+  border-radius: 17px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+}
+
+.customer-no-rooms > svg {
+  color: #9aa7b9;
+
+  font-size: 35px;
+
+  margin-bottom: 12px;
+}
+
+.customer-no-rooms h2 {
+  margin: 0;
+
+  color: #344563;
+
+  font-size: 18px;
+}
+
+.customer-no-rooms p {
+  margin: 7px 0 0;
+
+  color: #929dac;
+
+  font-size: 12px;
+}
+
+
+/* =====================================================
+   RESPONSIVE - 1200px
+===================================================== */
+
+@media (max-width: 1200px) {
+
+  .customer-room-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+
+/* =====================================================
+   RESPONSIVE - 900px
+===================================================== */
+
+@media (max-width: 900px) {
+
+  .customer-rooms-main {
+    margin-left: 75px;
+
+    width: calc(100% - 75px);
+  }
+
+  .customer-rooms-content {
+    padding: 25px 20px 35px;
+  }
+
+}
+
+
+/* =====================================================
+   RESPONSIVE - 700px
+===================================================== */
+
+@media (max-width: 700px) {
+
+  .customer-rooms-content {
+    padding: 20px 15px 30px;
+  }
+
+  .customer-rooms-header h1 {
+    font-size: 24px;
+  }
+
+  .customer-rooms-toolbar {
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+  .customer-room-search {
+    max-width: none;
+  }
+
+  .customer-room-filter {
+    width: 100%;
+
+    box-sizing: border-box;
+  }
+
+  .customer-room-grid {
+    grid-template-columns: 1fr;
+
+    gap: 16px;
+  }
+
+  .customer-room-image-wrapper {
+    height: 220px;
+  }
+
+}
+
+
+/* =====================================================
+   RESPONSIVE - SMALL MOBILE
+===================================================== */
+
+@media (max-width: 400px) {
+
+  .customer-room-details {
+    padding: 16px;
+  }
+
+  .customer-room-features {
+    gap: 8px;
+  }
+
+  .customer-room-features div {
+    font-size: 9px;
+  }
+
+}

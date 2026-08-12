@@ -1,0 +1,526 @@
+/* =====================================================
+   CUSTOMER PAYMENTS PAGE
+===================================================== */
+
+.customer-payments-page {
+  min-height: calc(100vh - 78px);
+  padding: 32px 35px 45px;
+  background: #f5f7fb;
+  box-sizing: border-box;
+}
+
+/* =====================================================
+   PAGE HEADER
+===================================================== */
+
+.customer-payments-header {
+  margin-bottom: 26px;
+}
+
+.customer-payments-label {
+  display: inline-block;
+  margin-bottom: 7px;
+
+  color: #17376e;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+}
+
+.customer-payments-header h1 {
+  margin: 0;
+
+  color: #17376e;
+  font-size: 30px;
+  font-weight: 800;
+}
+
+.customer-payments-header p {
+  margin: 8px 0 0;
+
+  color: #7b8799;
+  font-size: 14px;
+}
+
+/* =====================================================
+   PAYMENT SUMMARY
+===================================================== */
+
+.customer-payment-summary {
+  display: grid;
+
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  gap: 18px;
+
+  margin-bottom: 25px;
+}
+
+.customer-payment-summary-card {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  padding: 20px;
+
+  background: #ffffff;
+
+  border: 1px solid #e7ecf3;
+
+  border-radius: 15px;
+
+  box-shadow: 0 5px 18px rgba(30, 55, 90, 0.045);
+
+  box-sizing: border-box;
+}
+
+.customer-payment-summary-icon {
+  width: 48px;
+  height: 48px;
+
+  min-width: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  font-size: 19px;
+}
+
+.customer-payment-summary-icon.blue {
+  background: #eaf0ff;
+  color: #2563eb;
+}
+
+.customer-payment-summary-icon.green {
+  background: #e8f8ef;
+  color: #16a34a;
+}
+
+.customer-payment-summary-icon.orange {
+  background: #fff3df;
+  color: #f59e0b;
+}
+
+.customer-payment-summary-icon.purple {
+  background: #f1e9ff;
+  color: #7c3aed;
+}
+
+.customer-payment-summary-card span {
+  display: block;
+
+  color: #7d8899;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.customer-payment-summary-card strong {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #243b62;
+
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.customer-payment-summary-card small {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #9aa4b3;
+
+  font-size: 10px;
+}
+
+/* =====================================================
+   PAYMENT CARD
+===================================================== */
+
+.customer-payments-card {
+  width: 100%;
+
+  background: #ffffff;
+
+  border: 1px solid #e7ecf3;
+
+  border-radius: 17px;
+
+  box-shadow: 0 5px 18px rgba(30, 55, 90, 0.045);
+
+  overflow: hidden;
+}
+
+/* =====================================================
+   CARD HEADER
+===================================================== */
+
+.customer-payments-card-header {
+  min-height: 78px;
+
+  padding: 0 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 1px solid #edf1f6;
+
+  box-sizing: border-box;
+}
+
+.customer-payments-card-header h2 {
+  margin: 0;
+
+  color: #243b62;
+
+  font-size: 18px;
+  font-weight: 750;
+}
+
+.customer-payments-card-header p {
+  margin: 5px 0 0;
+
+  color: #8a95a6;
+
+  font-size: 11px;
+}
+
+.customer-payment-filter {
+  height: 36px;
+
+  padding: 0 14px;
+
+  border: 1px solid #e2e7ef;
+
+  border-radius: 9px;
+
+  background: #f8faff;
+
+  color: #59667b;
+
+  font-family: inherit;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+/* =====================================================
+   TABLE WRAPPER
+===================================================== */
+
+.customer-payment-table-wrapper {
+  width: 100%;
+
+  overflow-x: auto;
+}
+
+/* =====================================================
+   TABLE
+===================================================== */
+
+.customer-payment-table {
+  width: 100%;
+
+  min-width: 950px;
+
+  border-collapse: collapse;
+
+  table-layout: auto;
+}
+
+.customer-payment-table thead {
+  background: #f8faff;
+}
+
+.customer-payment-table th {
+  padding: 13px 20px;
+
+  text-align: left;
+
+  color: #788497;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.3px;
+
+  text-transform: uppercase;
+
+  border-bottom: 1px solid #edf1f6;
+
+  white-space: nowrap;
+}
+
+.customer-payment-table td {
+  padding: 16px 20px;
+
+  color: #647085;
+
+  font-size: 12px;
+
+  border-bottom: 1px solid #f0f3f7;
+
+  white-space: nowrap;
+}
+
+.customer-payment-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.customer-payment-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.customer-payment-table tbody tr:hover {
+  background: #fafcff;
+}
+
+/* =====================================================
+   TRANSACTION CELL
+===================================================== */
+
+.customer-transaction-cell {
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+}
+
+.customer-transaction-icon {
+  width: 38px;
+  height: 38px;
+
+  min-width: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #eaf0ff;
+
+  color: #2563eb;
+
+  font-size: 14px;
+}
+
+.customer-transaction-icon.refund {
+  background: #e8f8ef;
+  color: #16a34a;
+}
+
+.customer-transaction-cell strong {
+  display: block;
+
+  color: #243b62;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+.customer-transaction-cell span {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #9aa4b3;
+
+  font-size: 10px;
+}
+
+/* =====================================================
+   BOOKING CELL
+===================================================== */
+
+.customer-booking-cell strong {
+  display: block;
+
+  color: #354766;
+
+  font-size: 11px;
+
+  font-weight: 600;
+}
+
+.customer-booking-cell span {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #9aa4b3;
+
+  font-size: 10px;
+}
+
+/* =====================================================
+   PAYMENT AMOUNT
+===================================================== */
+
+.payment-amount {
+  color: #243b62;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+.refund-amount {
+  color: #16a34a;
+}
+
+/* =====================================================
+   PAYMENT METHOD
+===================================================== */
+
+.payment-method {
+  display: inline-flex;
+
+  align-items: center;
+
+  padding: 5px 9px;
+
+  border-radius: 7px;
+
+  background: #f2f5f9;
+
+  color: #68758a;
+
+  font-size: 10px;
+
+  font-weight: 600;
+}
+
+/* =====================================================
+   PAYMENT STATUS
+===================================================== */
+
+.payment-status {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  padding: 6px 9px;
+
+  border-radius: 20px;
+
+  font-size: 10px;
+
+  font-weight: 600;
+}
+
+.payment-status svg {
+  font-size: 9px;
+}
+
+.payment-status.completed {
+  background: #e8f8ef;
+  color: #16a34a;
+}
+
+.payment-status.pending {
+  background: #fff3df;
+  color: #d97706;
+}
+
+.payment-status.refunded {
+  background: #eaf0ff;
+  color: #2563eb;
+}
+
+/* =====================================================
+   ACTION BUTTONS
+===================================================== */
+
+.payment-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+}
+
+.payment-actions button {
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #e3e8ef;
+
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  color: #69768a;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.payment-actions button:hover {
+  background: #f1f5ff;
+
+  border-color: #d6dfef;
+
+  color: #17376e;
+}
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 1100px) {
+  .customer-payment-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 650px) {
+  .customer-payments-page {
+    padding: 22px 16px 35px;
+  }
+
+  .customer-payments-header h1 {
+    font-size: 24px;
+  }
+
+  .customer-payment-summary {
+    grid-template-columns: 1fr;
+    gap: 13px;
+  }
+
+  .customer-payments-card-header {
+    padding: 16px;
+  }
+
+  .customer-payment-table th,
+  .customer-payment-table td {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+}

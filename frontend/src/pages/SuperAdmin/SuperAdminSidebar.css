@@ -1,26 +1,26 @@
 /* =====================================================
-   CUSTOMER SIDEBAR
+   SUPER ADMIN SIDEBAR
 ===================================================== */
 
-.customer-sidebar {
+.super-admin-sidebar {
   position: fixed;
 
   top: 0;
   left: 0;
 
-  width: 270px;
+  width: 280px;
   height: 100vh;
 
   background: #ffffff;
 
-  border-right: 1px solid #e6ebf2;
+  border-right: 1px solid #e5eaf2;
 
   display: flex;
   flex-direction: column;
 
-  z-index: 1000;
-
   box-sizing: border-box;
+
+  z-index: 1000;
 }
 
 
@@ -28,7 +28,7 @@
    SIDEBAR HEADER
 ===================================================== */
 
-.customer-sidebar-header {
+.super-admin-sidebar-header {
   height: 110px;
 
   padding: 0 22px;
@@ -36,13 +36,13 @@
   display: flex;
   align-items: center;
 
-  gap: 14px;
+  gap: 13px;
 
   border-bottom: 1px solid #edf1f6;
 
-  flex-shrink: 0;
-
   box-sizing: border-box;
+
+  flex-shrink: 0;
 }
 
 
@@ -50,44 +50,48 @@
    LOGO
 ===================================================== */
 
-.customer-sidebar-logo {
-  width: 58px;
-  height: 58px;
+.super-admin-sidebar-logo {
+  width: 55px;
+  height: 55px;
 
   object-fit: contain;
+
+  border-radius: 50%;
 
   flex-shrink: 0;
 }
 
 
 /* =====================================================
-   BRAND
+   BRAND TEXT
 ===================================================== */
 
-.customer-brand-text {
+.super-admin-brand-text {
   min-width: 0;
 }
 
-.customer-brand-text h2 {
+.super-admin-brand-text h2 {
   margin: 0;
 
   color: #17376e;
 
   font-size: 21px;
 
+  line-height: 1.1;
+
   font-weight: 800;
 
-  letter-spacing: 0.4px;
+  letter-spacing: 0.5px;
 }
 
-.customer-brand-text p {
+.super-admin-brand-text p {
   margin: 5px 0 0;
 
   color: #7b8798;
 
   font-size: 11px;
 
-  line-height: 1.3;
+  line-height: 1.2;
 
   white-space: nowrap;
 }
@@ -97,10 +101,10 @@
    NAVIGATION
 ===================================================== */
 
-.customer-navigation {
+.super-admin-navigation {
   flex: 1;
 
-  padding: 28px 16px;
+  padding: 28px 18px;
 
   overflow-y: auto;
 
@@ -112,10 +116,10 @@
    NAVIGATION TITLE
 ===================================================== */
 
-.customer-nav-title {
-  margin: 0 11px 13px;
+.super-admin-nav-title {
+  margin: 0 10px 13px;
 
-  color: #9aa5b5;
+  color: #9aa4b5;
 
   font-size: 10px;
 
@@ -131,7 +135,7 @@
    ACCOUNT TITLE
 ===================================================== */
 
-.customer-account-title {
+.super-admin-account-title {
   margin-top: 30px;
 }
 
@@ -140,49 +144,54 @@
    NAVIGATION LINK
 ===================================================== */
 
-.customer-nav-link {
+.super-admin-nav-link {
   width: 100%;
-
   height: 46px;
 
   margin-bottom: 7px;
 
   padding: 0 15px;
 
+  box-sizing: border-box;
+
   display: flex;
   align-items: center;
 
   gap: 15px;
 
-  box-sizing: border-box;
-
   border-radius: 11px;
 
-  color: #5f6b7e;
-
   text-decoration: none;
+
+  color: #59667b;
 
   font-size: 14px;
 
   font-weight: 600;
 
-  transition: all 0.2s ease;
+  position: relative;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 
 /* =====================================================
-   ICON
+   NAV ICON
 ===================================================== */
 
-.customer-nav-link svg {
-  width: 18px;
-  min-width: 18px;
+.super-admin-nav-link svg {
+  width: 17px;
+
+  min-width: 17px;
 
   font-size: 17px;
 
-  color: #687588;
+  color: #657287;
 
-  transition: 0.2s ease;
+  transition: color 0.2s ease;
 }
 
 
@@ -190,41 +199,36 @@
    HOVER
 ===================================================== */
 
-.customer-nav-link:hover {
-  background: #f2f5fa;
+.super-admin-nav-link:hover {
+  background: #f1f5fb;
 
-  color: #044ecf;
+  color: #17376e;
 
   transform: translateX(2px);
 }
 
-.customer-nav-link:hover svg {
+.super-admin-nav-link:hover svg {
   color: #17376e;
 }
 
 
 /* =====================================================
-   ACTIVE
+   ACTIVE LINK
 ===================================================== */
 
-.customer-nav-link.active {
+.super-admin-nav-link.active {
   background: #17376e;
 
   color: #ffffff;
 
-  box-shadow: 0 7px 16px rgba(23, 55, 110, 0.18);
-}
-
-.customer-nav-link.active svg {
-  color: #ffffff;
-}
-
-.customer-nav-link.active:hover {
-  background: #17376e;
-
-  color: #ffffff;
+  box-shadow:
+    0 7px 17px rgba(23, 55, 110, 0.18);
 
   transform: none;
+}
+
+.super-admin-nav-link.active svg {
+  color: #ffffff;
 }
 
 
@@ -232,25 +236,24 @@
    SIDEBAR FOOTER
 ===================================================== */
 
-.customer-sidebar-footer {
+.super-admin-sidebar-footer {
   padding: 18px;
 
   border-top: 1px solid #edf1f6;
 
-  flex-shrink: 0;
-
   box-sizing: border-box;
+
+  flex-shrink: 0;
 }
 
 
 /* =====================================================
-   LOGOUT
+   LOGOUT BUTTON
 ===================================================== */
 
-.customer-logout-btn {
+.super-admin-logout-btn {
   width: 100%;
-
-  height: 48px;
+  height: 50px;
 
   border: none;
 
@@ -261,12 +264,11 @@
   color: #ef4444;
 
   display: flex;
-
   align-items: center;
 
-  gap: 13px;
+  gap: 14px;
 
-  padding: 0 16px;
+  padding: 0 17px;
 
   font-family: inherit;
 
@@ -279,11 +281,11 @@
   transition: all 0.2s ease;
 }
 
-.customer-logout-btn svg {
+.super-admin-logout-btn svg {
   font-size: 16px;
 }
 
-.customer-logout-btn:hover {
+.super-admin-logout-btn:hover {
   background: #ffe2e2;
 
   color: #dc2626;
@@ -291,45 +293,32 @@
 
 
 /* =====================================================
-   SIDEBAR SCROLLBAR
+   SCROLLBAR
 ===================================================== */
 
-.customer-navigation::-webkit-scrollbar {
+.super-admin-navigation::-webkit-scrollbar {
   width: 4px;
 }
 
-.customer-navigation::-webkit-scrollbar-track {
+.super-admin-navigation::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.customer-navigation::-webkit-scrollbar-thumb {
+.super-admin-navigation::-webkit-scrollbar-thumb {
   background: #dce2eb;
 
   border-radius: 10px;
 }
-/* =====================================================
-   CUSTOMER LAYOUT
-===================================================== */
-
-.customer-layout {
-  min-height: 100vh;
-
-  width: 100%;
-
-  background: #f5f7fb;
-
-  box-sizing: border-box;
-}
 
 
 /* =====================================================
-   CUSTOMER MAIN
+   MAIN CONTENT POSITION
 ===================================================== */
 
-.customer-main {
-  margin-left: 270px;
+.super-admin-main {
+  margin-left: 280px;
 
-  width: calc(100% - 270px);
+  width: calc(100% - 280px);
 
   min-height: 100vh;
 
@@ -340,44 +329,87 @@
 
 
 /* =====================================================
-   CUSTOMER CONTENT
+   RESPONSIVE
 ===================================================== */
 
-.customer-content {
-  padding: 32px;
+@media (max-width: 1100px) {
 
-  box-sizing: border-box;
+  .super-admin-sidebar {
+    width: 250px;
+  }
+
+  .super-admin-main {
+    margin-left: 250px;
+
+    width: calc(100% - 250px);
+  }
 }
 
 
-/* =====================================================
-   DASHBOARD WELCOME
-===================================================== */
+@media (max-width: 800px) {
 
-.customer-welcome {
-  display: flex;
+  .super-admin-sidebar {
+    width: 75px;
+  }
 
-  align-items: center;
+  .super-admin-main {
+    margin-left: 75px;
 
-  justify-content: space-between;
+    width: calc(100% - 75px);
+  }
 
-  margin-bottom: 25px;
-}
+  .super-admin-sidebar-header {
+    height: 90px;
 
-.customer-welcome h1 {
-  margin: 0;
+    padding: 0;
 
-  color: #17376e;
+    justify-content: center;
+  }
 
-  font-size: 32px;
+  .super-admin-sidebar-logo {
+    width: 48px;
+    height: 48px;
+  }
 
-  font-weight: 750;
-}
+  .super-admin-brand-text {
+    display: none;
+  }
 
-.customer-welcome p {
-  margin: 7px 0 0;
+  .super-admin-navigation {
+    padding: 22px 10px;
+  }
 
-  color: #7b8493;
+  .super-admin-nav-title {
+    display: none;
+  }
 
-  font-size: 15px;
+  .super-admin-nav-link {
+    justify-content: center;
+
+    padding: 0;
+
+    gap: 0;
+  }
+
+  .super-admin-nav-link span {
+    display: none;
+  }
+
+  .super-admin-nav-link svg {
+    font-size: 18px;
+  }
+
+  .super-admin-sidebar-footer {
+    padding: 12px 10px;
+  }
+
+  .super-admin-logout-btn {
+    justify-content: center;
+
+    padding: 0;
+  }
+
+  .super-admin-logout-btn span {
+    display: none;
+  }
 }

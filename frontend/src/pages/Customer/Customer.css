@@ -1,484 +1,11 @@
 /* =========================================================
-   CUSTOMER LAYOUT
-========================================================= */
-
-.customer-layout {
-  min-height: 100vh;
-  width: 100%;
-  background: #f5f7fb;
-}
-
-
-/* =========================================================
-   CUSTOMER SIDEBAR
-========================================================= */
-
-.customer-sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-
-  width: 270px;
-  height: 100vh;
-
-  background: #ffffff;
-
-  border-right: 1px solid #e6ebf2;
-
-  display: flex;
-  flex-direction: column;
-
-  z-index: 1000;
-
-  box-sizing: border-box;
-}
-
-
-/* =========================================================
-   SIDEBAR HEADER
-========================================================= */
-
-.customer-sidebar-header {
-  height: 105px;
-
-  padding: 0 22px;
-
-  display: flex;
-  align-items: center;
-
-  gap: 14px;
-
-  border-bottom: 1px solid #edf1f6;
-
-  flex-shrink: 0;
-}
-
-
-/* =========================================================
-   LOGO
-========================================================= */
-
-.customer-sidebar-logo {
-  width: 58px;
-  height: 58px;
-
-  object-fit: contain;
-
-  flex-shrink: 0;
-}
-
-
-/* =========================================================
-   BRAND
-========================================================= */
-
-.customer-brand-text {
-  min-width: 0;
-}
-
-.customer-brand-text h2 {
-  margin: 0;
-
-  color: #17376e;
-
-  font-size: 21px;
-  font-weight: 800;
-
-  line-height: 1.1;
-}
-
-.customer-brand-text p {
-  margin: 5px 0 0;
-
-  color: #7b8799;
-
-  font-size: 11px;
-
-  white-space: nowrap;
-}
-
-
-/* =========================================================
-   NAVIGATION
-========================================================= */
-
-.customer-navigation {
-  flex: 1;
-
-  padding: 28px 17px;
-
-  overflow-y: auto;
-
-  box-sizing: border-box;
-}
-
-
-/* =========================================================
-   NAV TITLE
-========================================================= */
-
-.customer-nav-title {
-  margin: 0 11px 13px;
-
-  color: #9aa5b5;
-
-  font-size: 10px;
-
-  font-weight: 700;
-
-  letter-spacing: 1.1px;
-
-  text-transform: uppercase;
-}
-
-.customer-account-title {
-  margin-top: 30px;
-}
-
-
-/* =========================================================
-   NAV LINK
-========================================================= */
-
-.customer-nav-link {
-  width: 100%;
-  height: 45px;
-
-  margin-bottom: 7px;
-
-  padding: 0 15px;
-
-  display: flex;
-  align-items: center;
-
-  gap: 14px;
-
-  border-radius: 11px;
-
-  box-sizing: border-box;
-
-  text-decoration: none;
-
-  color: #59667b;
-
-  font-size: 14px;
-
-  font-weight: 600;
-
-  transition: all 0.2s ease;
-}
-
-
-/* =========================================================
-   NAV ICON
-========================================================= */
-
-.customer-nav-link svg {
-  width: 17px;
-  min-width: 17px;
-
-  font-size: 17px;
-
-  color: #68758a;
-
-  transition: 0.2s ease;
-}
-
-
-/* =========================================================
-   NAV HOVER
-========================================================= */
-
-.customer-nav-link:hover {
-  background: #f1f5fb;
-
-  color: #17376e;
-}
-
-.customer-nav-link:hover svg {
-  color: #17376e;
-}
-
-
-/* =========================================================
-   ACTIVE
-========================================================= */
-
-.customer-nav-link.active {
-  background: #17376e;
-
-  color: #ffffff;
-
-  box-shadow: 0 7px 16px rgba(23, 55, 110, 0.18);
-}
-
-.customer-nav-link.active svg {
-  color: #ffffff;
-}
-
-
-/* =========================================================
-   SIDEBAR FOOTER
-========================================================= */
-
-.customer-sidebar-footer {
-  padding: 17px;
-
-  border-top: 1px solid #edf1f6;
-
-  flex-shrink: 0;
-}
-
-
-/* =========================================================
-   LOGOUT
-========================================================= */
-
-.customer-logout-btn {
-  width: 100%;
-  height: 48px;
-
-  border: none;
-
-  border-radius: 10px;
-
-  background: #fff0f0;
-
-  color: #ef4444;
-
-  display: flex;
-  align-items: center;
-
-  gap: 13px;
-
-  padding: 0 16px;
-
-  font-family: inherit;
-
-  font-size: 14px;
-
-  font-weight: 600;
-
-  cursor: pointer;
-
-  transition: 0.2s ease;
-}
-
-.customer-logout-btn:hover {
-  background: #ffe1e1;
-
-  color: #dc2626;
-}
-
-
-/* =========================================================
-   MAIN AREA
-========================================================= */
-
-.customer-main {
-  margin-left: 270px;
-
-  width: calc(100% - 270px);
-
-  min-height: 100vh;
-
-  background: #f5f7fb;
-
-  box-sizing: border-box;
-}
-
-
-/* =========================================================
-   TOPBAR
-========================================================= */
-
-.customer-topbar {
-  height: 78px;
-
-  background: #ffffff;
-
-  border-bottom: 1px solid #edf1f6;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  padding: 0 30px;
-
-  box-sizing: border-box;
-
-  position: sticky;
-
-  top: 0;
-
-  z-index: 900;
-
-  box-shadow: 0 3px 12px rgba(20, 45, 80, 0.04);
-}
-
-
-/* =========================================================
-   SEARCH
-========================================================= */
-
-.customer-search {
-  width: 380px;
-  height: 48px;
-
-  background: #f6f8fc;
-
-  border: 1px solid #e1e7ef;
-
-  border-radius: 12px;
-
-  display: flex;
-  align-items: center;
-
-  padding: 0 16px;
-
-  box-sizing: border-box;
-}
-
-.customer-search svg {
-  color: #91a0b5;
-
-  font-size: 16px;
-
-  margin-right: 12px;
-}
-
-.customer-search input {
-  width: 100%;
-
-  border: none;
-  outline: none;
-
-  background: transparent;
-
-  font-family: inherit;
-
-  font-size: 14px;
-
-  color: #333;
-}
-
-.customer-search input::placeholder {
-  color: #9ca6b5;
-}
-
-
-/* =========================================================
-   TOPBAR RIGHT
-========================================================= */
-
-.customer-topbar-right {
-  display: flex;
-  align-items: center;
-
-  gap: 22px;
-}
-
-
-/* =========================================================
-   NOTIFICATION
-========================================================= */
-
-.customer-notification {
-  width: 48px;
-  height: 48px;
-
-  border: 1px solid #e2e7ef;
-
-  border-radius: 12px;
-
-  background: #f7f9fc;
-
-  color: #17376e;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  position: relative;
-
-  cursor: pointer;
-}
-
-.customer-notification svg {
-  font-size: 17px;
-}
-
-.customer-notification span {
-  position: absolute;
-
-  top: 9px;
-  right: 10px;
-
-  width: 5px;
-  height: 5px;
-
-  background: #ef4444;
-
-  border-radius: 50%;
-}
-
-
-/* =========================================================
-   PROFILE
-========================================================= */
-
-.customer-profile {
-  display: flex;
-  align-items: center;
-
-  gap: 11px;
-}
-
-.customer-profile-icon {
-  width: 46px;
-  height: 46px;
-
-  border-radius: 50%;
-
-  background: #17376e;
-
-  color: #ffffff;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 19px;
-}
-
-.customer-profile-info strong {
-  display: block;
-
-  color: #263b60;
-
-  font-size: 14px;
-
-  font-weight: 700;
-}
-
-.customer-profile-info span {
-  display: block;
-
-  margin-top: 3px;
-
-  color: #8993a4;
-
-  font-size: 11px;
-}
-
-
-/* =========================================================
-   DASHBOARD
-========================================================= */
+   CUSTOMER DASHBOARD */
 
 .customer-dashboard {
-  padding: 32px;
-
+  min-height: calc(100vh - 78px);
+  width: 100%;
+  padding: 30px;
+  background: #f5f7fb;
   box-sizing: border-box;
 }
 
@@ -488,33 +15,26 @@
 ========================================================= */
 
 .customer-dashboard-header {
+  width: 100%;
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
-
+  gap: 20px;
   margin-bottom: 28px;
 }
 
 .customer-dashboard-header h1 {
   margin: 0;
-
   color: #17376e;
-
-  font-size: 34px;
-
-  line-height: 1.1;
-
+  font-size: 30px;
   font-weight: 750;
+  line-height: 1.2;
 }
 
 .customer-dashboard-header p {
   margin: 7px 0 0;
-
-  color: #7b8492;
-
-  font-size: 15px;
+  color: #7d8797;
+  font-size: 14px;
 }
 
 
@@ -524,39 +44,37 @@
 
 .book-room-btn {
   height: 45px;
-
-  padding: 0 20px;
-
-  border: none;
-
-  border-radius: 10px;
-
-  background: #17376e;
-
-  color: #ffffff;
+  padding: 0 18px;
 
   display: flex;
   align-items: center;
-
+  justify-content: center;
   gap: 9px;
 
+  border: none;
+  border-radius: 10px;
+
+  background: #17376e;
+  color: #ffffff;
+
   font-family: inherit;
-
   font-size: 13px;
-
   font-weight: 600;
 
   cursor: pointer;
 
-  box-shadow: 0 6px 15px rgba(23, 55, 110, 0.18);
+  box-shadow: 0 6px 16px rgba(23, 55, 110, 0.18);
 
   transition: 0.2s ease;
 }
 
 .book-room-btn:hover {
-  background: #12305f;
-
+  background: #102f61;
   transform: translateY(-1px);
+}
+
+.book-room-btn svg {
+  font-size: 14px;
 }
 
 
@@ -565,13 +83,15 @@
 ========================================================= */
 
 .customer-stats-grid {
+  width: 100%;
+
   display: grid;
 
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 
-  gap: 22px;
+  gap: 20px;
 
-  margin-bottom: 28px;
+  margin-bottom: 25px;
 }
 
 
@@ -580,30 +100,33 @@
 ========================================================= */
 
 .customer-stat-card {
-  min-height: 120px;
+  min-width: 0;
+  min-height: 118px;
+
+  padding: 21px;
 
   background: #ffffff;
 
-  border-radius: 17px;
+  border: 1px solid #edf1f6;
 
-  padding: 22px;
-
-  box-sizing: border-box;
+  border-radius: 15px;
 
   display: flex;
   align-items: center;
 
-  gap: 17px;
+  gap: 16px;
 
-  box-shadow: 0 7px 22px rgba(30, 50, 80, 0.06);
+  box-sizing: border-box;
+
+  box-shadow: 0 6px 20px rgba(30, 50, 80, 0.05);
 
   transition: 0.2s ease;
 }
 
 .customer-stat-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
 
-  box-shadow: 0 10px 25px rgba(30, 50, 80, 0.09);
+  box-shadow: 0 10px 25px rgba(30, 50, 80, 0.08);
 }
 
 
@@ -612,65 +135,69 @@
 ========================================================= */
 
 .customer-stat-icon {
-  width: 54px;
-  height: 54px;
+  width: 52px;
+  height: 52px;
 
-  min-width: 54px;
+  min-width: 52px;
 
-  border-radius: 14px;
+  border-radius: 13px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  font-size: 21px;
+  font-size: 20px;
 }
 
 .customer-stat-icon.blue {
-  background: #e8f0ff;
-  color: #2563eb;
+  background: #063fb2;
+  color: #f4f5f7;
 }
 
 .customer-stat-icon.orange {
-  background: #fff2df;
-  color: #f59e0b;
+  background: #ee9212;
+  color: #f4f3f0;
 }
 
 .customer-stat-icon.green {
-  background: #e6f7ef;
-  color: #16a34a;
+  background: #06ee6e;
+  color: #f1f8f4;
 }
 
 .customer-stat-icon.purple {
-  background: #f1e8ff;
-  color: #7c3aed;
+  background: #6828de;
+  color: #f1eff2;
 }
 
 
 /* =========================================================
-   STAT TEXT
+   STAT INFORMATION
 ========================================================= */
+
+.customer-stat-info {
+  min-width: 0;
+}
 
 .customer-stat-info span {
   display: block;
 
-  color: #738096;
+  margin-bottom: 5px;
 
-  font-size: 12px;
+  color: #7e8999;
+
+  font-size: 16px;
+  font-weight: 500;
 }
 
 .customer-stat-info strong {
   display: block;
 
-  margin-top: 4px;
-
   color: #17376e;
 
   font-size: 23px;
+  font-weight: 750;
 
   line-height: 1.1;
-
-  font-weight: 750;
 }
 
 .customer-stat-info small {
@@ -678,22 +205,24 @@
 
   margin-top: 5px;
 
-  color: #9aa3b1;
+  color: #a0a9b7;
 
-  font-size: 10px;
+  font-size: 12px;
 }
 
 
 /* =========================================================
-   DASHBOARD TWO COLUMN
+   MAIN DASHBOARD GRID
 ========================================================= */
 
 .customer-dashboard-grid {
+  width: 100%;
+
   display: grid;
 
-  grid-template-columns: 1.7fr 1fr;
+  grid-template-columns: minmax(0, 1.75fr) minmax(300px, 0.9fr);
 
-  gap: 24px;
+  gap: 22px;
 
   align-items: stretch;
 }
@@ -704,15 +233,19 @@
 ========================================================= */
 
 .customer-dashboard-card {
+  min-width: 0;
+
   background: #ffffff;
 
-  border-radius: 17px;
+  border: 1px solid #edf1f6;
 
-  padding: 25px;
+  border-radius: 16px;
+
+  padding: 24px;
 
   box-sizing: border-box;
 
-  box-shadow: 0 7px 22px rgba(30, 50, 80, 0.06);
+  box-shadow: 0 6px 20px rgba(30, 50, 80, 0.05);
 }
 
 
@@ -724,8 +257,9 @@
   display: flex;
 
   align-items: flex-start;
-
   justify-content: space-between;
+
+  gap: 15px;
 
   margin-bottom: 20px;
 }
@@ -733,24 +267,25 @@
 .customer-card-header h2 {
   margin: 0;
 
-  color: #17479b;
+  color: #17376e;
 
-  font-size: 20px;
-
+  font-size: 19px;
   font-weight: 700;
+
+  line-height: 1.3;
 }
 
 .customer-card-header p {
   margin: 5px 0 0;
 
-  color: #9aa4b5;
+  color: #9aa4b3;
 
   font-size: 11px;
 }
 
 
 /* =========================================================
-   VIEW ALL
+   VIEW ALL BUTTON
 ========================================================= */
 
 .view-all-btn {
@@ -758,29 +293,36 @@
 
   background: transparent;
 
-  color: #2563eb;
+  color: #2864e8;
 
   display: flex;
   align-items: center;
 
   gap: 7px;
 
+  padding: 5px 0;
+
   font-family: inherit;
 
   font-size: 12px;
-
   font-weight: 600;
 
   cursor: pointer;
+
+  white-space: nowrap;
+}
+
+.view-all-btn:hover {
+  color: #17376e;
 }
 
 .view-all-btn svg {
-  font-size: 11px;
+  font-size: 10px;
 }
 
 
 /* =========================================================
-   BOOKING TABLE
+   TABLE WRAPPER
 ========================================================= */
 
 .booking-table-wrapper {
@@ -789,42 +331,75 @@
   overflow-x: auto;
 }
 
+
+/* =========================================================
+   BOOKINGS TABLE
+========================================================= */
+
 .customer-booking-table {
   width: 100%;
 
+  min-width: 560px;
+
   border-collapse: collapse;
 
-  min-width: 600px;
+  table-layout: fixed;
 }
 
+
+/* =========================================================
+   TABLE HEADER
+========================================================= */
+
 .customer-booking-table thead {
-  background: #f4f5f7;
+  background: #f5f7fa;
 }
 
 .customer-booking-table th {
-  padding: 13px 15px;
+  height: 44px;
+
+  padding: 0 13px;
 
   text-align: left;
 
-  color: #202020;
+  color: #596273;
 
-  font-size: 12px;
+  font-size: 11px;
 
   font-weight: 700;
+
+  border-bottom: 1px solid #e9edf3;
 }
 
+
+/* =========================================================
+   TABLE BODY
+========================================================= */
+
 .customer-booking-table td {
-  padding: 15px;
+  height: 68px;
 
-  border-bottom: 1px solid #edf1f5;
+  padding: 8px 13px;
 
-  color: #555;
+  color: #606b7c;
 
   font-size: 12px;
+
+  border-bottom: 1px solid #edf1f6;
+
+  vertical-align: middle;
 }
 
 .customer-booking-table tbody tr:last-child td {
   border-bottom: none;
+}
+
+.customer-booking-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.customer-booking-table tbody tr:hover {
+  background: #fafbfd;
 }
 
 
@@ -837,38 +412,49 @@
 
   align-items: center;
 
-  gap: 12px;
+  gap: 11px;
+
+  min-width: 0;
 }
 
 .room-small-icon {
-  width: 37px;
-  height: 37px;
+  width: 38px;
+  height: 38px;
 
-  min-width: 37px;
+  min-width: 38px;
 
-  border-radius: 10px;
+  border-radius: 9px;
 
-  background: #edf3ff;
+  background: #e3e5e9;
 
-  color: #2563eb;
+  color: #0b32d2;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
+
+  font-size: 14px;
 }
 
-.room-small-icon svg {
-  font-size: 14px;
+.room-cell > div:last-child {
+  min-width: 0;
 }
 
 .room-cell strong {
   display: block;
 
-  color: #444;
+  color: #3d4859;
 
   font-size: 12px;
 
-  font-weight: 700;
+  font-weight: 650;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
 }
 
 .room-cell span {
@@ -876,14 +462,23 @@
 
   margin-top: 4px;
 
-  color: #9aa3af;
+  color: #9ba5b3;
 
   font-size: 10px;
 }
 
 
 /* =========================================================
-   BOOKING STATUS
+   BOOKING STATUS CARD
+========================================================= */
+
+.booking-status-card {
+  padding: 24px;
+}
+
+
+/* =========================================================
+   BOOKING STATUS LIST
 ========================================================= */
 
 .booking-status-list {
@@ -891,36 +486,39 @@
 
   flex-direction: column;
 
-  gap: 14px;
+  gap: 13px;
 }
 
 
 /* =========================================================
-   STATUS ITEM
+   BOOKING STATUS ITEM
 ========================================================= */
 
 .booking-status-item {
-  min-height: 82px;
+  width: 100%;
+  min-height: 78px;
 
-  border: 1px solid #e5eaf2;
+  padding: 14px;
 
-  border-radius: 14px;
+  border: 1px solid #e5eaf1;
 
-  padding: 14px 15px;
-
-  box-sizing: border-box;
+  border-radius: 13px;
 
   display: flex;
 
   align-items: center;
 
-  gap: 14px;
+  gap: 13px;
+
+  box-sizing: border-box;
 
   transition: 0.2s ease;
 }
 
 .booking-status-item:hover {
-  background: #fafcff;
+  background: #fafbfd;
+
+  border-color: #dce3ed;
 
   transform: translateX(2px);
 }
@@ -931,55 +529,57 @@
 ========================================================= */
 
 .booking-status-icon {
-  width: 50px;
-  height: 50px;
+  width: 42px;
+  height: 42px;
 
-  min-width: 50px;
+  min-width: 42px;
 
-  border-radius: 12px;
+  border-radius: 11px;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
-  font-size: 18px;
+  font-size: 15px;
 }
 
 .booking-status-icon.upcoming {
-  background: #dff5ed;
-
-  color: #42b88a;
+  background: #d88305;
+  color: #eceae8;
 }
 
 .booking-status-icon.confirmed {
-  background: #e3f6eb;
-
-  color: #42b883;
+  background: #09eb67;
+  color: #f0f4f2;
 }
 
 .booking-status-icon.cancelled {
-  background: #ffe5e5;
-
-  color: #ef4444;
+  background: #e65959;
+  color: #f2efef;
 }
 
 
 /* =========================================================
-   STATUS TEXT
+   STATUS INFORMATION
 ========================================================= */
 
 .booking-status-info {
   flex: 1;
+
+  min-width: 0;
 }
 
 .booking-status-info strong {
   display: block;
 
-  color: #171717;
+  color: #263b60;
 
-  font-size: 21px;
+  font-size: 20px;
 
   line-height: 1.1;
+
+  font-weight: 750;
 }
 
 .booking-status-info span {
@@ -987,50 +587,41 @@
 
   margin-top: 4px;
 
-  color: #777;
+  color: #7f8998;
 
   font-size: 11px;
 }
 
 
 /* =========================================================
-   ARROW
+   STATUS ARROW
 ========================================================= */
 
 .status-arrow {
-  color: #a8b3c3;
+  color: #a9b3c1;
 
-  font-size: 13px;
+  font-size: 11px;
+
+  flex-shrink: 0;
+
+  transition: 0.2s ease;
+}
+
+.booking-status-item:hover .status-arrow {
+  color: #17376e;
+
+  transform: translateX(2px);
 }
 
 
 /* =========================================================
-   SCROLLBAR
-========================================================= */
-
-.customer-navigation::-webkit-scrollbar {
-  width: 4px;
-}
-
-.customer-navigation::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.customer-navigation::-webkit-scrollbar-thumb {
-  background: #d8dee8;
-
-  border-radius: 10px;
-}
-
-
-/* =========================================================
-   RESPONSIVE
+   RESPONSIVE - 1200px
 ========================================================= */
 
 @media (max-width: 1200px) {
 
   .customer-stats-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .customer-dashboard-grid {
@@ -1040,137 +631,103 @@
 }
 
 
+/* =========================================================
+   RESPONSIVE - 900px
+========================================================= */
+
 @media (max-width: 900px) {
 
-  .customer-sidebar {
-    width: 230px;
-  }
-
-  .customer-main {
-    margin-left: 230px;
-
-    width: calc(100% - 230px);
-  }
-
   .customer-dashboard {
-    padding: 25px;
-  }
-
-  .customer-search {
-    width: 280px;
-  }
-
-}
-
-
-@media (max-width: 700px) {
-
-  .customer-sidebar {
-    width: 72px;
-  }
-
-  .customer-main {
-    margin-left: 72px;
-
-    width: calc(100% - 72px);
-  }
-
-  .customer-sidebar-header {
-    justify-content: center;
-
-    padding: 0;
-  }
-
-  .customer-sidebar-logo {
-    width: 48px;
-    height: 48px;
-  }
-
-  .customer-brand-text {
-    display: none;
-  }
-
-  .customer-navigation {
-    padding: 22px 9px;
-  }
-
-  .customer-nav-title {
-    display: none;
-  }
-
-  .customer-nav-link {
-    justify-content: center;
-
-    padding: 0;
-
-    gap: 0;
-  }
-
-  .customer-nav-link span {
-    display: none;
-  }
-
-  .customer-sidebar-footer {
-    padding: 12px 9px;
-  }
-
-  .customer-logout-btn {
-    justify-content: center;
-
-    padding: 0;
-  }
-
-  .customer-logout-btn span {
-    display: none;
-  }
-
-  .customer-topbar {
-    padding: 0 18px;
-  }
-
-  .customer-search {
-    width: 220px;
-  }
-
-  .customer-profile-info {
-    display: none;
-  }
-
-  .customer-dashboard {
-    padding: 20px;
-  }
-
-  .customer-dashboard-header {
-    align-items: flex-start;
-
-    gap: 15px;
+    padding: 25px 20px 35px;
   }
 
   .customer-dashboard-header h1 {
     font-size: 27px;
   }
 
+  .customer-stats-grid {
+    gap: 15px;
+  }
+
 }
 
 
-@media (max-width: 550px) {
+/* =========================================================
+   RESPONSIVE - 600px
+========================================================= */
 
-  .customer-stats-grid {
-    grid-template-columns: 1fr;
+@media (max-width: 600px) {
+
+  .customer-dashboard {
+    padding: 20px 15px 30px;
   }
 
   .customer-dashboard-header {
     flex-direction: column;
+    align-items: stretch;
+  }
+
+  .customer-dashboard-header h1 {
+    font-size: 24px;
   }
 
   .book-room-btn {
     width: 100%;
-
-    justify-content: center;
   }
 
-  .customer-search {
-    width: 170px;
+  .customer-stats-grid {
+    grid-template-columns: 1fr;
+
+    gap: 13px;
+  }
+
+  .customer-stat-card {
+    min-height: 100px;
+
+    padding: 18px;
+  }
+
+  .customer-dashboard-card {
+    padding: 18px;
+  }
+
+  .customer-card-header {
+    align-items: flex-start;
+  }
+
+  .customer-card-header h2 {
+    font-size: 17px;
+  }
+
+  .customer-booking-table {
+    min-width: 560px;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 400px) {
+
+  .customer-dashboard {
+    padding: 17px 12px 25px;
+  }
+
+  .customer-stat-card {
+    padding: 16px;
+  }
+
+  .customer-stat-icon {
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
+  }
+
+  .customer-stat-info strong {
+    font-size: 20px;
   }
 
 }

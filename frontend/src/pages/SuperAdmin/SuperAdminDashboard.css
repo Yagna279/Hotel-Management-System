@@ -1,0 +1,1895 @@
+/* =========================================================
+   SUPER ADMIN DASHBOARD
+   Sidebar and Topbar have their own CSS
+   ========================================================= */
+
+
+/* =========================================================
+   GLOBAL DASHBOARD
+   ========================================================= */
+
+.super-admin-dashboard {
+  width: 100%;
+  min-height: calc(100vh - 78px);
+
+  padding: 28px;
+
+  box-sizing: border-box;
+
+  background: #f5f7fc;
+
+  overflow-x: hidden;
+}
+
+
+/* =========================================================
+   WELCOME BANNER
+   ========================================================= */
+
+.super-admin-welcome {
+  width: 100%;
+  min-height: 178px;
+
+  margin-bottom: 22px;
+
+  position: relative;
+
+  overflow: hidden;
+
+  border-radius: 18px;
+
+  background: linear-gradient(
+    110deg,
+    #4355e8 0%,
+    #5b6ceb 50%,
+    #7889ef 100%
+  );
+
+  box-shadow: 0 12px 30px rgba(67, 85, 232, 0.18);
+}
+
+
+.welcome-content {
+  width: 100%;
+  min-height: 178px;
+
+  padding: 28px 34px;
+
+  box-sizing: border-box;
+
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+.welcome-text {
+  min-width: 0;
+
+  position: relative;
+  z-index: 5;
+}
+
+
+.welcome-label {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  margin-bottom: 7px;
+
+  color: rgba(255, 255, 255, 0.78);
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 0.7px;
+}
+
+
+.welcome-label svg {
+  font-size: 12px;
+}
+
+
+.welcome-text h1 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 27px;
+  line-height: 1.2;
+
+  font-weight: 750;
+}
+
+
+.welcome-text p {
+  margin: 8px 0 17px;
+
+  color: rgba(255, 255, 255, 0.88);
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+
+.welcome-badges {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  flex-wrap: wrap;
+}
+
+
+.welcome-badge {
+  min-height: 32px;
+
+  padding: 0 11px;
+
+  box-sizing: border-box;
+
+  display: inline-flex;
+  align-items: center;
+
+  gap: 7px;
+
+  border: 1px solid rgba(255, 255, 255, 0.18);
+
+  border-radius: 9px;
+
+  background: rgba(255, 255, 255, 0.13);
+
+  color: #ffffff;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  backdrop-filter: blur(8px);
+}
+
+
+.welcome-badge svg {
+  flex-shrink: 0;
+
+  font-size: 11px;
+}
+
+
+.welcome-badge.operational {
+  background: rgba(255, 255, 255, 0.19);
+}
+
+
+/* =========================================================
+   WELCOME VISUAL
+   ========================================================= */
+
+.welcome-visual {
+  width: 330px;
+  height: 178px;
+
+  flex-shrink: 0;
+
+  position: absolute;
+
+  right: 0;
+  top: 0;
+
+  overflow: hidden;
+
+  pointer-events: none;
+}
+
+
+.welcome-visual-circle {
+  position: absolute;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.08);
+}
+
+
+.circle-one {
+  width: 220px;
+  height: 220px;
+
+  right: -55px;
+  top: -125px;
+}
+
+
+.circle-two {
+  width: 170px;
+  height: 170px;
+
+  right: -35px;
+  bottom: -105px;
+}
+
+
+.welcome-hotel-icon {
+  width: 82px;
+  height: 82px;
+
+  position: absolute;
+
+  right: 82px;
+  top: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.24);
+
+  border-radius: 22px;
+
+  background: rgba(255, 255, 255, 0.14);
+
+  color: #ffffff;
+
+  font-size: 36px;
+
+  backdrop-filter: blur(10px);
+
+  transform: rotate(-3deg);
+}
+
+
+.welcome-bed-icon {
+  width: 43px;
+  height: 43px;
+
+  position: absolute;
+
+  right: 45px;
+  bottom: 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+
+  background: rgba(255, 255, 255, 0.18);
+
+  color: #ffffff;
+
+  font-size: 17px;
+}
+
+
+/* =========================================================
+   STATISTICS GRID
+   ========================================================= */
+
+.super-admin-stats-grid {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+
+  gap: 16px;
+
+  margin-bottom: 22px;
+}
+
+
+/* =========================================================
+   STAT CARD
+   ========================================================= */
+
+.super-admin-stat-card {
+  min-width: 0;
+  min-height: 188px;
+
+  position: relative;
+
+  overflow: hidden;
+
+  padding: 18px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #e5eaf2;
+
+  border-radius: 16px;
+
+  background: #ffffff;
+
+  box-shadow: 0 5px 18px rgba(24, 45, 80, 0.045);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.super-admin-stat-card:hover {
+  transform: translateY(-3px);
+
+  box-shadow: 0 11px 28px rgba(24, 45, 80, 0.09);
+}
+
+
+.super-admin-stat-top {
+  margin-bottom: 14px;
+}
+
+
+.super-admin-stat-icon {
+  width: 47px;
+  height: 47px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  font-size: 18px;
+}
+
+
+/* =========================================================
+   STAT COLORS
+   ========================================================= */
+
+.super-admin-stat-icon.users {
+  color: #2563eb;
+  background: #eaf1ff;
+}
+
+
+.super-admin-stat-icon.admins {
+  color: #10a66a;
+  background: #e7f8ef;
+}
+
+
+.super-admin-stat-icon.rooms {
+  color: #f28c18;
+  background: #fff2df;
+}
+
+
+.super-admin-stat-icon.bookings {
+  color: #7c3aed;
+  background: #f1eaff;
+}
+
+
+.super-admin-stat-icon.revenue {
+  color: #ef4444;
+  background: #ffebeb;
+}
+
+
+/* =========================================================
+   STAT CONTENT
+   ========================================================= */
+
+.super-admin-stat-content {
+  min-width: 0;
+}
+
+
+.super-admin-stat-content span {
+  display: block;
+
+  color: #70809a;
+
+  font-size: 11px;
+
+  font-weight: 600;
+}
+
+
+.super-admin-stat-content h2 {
+  margin: 5px 0 0;
+
+  color: #25324a;
+
+  font-size: 25px;
+
+  line-height: 1.2;
+
+  font-weight: 750;
+}
+
+
+.super-admin-stat-content small {
+  min-height: 16px;
+
+  margin-top: 7px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+
+  color: #9aa5b7;
+
+  font-size: 9px;
+  font-weight: 500;
+}
+
+
+.super-admin-stat-content small svg {
+  flex-shrink: 0;
+
+  font-size: 9px;
+}
+
+
+.stat-positive {
+  color: #10a66a !important;
+}
+
+
+.stat-green {
+  color: #10a66a !important;
+}
+
+
+.stat-orange {
+  color: #f28c18 !important;
+}
+
+
+/* =========================================================
+   MINI CHART
+   ========================================================= */
+
+.mini-chart {
+  width: 100%;
+  height: 32px;
+
+  margin-top: 14px;
+
+  display: flex;
+  align-items: flex-end;
+
+  gap: 4px;
+}
+
+
+.mini-chart span {
+  flex: 1;
+
+  min-width: 3px;
+
+  border-radius: 5px 5px 0 0;
+
+  opacity: 0.8;
+}
+
+
+.users-chart span {
+  background: #4c83f1;
+}
+
+
+.admins-chart span {
+  background: #34c58a;
+}
+
+
+.rooms-chart span {
+  background: #f5a43b;
+}
+
+
+.bookings-chart span {
+  background: #8b5cf6;
+}
+
+
+.revenue-chart span {
+  background: #f87171;
+}
+
+
+/* =========================================================
+   CHARTS GRID
+   ========================================================= */
+
+.super-admin-charts-grid {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.55fr)
+    minmax(350px, 1fr);
+
+  gap: 18px;
+
+  margin-bottom: 22px;
+
+  align-items: stretch;
+}
+
+
+/* =========================================================
+   CHART CARD
+   ========================================================= */
+
+.super-admin-chart-card {
+  min-width: 0;
+
+  background: #ffffff;
+
+  border: 1px solid #e5eaf2;
+
+  border-radius: 16px;
+
+  overflow: hidden;
+
+  box-shadow: 0 5px 18px rgba(24, 45, 80, 0.045);
+}
+
+
+/* =========================================================
+   CHART HEADER
+   ========================================================= */
+
+.super-admin-chart-header {
+  min-height: 70px;
+
+  padding: 16px 20px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  border-bottom: 1px solid #edf1f6;
+}
+
+
+.chart-title {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+}
+
+
+.chart-title-icon {
+  width: 36px;
+  height: 36px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  font-size: 13px;
+}
+
+
+.chart-title-icon.blue {
+  color: #3478f6;
+  background: #eaf1ff;
+}
+
+
+.chart-title-icon.green {
+  color: #10a66a;
+  background: #e7f8ef;
+}
+
+
+.chart-title h2 {
+  margin: 0;
+
+  color: #243b62;
+
+  font-size: 15px;
+  line-height: 1.3;
+
+  font-weight: 700;
+}
+
+
+.chart-title p {
+  margin: 3px 0 0;
+
+  color: #9aa5b7;
+
+  font-size: 9px;
+}
+
+
+.chart-select {
+  width: 100px;
+  height: 34px;
+
+  flex-shrink: 0;
+
+  padding: 0 9px;
+
+  border: 1px solid #dfe5ee;
+
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  color: #344054;
+
+  outline: none;
+
+  font-family: inherit;
+
+  font-size: 10px;
+
+  cursor: pointer;
+}
+
+
+.chart-select:focus {
+  border-color: #7c91ec;
+
+  box-shadow: 0 0 0 3px rgba(79, 127, 245, 0.08);
+}
+
+
+/* =========================================================
+   BOOKING CHART
+   ========================================================= */
+
+.booking-chart-container {
+  width: 100%;
+  height: 292px;
+
+  padding: 20px;
+
+  box-sizing: border-box;
+
+  display: flex;
+}
+
+
+.chart-y-axis {
+  width: 34px;
+
+  height: 226px;
+
+  flex-shrink: 0;
+
+  padding: 0 0 25px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  color: #9ba5b5;
+
+  font-size: 9px;
+
+  text-align: right;
+}
+
+
+.booking-chart-area {
+  flex: 1;
+
+  min-width: 0;
+  min-height: 0;
+
+  height: 247px;
+
+  position: relative;
+
+  margin-left: 11px;
+}
+
+
+.chart-grid-lines {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 220px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  pointer-events: none;
+}
+
+
+.chart-grid-lines span {
+  width: 100%;
+
+  border-top: 1px dashed #e8edf4;
+}
+
+
+.booking-line-chart {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 220px;
+
+  display: block;
+
+  overflow: visible;
+}
+
+
+.chart-tooltip {
+  position: absolute;
+
+  top: 14px;
+  left: 63%;
+
+  z-index: 5;
+
+  padding: 8px 10px;
+
+  border: 1px solid #e3e8f0;
+
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  box-shadow: 0 7px 20px rgba(20, 40, 80, 0.1);
+
+  white-space: nowrap;
+}
+
+
+.chart-tooltip strong {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #344054;
+
+  font-size: 9px;
+}
+
+
+.chart-tooltip > span {
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+
+  color: #657287;
+
+  font-size: 9px;
+}
+
+
+.tooltip-dot {
+  width: 6px;
+  height: 6px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #4f7ff5;
+}
+
+
+.chart-x-axis {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 20px;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  color: #9ba5b5;
+
+  font-size: 9px;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   REVENUE OVERVIEW
+   ========================================================= */
+
+.revenue-content {
+  min-height: 292px;
+
+  padding: 24px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+
+  gap: 28px;
+}
+
+
+.revenue-donut {
+  width: 174px;
+  height: 174px;
+
+  flex-shrink: 0;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: conic-gradient(
+    #4c83f1 0deg 216deg,
+    #39bd89 216deg 306deg,
+    #f59e2f 306deg 342deg,
+    #8b5cf6 342deg 360deg
+  );
+}
+
+
+.revenue-donut::after {
+  content: "";
+
+  position: absolute;
+
+  width: 108px;
+  height: 108px;
+
+  border-radius: 50%;
+
+  background: #ffffff;
+}
+
+
+.revenue-donut-center {
+  position: relative;
+
+  z-index: 2;
+
+  text-align: center;
+}
+
+
+.revenue-donut-center strong {
+  display: block;
+
+  color: #243b62;
+
+  font-size: 19px;
+
+  font-weight: 750;
+}
+
+
+.revenue-donut-center span {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #8b96a7;
+
+  font-size: 9px;
+}
+
+
+.revenue-legend {
+  flex: 1;
+
+  min-width: 0;
+}
+
+
+.revenue-legend-item {
+  min-height: 44px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  border-bottom: 1px solid #edf1f5;
+
+  color: #657287;
+
+  font-size: 10px;
+}
+
+
+.revenue-legend-item:last-child {
+  border-bottom: none;
+}
+
+
+.revenue-legend-item > div {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+}
+
+
+.revenue-legend-item strong {
+  color: #344054;
+
+  font-size: 10px;
+}
+
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+}
+
+
+.legend-dot.blue {
+  background: #4c83f1;
+}
+
+
+.legend-dot.green {
+  background: #39bd89;
+}
+
+
+.legend-dot.orange {
+  background: #f59e2f;
+}
+
+
+.legend-dot.purple {
+  background: #8b5cf6;
+}
+
+
+/* =========================================================
+   BOTTOM GRID
+   ========================================================= */
+
+.super-admin-bottom-grid {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.55fr)
+    minmax(320px, 1fr);
+
+  gap: 18px;
+
+  align-items: start;
+
+  margin-bottom: 18px;
+}
+
+
+/* =========================================================
+   GENERAL CARD
+   ========================================================= */
+
+.super-admin-card {
+  min-width: 0;
+
+  background: #ffffff;
+
+  border: 1px solid #e5eaf2;
+
+  border-radius: 16px;
+
+  overflow: hidden;
+
+  box-shadow: 0 5px 18px rgba(24, 45, 80, 0.045);
+}
+
+
+/* =========================================================
+   CARD HEADER
+   ========================================================= */
+
+.super-admin-card-header {
+  min-height: 70px;
+
+  padding: 16px 20px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  border-bottom: 1px solid #edf1f6;
+}
+
+
+.super-admin-card-header h2 {
+  margin: 0;
+
+  color: #243b62;
+
+  font-size: 15px;
+
+  font-weight: 700;
+}
+
+
+.super-admin-card-header p {
+  margin: 4px 0 0;
+
+  color: #929cab;
+
+  font-size: 9px;
+}
+
+
+/* =========================================================
+   VIEW ALL
+   ========================================================= */
+
+.super-admin-view-btn {
+  border: none;
+
+  background: transparent;
+
+  display: inline-flex;
+  align-items: center;
+
+  gap: 6px;
+
+  padding: 5px 0;
+
+  color: #17376e;
+
+  font-family: inherit;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+.super-admin-view-btn svg {
+  font-size: 10px;
+}
+
+
+.super-admin-view-btn:hover {
+  color: #3478f6;
+}
+
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.super-admin-table-wrapper {
+  width: 100%;
+
+  overflow-x: auto;
+}
+
+
+.super-admin-table {
+  width: 100%;
+
+  border-collapse: collapse;
+
+  table-layout: fixed;
+}
+
+
+.super-admin-table th {
+  height: 42px;
+
+  padding: 0 18px;
+
+  box-sizing: border-box;
+
+  background: #fafbfd;
+
+  border-bottom: 1px solid #edf1f6;
+
+  color: #8995a8;
+
+  text-align: left;
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.6px;
+
+  text-transform: uppercase;
+
+  white-space: nowrap;
+}
+
+
+.super-admin-table td {
+  height: 70px;
+
+  padding: 10px 18px;
+
+  box-sizing: border-box;
+
+  border-bottom: 1px solid #f0f2f6;
+
+  color: #536176;
+
+  font-size: 10px;
+
+  vertical-align: middle;
+
+  white-space: nowrap;
+}
+
+
+.super-admin-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+
+.super-admin-table tbody tr:hover {
+  background: #fafcff;
+}
+
+
+/* =========================================================
+   TABLE COLUMN WIDTHS
+   ========================================================= */
+
+.super-admin-table th:nth-child(1),
+.super-admin-table td:nth-child(1) {
+  width: 34%;
+}
+
+
+.super-admin-table th:nth-child(2),
+.super-admin-table td:nth-child(2) {
+  width: 18%;
+}
+
+
+.super-admin-table th:nth-child(3),
+.super-admin-table td:nth-child(3) {
+  width: 17%;
+}
+
+
+.super-admin-table th:nth-child(4),
+.super-admin-table td:nth-child(4) {
+  width: 14%;
+}
+
+
+.super-admin-table th:nth-child(5),
+.super-admin-table td:nth-child(5) {
+  width: 17%;
+}
+
+
+/* =========================================================
+   GUEST CELL
+   ========================================================= */
+
+.guest-cell {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+}
+
+
+.guest-avatar {
+  width: 33px;
+  height: 33px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  color: #ffffff;
+
+  font-size: 9px;
+
+  font-weight: 700;
+}
+
+
+.guest-avatar.blue {
+  background: #4c83f1;
+}
+
+
+.guest-avatar.pink {
+  background: #ef476f;
+}
+
+
+.guest-avatar.green {
+  background: #35b982;
+}
+
+
+.guest-info {
+  min-width: 0;
+}
+
+
+.guest-info strong {
+  display: block;
+
+  overflow: hidden;
+
+  color: #344054;
+
+  font-size: 10px;
+
+  font-weight: 650;
+
+  white-space: nowrap;
+
+  text-overflow: ellipsis;
+}
+
+
+.guest-info span {
+  display: block;
+
+  margin-top: 3px;
+
+  overflow: hidden;
+
+  color: #9aa5b7;
+
+  font-size: 8px;
+
+  white-space: nowrap;
+
+  text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.status {
+  min-height: 27px;
+
+  padding: 0 9px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 5px;
+
+  border-radius: 20px;
+
+  font-size: 9px;
+
+  font-weight: 650;
+
+  white-space: nowrap;
+}
+
+
+.status svg {
+  font-size: 9px;
+}
+
+
+.status.confirmed {
+  color: #159669;
+
+  background: #e5f8ef;
+}
+
+
+.status.pending {
+  color: #e78316;
+
+  background: #fff0dc;
+}
+
+
+/* =========================================================
+   QUICK ACTIONS
+   ========================================================= */
+
+.quick-actions-grid {
+  padding: 18px;
+
+  display: grid;
+
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  gap: 12px;
+
+  box-sizing: border-box;
+}
+
+
+.quick-action-item {
+  min-height: 104px;
+
+  padding: 12px 7px;
+
+  border: 1px solid #edf0f5;
+
+  border-radius: 12px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+
+  font-family: inherit;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+
+.quick-action-item:hover {
+  transform: translateY(-3px);
+
+  box-shadow: 0 8px 18px rgba(30, 50, 90, 0.08);
+}
+
+
+.quick-action-icon {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  font-size: 14px;
+}
+
+
+.quick-action-item span {
+  color: #44536d;
+
+  font-size: 9px;
+
+  font-weight: 650;
+
+  text-align: center;
+
+  line-height: 1.3;
+}
+
+
+/* =========================================================
+   QUICK ACTION COLORS
+   ========================================================= */
+
+.quick-action-item.blue {
+  background: #f7f9ff;
+}
+
+
+.quick-action-item.blue .quick-action-icon {
+  color: #3478f6;
+  background: #eaf1ff;
+}
+
+
+.quick-action-item.green {
+  background: #f7fcfa;
+}
+
+
+.quick-action-item.green .quick-action-icon {
+  color: #10a66a;
+  background: #e5f8ef;
+}
+
+
+.quick-action-item.purple {
+  background: #fbf9ff;
+}
+
+
+.quick-action-item.purple .quick-action-icon {
+  color: #7c3aed;
+  background: #f1eaff;
+}
+
+
+.quick-action-item.orange {
+  background: #fffaf4;
+}
+
+
+.quick-action-item.orange .quick-action-icon {
+  color: #ef8d1d;
+  background: #fff0dc;
+}
+
+
+.quick-action-item.indigo {
+  background: #f8f8ff;
+}
+
+
+.quick-action-item.indigo .quick-action-icon {
+  color: #5b5ce2;
+  background: #ececff;
+}
+
+
+.quick-action-item.gray {
+  background: #fafbfc;
+}
+
+
+.quick-action-item.gray .quick-action-icon {
+  color: #64748b;
+  background: #edf1f5;
+}
+
+
+/* =========================================================
+   SYSTEM STATUS
+   ========================================================= */
+
+.super-admin-system-status {
+  width: 100%;
+
+  min-height: 62px;
+
+  padding: 13px 18px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  border: 1px solid #dcefe6;
+
+  border-radius: 14px;
+
+  background: #f7fcf9;
+
+  box-shadow: 0 4px 14px rgba(25, 100, 65, 0.035);
+}
+
+
+.system-status-icon {
+  width: 36px;
+  height: 36px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #e2f7ec;
+
+  color: #16a36a;
+
+  font-size: 15px;
+}
+
+
+.system-status-content {
+  min-width: 0;
+
+  flex: 1;
+}
+
+
+.system-status-content strong {
+  display: block;
+
+  color: #244d3c;
+
+  font-size: 11px;
+
+  font-weight: 700;
+}
+
+
+.system-status-content span {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #789084;
+
+  font-size: 9px;
+}
+
+
+.system-status-badge {
+  min-height: 28px;
+
+  padding: 0 10px;
+
+  flex-shrink: 0;
+
+  display: inline-flex;
+  align-items: center;
+
+  gap: 5px;
+
+  border-radius: 20px;
+
+  background: #e4f8ed;
+
+  color: #159669;
+
+  font-size: 9px;
+
+  font-weight: 700;
+}
+
+
+.system-status-badge svg {
+  font-size: 9px;
+}
+
+
+/* =========================================================
+   LARGE LAPTOP
+   ========================================================= */
+
+@media (max-width: 1300px) {
+
+  .super-admin-dashboard {
+    padding: 24px;
+  }
+
+
+  .super-admin-stats-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+
+  .super-admin-charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+
+  .super-admin-bottom-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .super-admin-dashboard {
+    padding: 20px;
+  }
+
+
+  .super-admin-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+
+  .welcome-content {
+    padding: 24px;
+  }
+
+
+  .welcome-visual {
+    opacity: 0.4;
+  }
+
+
+  .welcome-text h1 {
+    font-size: 23px;
+  }
+
+
+  .revenue-content {
+    justify-content: center;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .super-admin-dashboard {
+    padding: 14px;
+  }
+
+
+  /* WELCOME */
+
+  .super-admin-welcome {
+    min-height: 205px;
+
+    margin-bottom: 16px;
+  }
+
+
+  .welcome-content {
+    min-height: 205px;
+
+    padding: 22px;
+  }
+
+
+  .welcome-text {
+    width: 100%;
+  }
+
+
+  .welcome-text h1 {
+    font-size: 21px;
+  }
+
+
+  .welcome-text p {
+    max-width: 90%;
+
+    font-size: 11px;
+  }
+
+
+  .welcome-visual {
+    display: none;
+  }
+
+
+  .welcome-badges {
+    gap: 6px;
+  }
+
+
+  .welcome-badge {
+    min-height: 29px;
+
+    padding: 0 8px;
+
+    font-size: 8px;
+  }
+
+
+  /* STATISTICS */
+
+  .super-admin-stats-grid {
+    grid-template-columns: 1fr;
+
+    gap: 12px;
+
+    margin-bottom: 16px;
+  }
+
+
+  .super-admin-stat-card {
+    min-height: 175px;
+
+    padding: 18px;
+  }
+
+
+  /* CHART */
+
+  .super-admin-charts-grid {
+    gap: 14px;
+
+    margin-bottom: 16px;
+  }
+
+
+  .super-admin-chart-header,
+  .super-admin-card-header {
+    min-height: 64px;
+
+    padding: 14px;
+  }
+
+
+  .chart-title h2 {
+    font-size: 13px;
+  }
+
+
+  .chart-select {
+    width: 88px;
+
+    height: 31px;
+
+    font-size: 9px;
+  }
+
+
+  .booking-chart-container {
+    height: 260px;
+
+    padding: 14px;
+  }
+
+
+  .chart-y-axis {
+    width: 27px;
+
+    height: 200px;
+  }
+
+
+  .booking-chart-area {
+    height: 220px;
+
+    margin-left: 8px;
+  }
+
+
+  .chart-grid-lines {
+    height: 190px;
+  }
+
+
+  .booking-line-chart {
+    height: 190px;
+  }
+
+
+  .chart-x-axis {
+    font-size: 7px;
+  }
+
+
+  .chart-tooltip {
+    left: 52%;
+
+    top: 10px;
+  }
+
+
+  /* REVENUE */
+
+  .revenue-content {
+    min-height: 310px;
+
+    padding: 20px;
+
+    flex-direction: column;
+
+    gap: 18px;
+  }
+
+
+  .revenue-donut {
+    width: 150px;
+    height: 150px;
+  }
+
+
+  .revenue-donut::after {
+    width: 94px;
+    height: 94px;
+  }
+
+
+  .revenue-legend {
+    width: 100%;
+  }
+
+
+  /* TABLE */
+
+  .super-admin-table {
+    min-width: 650px;
+  }
+
+
+  .super-admin-table th,
+  .super-admin-table td {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+
+  /* QUICK ACTIONS */
+
+  .quick-actions-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    padding: 14px;
+  }
+
+
+  /* SYSTEM STATUS */
+
+  .super-admin-system-status {
+    align-items: flex-start;
+
+    padding: 13px;
+  }
+
+
+  .system-status-content span {
+    line-height: 1.4;
+  }
+
+
+  .system-status-badge {
+    display: none;
+  }
+
+}

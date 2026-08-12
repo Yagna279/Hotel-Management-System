@@ -5,6 +5,7 @@ import {
   FaHome,
   FaCalendarCheck,
   FaBed,
+  FaConciergeBell,
   FaCreditCard,
   FaUser,
   FaCog,
@@ -13,7 +14,7 @@ import {
 
 import logo from "../../assets/shnoor-logo.jpeg";
 
-import "./Customer.css";
+import "./CustomerSidebar.css";
 
 function CustomerSidebar() {
   return (
@@ -45,11 +46,16 @@ function CustomerSidebar() {
 
       <nav className="customer-navigation">
 
+        {/* MAIN MENU */}
+
         <p className="customer-nav-title">
           Main Menu
         </p>
 
-        {/* Dashboard */}
+
+        {/* =========================================
+            DASHBOARD
+        ========================================= */}
 
         <NavLink
           to="/customer-dashboard"
@@ -62,7 +68,9 @@ function CustomerSidebar() {
         </NavLink>
 
 
-        {/* My Bookings */}
+        {/* =========================================
+            MY BOOKINGS
+        ========================================= */}
 
         <NavLink
           to="/customer/bookings"
@@ -75,7 +83,9 @@ function CustomerSidebar() {
         </NavLink>
 
 
-        {/* Rooms */}
+        {/* =========================================
+            ROOMS
+        ========================================= */}
 
         <NavLink
           to="/customer/rooms"
@@ -88,7 +98,24 @@ function CustomerSidebar() {
         </NavLink>
 
 
-        {/* Payments */}
+        {/* =========================================
+            MY SERVICES
+        ========================================= */}
+
+        <NavLink
+          to="/customer/services"
+          className={({ isActive }) =>
+            `customer-nav-link ${isActive ? "active" : ""}`
+          }
+        >
+          <FaConciergeBell />
+          <span>My Services</span>
+        </NavLink>
+
+
+        {/* =========================================
+            PAYMENTS
+        ========================================= */}
 
         <NavLink
           to="/customer/payments"
@@ -110,7 +137,9 @@ function CustomerSidebar() {
         </p>
 
 
-        {/* My Profile */}
+        {/* =========================================
+            MY PROFILE
+        ========================================= */}
 
         <NavLink
           to="/customer/profile"
@@ -123,7 +152,9 @@ function CustomerSidebar() {
         </NavLink>
 
 
-        {/* Settings */}
+        {/* =========================================
+            SETTINGS
+        ========================================= */}
 
         <NavLink
           to="/customer/settings"

@@ -1,0 +1,563 @@
+/* =====================================================
+   CUSTOMER PROFILE PAGE
+===================================================== */
+
+.customer-profile-page {
+  padding: 30px;
+  min-height: calc(100vh - 78px);
+  background: #f5f7fb;
+  box-sizing: border-box;
+}
+
+
+/* =====================================================
+   PAGE HEADER
+===================================================== */
+
+.customer-profile-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+.customer-profile-header h1 {
+  margin: 0;
+  color: #17376e;
+  font-size: 28px;
+  font-weight: 750;
+}
+
+.customer-profile-header p {
+  margin: 7px 0 0;
+  color: #7b8799;
+  font-size: 14px;
+}
+
+
+/* =====================================================
+   EDIT BUTTON
+===================================================== */
+
+.profile-edit-btn {
+  height: 44px;
+  padding: 0 18px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #17376e;
+  color: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.profile-edit-btn:hover {
+  background: #102e60;
+  transform: translateY(-1px);
+}
+
+
+/* =====================================================
+   PROFILE CARD
+===================================================== */
+
+.customer-profile-card {
+  background: #ffffff;
+
+  border: 1px solid #e7ebf2;
+  border-radius: 16px;
+
+  box-shadow: 0 6px 20px rgba(24, 45, 80, 0.05);
+
+  overflow: hidden;
+}
+
+
+/* =====================================================
+   PROFILE CARD HEADER
+===================================================== */
+
+.profile-card-header {
+  min-height: 125px;
+
+  padding: 25px 30px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 18px;
+
+  background: linear-gradient(
+    135deg,
+    #f5f8ff,
+    #ffffff
+  );
+
+  border-bottom: 1px solid #edf1f6;
+
+  box-sizing: border-box;
+}
+
+
+/* =====================================================
+   PROFILE AVATAR
+===================================================== */
+
+.profile-avatar {
+  width: 75px;
+  height: 75px;
+
+  border-radius: 50%;
+
+  background: #17376e;
+  color: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 28px;
+
+  box-shadow: 0 7px 18px rgba(23, 55, 110, 0.2);
+}
+
+.profile-name-section h2 {
+  margin: 0;
+
+  color: #17376e;
+
+  font-size: 21px;
+  font-weight: 700;
+}
+
+.profile-name-section p {
+  margin: 5px 0 0;
+
+  color: #8994a6;
+
+  font-size: 13px;
+}
+
+
+/* =====================================================
+   PROFILE FORM
+===================================================== */
+
+.profile-form {
+  padding: 30px;
+
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  column-gap: 25px;
+  row-gap: 22px;
+
+  box-sizing: border-box;
+}
+
+
+/* =====================================================
+   FORM GROUP
+===================================================== */
+
+.profile-form-group {
+  min-width: 0;
+}
+
+.profile-full-width {
+  grid-column: 1 / -1;
+}
+
+.profile-form-group label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #46546a;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+
+/* =====================================================
+   INPUT WRAPPER
+===================================================== */
+
+.profile-input-wrapper {
+  width: 100%;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+
+  border: 1px solid #dfe5ed;
+
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  padding: 0 14px;
+
+  box-sizing: border-box;
+
+  transition: 0.2s ease;
+}
+
+.profile-input-wrapper:focus-within {
+  border-color: #17376e;
+
+  box-shadow: 0 0 0 3px rgba(23, 55, 110, 0.08);
+}
+
+.profile-input-wrapper svg {
+  flex-shrink: 0;
+
+  color: #8c98aa;
+
+  font-size: 14px;
+
+  margin-right: 11px;
+}
+
+.profile-input-wrapper input,
+.profile-input-wrapper textarea {
+  width: 100%;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  color: #29384f;
+
+  font-family: inherit;
+
+  font-size: 14px;
+}
+
+.profile-input-wrapper input::placeholder,
+.profile-input-wrapper textarea::placeholder {
+  color: #a5afbd;
+}
+
+
+/* =====================================================
+   DISABLED INPUT
+===================================================== */
+
+.profile-input-wrapper input:disabled,
+.profile-input-wrapper textarea:disabled {
+  cursor: default;
+
+  color: #667085;
+}
+
+
+/* =====================================================
+   TEXTAREA
+===================================================== */
+
+.profile-textarea-wrapper {
+  min-height: 105px;
+
+  height: auto;
+
+  align-items: flex-start;
+
+  padding-top: 14px;
+}
+
+.profile-textarea-wrapper textarea {
+  resize: vertical;
+
+  min-height: 75px;
+
+  line-height: 1.5;
+}
+
+
+/* =====================================================
+   FORM ACTIONS
+===================================================== */
+
+.profile-form-actions {
+  grid-column: 1 / -1;
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 12px;
+
+  padding-top: 5px;
+}
+
+
+/* =====================================================
+   CANCEL BUTTON
+===================================================== */
+
+.profile-cancel-btn {
+  height: 44px;
+
+  padding: 0 17px;
+
+  border: 1px solid #dfe4eb;
+
+  border-radius: 9px;
+
+  background: #ffffff;
+  color: #667085;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  font-family: inherit;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.profile-cancel-btn:hover {
+  background: #f5f7fa;
+  color: #344054;
+}
+
+
+/* =====================================================
+   SAVE BUTTON
+===================================================== */
+
+.profile-save-btn {
+  height: 44px;
+
+  padding: 0 19px;
+
+  border: none;
+
+  border-radius: 9px;
+
+  background: #17376e;
+  color: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  font-family: inherit;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.profile-save-btn:hover {
+  background: #102e60;
+}
+
+
+/* =====================================================
+   ACCOUNT INFORMATION
+===================================================== */
+
+.profile-information-card {
+  margin-top: 22px;
+
+  padding: 25px 30px;
+
+  background: #ffffff;
+
+  border: 1px solid #e7ebf2;
+
+  border-radius: 16px;
+
+  box-shadow: 0 6px 20px rgba(24, 45, 80, 0.05);
+
+  box-sizing: border-box;
+}
+
+
+/* =====================================================
+   INFORMATION HEADER
+===================================================== */
+
+.profile-information-header {
+  margin-bottom: 22px;
+}
+
+.profile-information-header h2 {
+  margin: 0;
+
+  color: #17376e;
+
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.profile-information-header p {
+  margin: 5px 0 0;
+
+  color: #8994a6;
+
+  font-size: 13px;
+}
+
+
+/* =====================================================
+   INFORMATION GRID
+===================================================== */
+
+.profile-information-grid {
+  display: grid;
+
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  gap: 15px;
+}
+
+
+/* =====================================================
+   INFORMATION ITEM
+===================================================== */
+
+.profile-information-item {
+  padding: 16px;
+
+  border: 1px solid #edf1f5;
+
+  border-radius: 11px;
+
+  background: #fafbfc;
+}
+
+.profile-information-item span {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #8b96a7;
+
+  font-size: 11px;
+}
+
+.profile-information-item strong {
+  color: #35445b;
+
+  font-size: 13px;
+
+  font-weight: 650;
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+.profile-active-status {
+  color: #16a34a !important;
+}
+
+.profile-verified-status {
+  color: #2563eb !important;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 1000px) {
+  .profile-information-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 800px) {
+  .customer-profile-page {
+    padding: 22px;
+  }
+
+  .profile-form {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-full-width {
+    grid-column: auto;
+  }
+
+  .profile-form-actions {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .customer-profile-page {
+    padding: 15px;
+  }
+
+  .customer-profile-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .customer-profile-header h1 {
+    font-size: 23px;
+  }
+
+  .profile-edit-btn {
+    width: 100%;
+  }
+
+  .profile-card-header {
+    padding: 22px;
+  }
+
+  .profile-form {
+    padding: 22px;
+  }
+
+  .profile-information-card {
+    padding: 22px;
+  }
+
+  .profile-information-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-form-actions {
+    flex-direction: column;
+  }
+
+  .profile-cancel-btn,
+  .profile-save-btn {
+    width: 100%;
+  }
+}

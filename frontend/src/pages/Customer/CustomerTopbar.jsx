@@ -1,6 +1,6 @@
 import React from "react";
 import { FaBell, FaSearch, FaUser } from "react-icons/fa";
-import "./Customer.css";
+import "./CustomerTopbar.css";
 
 function CustomerTopbar() {
   return (

@@ -52,7 +52,7 @@ function ForgotPassword() {
           className="login-logo"
         />
 
-        <h2>Forgot Password</h2>
+        <h2>Change Password</h2>
 
         <p className="login-subtitle">
           Enter your registered email address.

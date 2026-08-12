@@ -1,0 +1,797 @@
+/* =====================================================
+   CUSTOMER BOOKINGS PAGE
+===================================================== */
+
+.customer-bookings-layout {
+  min-height: 100vh;
+  background: #f5f7fb;
+}
+
+
+/* =====================================================
+   MAIN CONTENT
+===================================================== */
+
+.customer-bookings-content {
+  padding: 30px 32px 40px;
+  box-sizing: border-box;
+}
+
+
+/* =====================================================
+   PAGE HEADER
+===================================================== */
+
+.customer-bookings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 28px;
+}
+
+.customer-bookings-header h1 {
+  margin: 0;
+
+  color: #17376e;
+
+  font-size: 28px;
+  font-weight: 800;
+
+  line-height: 1.2;
+}
+
+.customer-bookings-header p {
+  margin: 7px 0 0;
+
+  color: #7b8799;
+
+  font-size: 14px;
+}
+
+
+/* =====================================================
+   BOOK ROOM BUTTON
+===================================================== */
+
+.customer-new-booking-btn {
+  height: 46px;
+
+  padding: 0 20px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #17376e;
+  color: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+
+  font-family: inherit;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow: 0 6px 16px rgba(23, 55, 110, 0.18);
+
+  transition: all 0.2s ease;
+}
+
+.customer-new-booking-btn svg {
+  font-size: 15px;
+}
+
+.customer-new-booking-btn:hover {
+  background: #102d5c;
+
+  transform: translateY(-1px);
+
+  box-shadow: 0 8px 20px rgba(23, 55, 110, 0.24);
+}
+
+
+/* =====================================================
+   BOOKING SUMMARY
+===================================================== */
+
+.customer-booking-summary {
+  display: grid;
+
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 18px;
+
+  margin-bottom: 25px;
+}
+
+
+/* =====================================================
+   SUMMARY CARD
+===================================================== */
+
+.customer-booking-summary-card {
+  min-height: 105px;
+
+  padding: 20px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border: 1px solid #e8edf4;
+
+  border-radius: 15px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  box-shadow: 0 5px 18px rgba(20, 45, 80, 0.04);
+
+  transition: all 0.2s ease;
+}
+
+.customer-booking-summary-card:hover {
+  transform: translateY(-2px);
+
+  box-shadow: 0 9px 24px rgba(20, 45, 80, 0.07);
+}
+
+
+/* =====================================================
+   SUMMARY ICON
+===================================================== */
+
+.customer-booking-summary-icon {
+  width: 48px;
+  height: 48px;
+
+  min-width: 48px;
+
+  border-radius: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 18px;
+}
+
+
+/* BLUE */
+
+.customer-booking-summary-icon.blue {
+  background: #1158e7;
+  color: #f5f6f9;
+}
+
+
+/* ORANGE */
+
+.customer-booking-summary-icon.orange {
+  background: #deaa4a;
+  color: #fffefc;
+}
+
+
+/* GREEN */
+
+.customer-booking-summary-icon.green {
+  background: #2fe578;
+  color: #f4f9f6;
+}
+
+
+/* RED */
+
+.customer-booking-summary-icon.red {
+  background: #e85555;
+  color: #fbf8f8;
+}
+
+
+/* =====================================================
+   SUMMARY TEXT
+===================================================== */
+
+.customer-booking-summary-card span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #7d899b;
+
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.customer-booking-summary-card strong {
+  display: block;
+
+  color: #17376e;
+
+  font-size: 23px;
+  font-weight: 800;
+
+  line-height: 1;
+}
+
+
+/* =====================================================
+   MAIN BOOKINGS CARD
+===================================================== */
+
+.customer-bookings-card {
+  background: #ffffff;
+
+  border: 1px solid #e8edf4;
+
+  border-radius: 17px;
+
+  box-shadow: 0 6px 20px rgba(20, 45, 80, 0.05);
+
+  overflow: hidden;
+}
+
+
+/* =====================================================
+   CARD HEADER
+===================================================== */
+
+.customer-bookings-card-header {
+  min-height: 85px;
+
+  padding: 20px 24px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 1px solid #edf1f6;
+}
+
+.customer-bookings-card-header h2 {
+  margin: 0;
+
+  color: #17376e;
+
+  font-size: 18px;
+  font-weight: 750;
+}
+
+.customer-bookings-card-header p {
+  margin: 5px 0 0;
+
+  color: #8994a6;
+
+  font-size: 12px;
+}
+
+
+/* =====================================================
+   FILTER
+===================================================== */
+
+.customer-booking-filter {
+  height: 40px;
+
+  min-width: 145px;
+
+  padding: 0 12px;
+
+  border: 1px solid #dfe5ee;
+
+  border-radius: 9px;
+
+  background: #ffffff;
+
+  color: #536176;
+
+  font-family: inherit;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  outline: none;
+
+  cursor: pointer;
+}
+
+.customer-booking-filter:focus {
+  border-color: #17376e;
+
+  box-shadow: 0 0 0 3px rgba(23, 55, 110, 0.08);
+}
+
+
+/* =====================================================
+   BOOKING LIST
+===================================================== */
+
+.customer-booking-list {
+  width: 100%;
+}
+
+
+/* =====================================================
+   BOOKING ITEM
+===================================================== */
+
+.customer-booking-item {
+  min-height: 105px;
+
+  padding: 20px 24px;
+
+  box-sizing: border-box;
+
+  display: grid;
+
+  grid-template-columns:
+    1.5fr
+    1fr
+    1fr
+    0.8fr
+    0.8fr
+    auto
+    auto;
+
+  align-items: center;
+
+  gap: 20px;
+
+  border-bottom: 1px solid #edf1f6;
+
+  transition: background 0.2s ease;
+}
+
+.customer-booking-item:last-child {
+  border-bottom: none;
+}
+
+.customer-booking-item:hover {
+  background: #fafcff;
+}
+
+
+/* =====================================================
+   ROOM
+===================================================== */
+
+.customer-booking-room {
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  min-width: 0;
+}
+
+.customer-booking-room-icon {
+  width: 46px;
+  height: 46px;
+
+  min-width: 46px;
+
+  border-radius: 11px;
+
+  background: #eaf1ff;
+
+  color: #2563eb;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 17px;
+}
+
+.customer-booking-room h3 {
+  margin: 0;
+
+  color: #253b61;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+.customer-booking-room span {
+  display: block;
+
+  margin-top: 5px;
+
+  color: #929daf;
+
+  font-size: 11px;
+}
+
+
+/* =====================================================
+   BOOKING INFORMATION
+===================================================== */
+
+.customer-booking-info {
+  min-width: 0;
+}
+
+.customer-booking-info span {
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+
+  margin-bottom: 6px;
+
+  color: #98a2b2;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  text-transform: uppercase;
+}
+
+.customer-booking-info span svg {
+  font-size: 10px;
+
+  color: #7d8ba0;
+}
+
+.customer-booking-info strong {
+  display: block;
+
+  color: #344563;
+
+  font-size: 12px;
+  font-weight: 650;
+
+  white-space: nowrap;
+}
+
+
+/* =====================================================
+   PRICE
+===================================================== */
+
+.customer-booking-price span {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #98a2b2;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  text-transform: uppercase;
+}
+
+.customer-booking-price strong {
+  color: #17376e;
+
+  font-size: 14px;
+  font-weight: 800;
+
+  white-space: nowrap;
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+.customer-booking-status {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-width: 75px;
+
+  padding: 7px 11px;
+
+  border-radius: 20px;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+
+/* CONFIRMED */
+
+.customer-booking-status.confirmed {
+  background: #e9f8ef;
+
+  color: #16a34a;
+}
+
+
+/* UPCOMING */
+
+.customer-booking-status.upcoming {
+  background: #fff4df;
+
+  color: #d97706;
+}
+
+
+/* COMPLETED */
+
+.customer-booking-status.completed {
+  background: #eaf1ff;
+
+  color: #2563eb;
+}
+
+
+/* CANCELLED */
+
+.customer-booking-status.cancelled {
+  background: #ffecec;
+
+  color: #dc2626;
+}
+
+
+/* =====================================================
+   VIEW BUTTON
+===================================================== */
+
+.customer-booking-action {
+  height: 36px;
+
+  padding: 0 12px;
+
+  border: 1px solid #dfe5ee;
+
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  color: #52627a;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  font-family: inherit;
+
+  font-size: 11px;
+  font-weight: 650;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.customer-booking-action svg {
+  font-size: 12px;
+}
+
+.customer-booking-action:hover {
+  background: #17376e;
+
+  border-color: #17376e;
+
+  color: #ffffff;
+}
+
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 1200px) {
+
+  .customer-bookings-content {
+    padding: 25px;
+  }
+
+  .customer-booking-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .customer-booking-item {
+    grid-template-columns:
+      1.5fr
+      1fr
+      1fr
+      0.8fr
+      auto
+      auto;
+  }
+
+}
+
+
+/* =====================================================
+   SMALL TABLET
+===================================================== */
+
+@media (max-width: 950px) {
+
+  .customer-bookings-header {
+    align-items: flex-start;
+
+    gap: 20px;
+  }
+
+  .customer-booking-item {
+    grid-template-columns: 1.5fr 1fr 1fr;
+
+    gap: 18px;
+  }
+
+  .customer-booking-price,
+  .customer-booking-status,
+  .customer-booking-action {
+    margin-top: 5px;
+  }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 700px) {
+
+  .customer-bookings-content {
+    padding: 20px 15px 30px;
+  }
+
+
+  .customer-bookings-header {
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+
+  .customer-bookings-header h1 {
+    font-size: 24px;
+  }
+
+
+  .customer-new-booking-btn {
+    width: 100%;
+  }
+
+
+  .customer-booking-summary {
+    grid-template-columns: 1fr;
+
+    gap: 12px;
+  }
+
+
+  .customer-bookings-card-header {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 15px;
+  }
+
+
+  .customer-booking-filter {
+    width: 100%;
+  }
+
+
+  /*
+     Convert each booking into a clean
+     mobile card
+  */
+
+  .customer-booking-item {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 16px;
+
+    padding: 20px;
+  }
+
+
+  .customer-booking-room {
+    padding-bottom: 14px;
+
+    border-bottom: 1px solid #edf1f6;
+  }
+
+
+  .customer-booking-info {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding-bottom: 10px;
+
+    border-bottom: 1px solid #f0f2f6;
+  }
+
+
+  .customer-booking-info span {
+    margin: 0;
+  }
+
+
+  .customer-booking-info strong {
+    text-align: right;
+  }
+
+
+  .customer-booking-price {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+  }
+
+
+  .customer-booking-price span {
+    margin: 0;
+  }
+
+
+  .customer-booking-action {
+    width: 100%;
+
+    height: 40px;
+  }
+
+
+  .customer-booking-status {
+    align-self: flex-start;
+  }
+
+}
+
+
+/* =====================================================
+   EXTRA SMALL MOBILE
+===================================================== */
+
+@media (max-width: 400px) {
+
+  .customer-booking-summary-card {
+    padding: 16px;
+  }
+
+  .customer-booking-summary-icon {
+    width: 43px;
+    height: 43px;
+    min-width: 43px;
+  }
+
+  .customer-bookings-card-header {
+    padding: 18px;
+  }
+
+  .customer-booking-item {
+    padding: 18px;
+  }
+
+}
