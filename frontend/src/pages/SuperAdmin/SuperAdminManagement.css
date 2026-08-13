@@ -1,8 +1,3 @@
-/* =====================================================
-   SUPER ADMIN MANAGEMENT
-   Sidebar and Topbar have their own CSS
-===================================================== */
-
 .super-admin-management {
   width: 100%;
   min-height: calc(100vh - 78px);

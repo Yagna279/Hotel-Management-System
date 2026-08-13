@@ -6,12 +6,55 @@ import {
   FaFileInvoiceDollar,
   FaBroom,
   FaUtensils,
-  FaChartLine
+  FaChartLine,
 } from "react-icons/fa";
 
 function Services() {
+  const services = [
+    {
+      icon: <FaBed />,
+      title: "Room Booking",
+      description:
+        "Manage reservations, room availability and online bookings from one centralized dashboard.",
+    },
+    {
+      icon: <FaUsers />,
+      title: "Guest Management",
+      description:
+        "Store guest information, check-ins, check-outs and booking history securely.",
+    },
+    {
+      icon: <FaFileInvoiceDollar />,
+      title: "Billing & Invoicing",
+      description:
+        "Generate invoices, manage payments and automate billing with complete accuracy.",
+    },
+    {
+      icon: <FaBroom />,
+      title: "Housekeeping",
+      description:
+        "Assign housekeeping tasks, track room status and improve staff productivity.",
+    },
+    {
+      icon: <FaUtensils />,
+      title: "Restaurant Management",
+      description:
+        "Manage restaurant orders, table bookings and billing seamlessly within the same platform.",
+    },
+    {
+      icon: <FaChartLine />,
+      title: "Analytics & Reports",
+      description:
+        "Monitor revenue, occupancy and hotel performance using real-time dashboards and smart reports.",
+    },
+  ];
+
   return (
     <section id="services" className="services">
+
+      {/* =========================
+          HEADER
+      ========================= */}
 
       <div className="services-header">
 
@@ -19,107 +62,44 @@ function Services() {
           OUR SERVICES
         </span>
 
-        <h2>Everything You Need to Manage Your Hotel</h2>
+        <h2>
+          Everything You Need to Manage Your Hotel
+        </h2>
 
         <p>
-          Streamline Hotel operations with an all-in-one Management platform
-          Designed to Improve efficiency, Guest satisfaction, and Business
+          Streamline hotel operations with an all-in-one management platform
+          designed to improve efficiency, guest satisfaction, and business
           performance.
         </p>
 
       </div>
 
+      {/* =========================
+          SERVICES GRID
+      ========================= */}
+
       <div className="services-grid">
 
-        <div className="service-card">
+        {services.map((service, index) => (
+          <div
+            className="service-card"
+            key={index}
+          >
 
-          <div className="service-icon">
-            <FaBed />
+            <div className="service-icon">
+              {service.icon}
+            </div>
+
+            <h3>
+              {service.title}
+            </h3>
+
+            <p>
+              {service.description}
+            </p>
+
           </div>
-
-          <h3>Room Booking</h3>
-
-          <p>
-            Manage reservations, Room availability and online Bookings
-            from one Centralized dashboard.
-          </p>
-
-        </div>
-
-        <div className="service-card">
-
-          <div className="service-icon">
-            <FaUsers />
-          </div>
-
-          <h3>Guest Management</h3>
-
-          <p>
-            Store guest information, Check-ins, Check-outs and Booking
-            history securely.
-          </p>
-
-        </div>
-
-        <div className="service-card">
-
-          <div className="service-icon">
-            <FaFileInvoiceDollar />
-          </div>
-
-          <h3>Billing & Invoicing</h3>
-
-          <p>
-            Generate invoices, Manage payments and Automate billing
-            with complete accuracy.
-          </p>
-
-        </div>
-
-        <div className="service-card">
-
-          <div className="service-icon">
-            <FaBroom />
-          </div>
-
-          <h3>Housekeeping</h3>
-
-          <p>
-            Assign Housekeeping tasks, Track room status and Improve
-            staff productivity.
-          </p>
-
-        </div>
-
-        <div className="service-card">
-
-          <div className="service-icon">
-            <FaUtensils />
-          </div>
-
-          <h3>Restaurant Management</h3>
-
-          <p>
-            Manage restaurant orders, Table bookings and Billing
-            seamlessly within the same platform.
-          </p>
-
-        </div>
-
-        <div className="service-card">
-
-          <div className="service-icon">
-            <FaChartLine />
-          </div>
-
-          <h3>Analytics & Reports</h3>
-
-          <p>
-            Monitor revenue, occupancy and Hotel performance using
-            Real-time Dashboards and Smart reports.
-          </p>
-
-        </div>
+        ))}
 
       </div>
 

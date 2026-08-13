@@ -12,7 +12,9 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // ================= EMAIL LOGIN =================
+  // =====================================================
+  // EMAIL / PASSWORD LOGIN
+  // =====================================================
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -35,69 +37,216 @@ function Login() {
       );
 
       const data = await response.json();
-      console.log("Response:", data);
+
+      console.log("Login Response:", data);
+      console.log("Logged in User:", data.user);
       console.log("Role:", data.user?.role);
+
+      // =================================================
+      // LOGIN FAILED
+      // =================================================
+
       if (!response.ok) {
-        alert(data.message);
+        alert(data.message || "Login failed.");
         return;
       }
 
-      // Save Login Details
+      // =================================================
+      // CHECK RESPONSE
+      // =================================================
+
+      if (!data.token || !data.user) {
+        console.error("Invalid login response:", data);
+
+        alert(
+          "Login failed. Server did not return valid authentication information."
+        );
+
+        return;
+      }
+
+      // =================================================
+      // SAVE AUTHENTICATION DATA
+      // =================================================
+
       localStorage.setItem("token", data.token);
+
       localStorage.setItem(
         "user",
         JSON.stringify(data.user)
       );
 
-      // ================= ROLE BASED ROUTING =================
+      // Optional: remove Google login data
+      localStorage.removeItem("googleUser");
 
-      switch (data.user.role.toUpperCase()) {
+      // =================================================
+      // GET ROLE
+      // =================================================
+
+      const role = String(
+        data.user.role || ""
+      ).toUpperCase();
+
+      console.log("Authenticated Role:", role);
+
+      // =================================================
+      // ROLE BASED REDIRECTION
+      // =================================================
+
+      switch (role) {
         case "SUPER_ADMIN":
-          navigate("/super-admin-dashboard");
+          navigate("/super-admin-dashboard", {
+            replace: true,
+          });
           break;
 
         case "ADMIN":
-          navigate("/admin-dashboard");
+          navigate("/admin-dashboard", {
+            replace: true,
+          });
           break;
 
         case "CUSTOMER":
-          navigate("/customer-dashboard");
+          navigate("/customer-dashboard", {
+            replace: true,
+          });
           break;
 
         default:
-          alert("Unknown User Role");
+          // Invalid role
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+
+          alert(
+            "Unknown user role. Please contact the administrator."
+          );
+          break;
       }
 
     } catch (error) {
-      console.error(error);
-      alert("Server Error");
+      console.error("Login Error:", error);
+
+      alert(
+        "Unable to connect to the server. Please try again."
+      );
     }
   };
 
-  // ================= GOOGLE LOGIN =================
+  // =====================================================
+  // GOOGLE LOGIN
+  // =====================================================
 
-  const handleGoogleSuccess = (credentialResponse) => {
-    const user = jwtDecode(
-      credentialResponse.credential
-    );
+  const handleGoogleSuccess = async (
+    credentialResponse
+  ) => {
+    try {
+      // =================================================
+      // CHECK GOOGLE CREDENTIAL
+      // =================================================
 
-    console.log(user);
+      if (!credentialResponse?.credential) {
+        alert("Google Login Failed.");
+        return;
+      }
 
-    alert(`Welcome ${user.name}`);
+      // =================================================
+      // DECODE GOOGLE USER
+      // =================================================
 
-    localStorage.setItem(
-      "googleUser",
-      JSON.stringify(user)
-    );
+      const googleUser = jwtDecode(
+        credentialResponse.credential
+      );
 
-    // Google login is for customers
-    navigate("/customer-dashboard");
+      console.log(
+        "Google User:",
+        googleUser
+      );
+
+      // =================================================
+      // GOOGLE LOGIN IS CUSTOMER LOGIN
+      // =================================================
+
+      const customerUser = {
+        id: googleUser.sub,
+        full_name: googleUser.name || "",
+        email: googleUser.email || "",
+        role: "CUSTOMER",
+        picture: googleUser.picture || "",
+      };
+
+      // =================================================
+      // IMPORTANT
+      // =================================================
+      //
+      // ProtectedRoute requires BOTH:
+      //
+      // token
+      // user
+      //
+      // Google provides us with a credential.
+      // Store it as the authentication token.
+      // =================================================
+
+      localStorage.setItem(
+        "token",
+        credentialResponse.credential
+      );
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify(customerUser)
+      );
+
+      // Keep Google information if needed elsewhere
+      localStorage.setItem(
+        "googleUser",
+        JSON.stringify(googleUser)
+      );
+
+      // =================================================
+      // REDIRECT CUSTOMER
+      // =================================================
+
+      navigate("/customer-dashboard", {
+        replace: true,
+      });
+
+    } catch (error) {
+      console.error(
+        "Google Login Error:",
+        error
+      );
+
+      alert(
+        "Google Login failed. Please try again."
+      );
+    }
   };
+
+  // =====================================================
+  // GOOGLE LOGIN ERROR
+  // =====================================================
+
+  const handleGoogleError = () => {
+    console.error("Google Login Failed");
+
+    alert(
+      "Google Login Failed. Please try again."
+    );
+  };
+
+  // =====================================================
+  // JSX
+  // =====================================================
 
   return (
     <div className="login-page">
 
       <div className="login-card">
+
+        {/* =================================================
+            LOGO
+        ================================================= */}
 
         <img
           src={logo}
@@ -105,19 +254,31 @@ function Login() {
           className="login-logo"
         />
 
-        <h2>Welcome Back</h2>
+        {/* =================================================
+            TITLE
+        ================================================= */}
+
+        <h2>
+          Welcome Back
+        </h2>
 
         <p className="login-subtitle">
           Sign in to access your Hotel Management Dashboard
         </p>
 
+        {/* =================================================
+            LOGIN FORM
+        ================================================= */}
+
         <form onSubmit={handleLogin}>
 
-          {/* Email */}
+          {/* EMAIL */}
 
           <div className="input-group">
 
-            <label>Email Address</label>
+            <label>
+              Email Address
+            </label>
 
             <input
               type="email"
@@ -131,11 +292,13 @@ function Login() {
 
           </div>
 
-          {/* Password */}
+          {/* PASSWORD */}
 
           <div className="input-group">
 
-            <label>Password</label>
+            <label>
+              Password
+            </label>
 
             <input
               type="password"
@@ -149,7 +312,7 @@ function Login() {
 
           </div>
 
-          {/* Forgot Password */}
+          {/* FORGOT PASSWORD */}
 
           <div
             style={{
@@ -174,7 +337,7 @@ function Login() {
 
           </div>
 
-          {/* Login Button */}
+          {/* LOGIN BUTTON */}
 
           <button
             type="submit"
@@ -185,15 +348,21 @@ function Login() {
 
         </form>
 
-        {/* Divider */}
+        {/* =================================================
+            DIVIDER
+        ================================================= */}
 
         <div className="divider">
 
-          <span>OR</span>
+          <span>
+            OR
+          </span>
 
         </div>
 
-        {/* Google Login */}
+        {/* =================================================
+            GOOGLE LOGIN
+        ================================================= */}
 
         <div
           style={{
@@ -204,14 +373,14 @@ function Login() {
 
           <GoogleLogin
             onSuccess={handleGoogleSuccess}
-            onError={() => {
-              alert("Google Login Failed");
-            }}
+            onError={handleGoogleError}
           />
 
         </div>
 
-        {/* Footer */}
+        {/* =================================================
+            FOOTER
+        ================================================= */}
 
         <p className="login-footer">
           © 2026 SHNOOR International LLC

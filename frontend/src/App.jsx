@@ -2,6 +2,12 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 
 // =====================================================
+// PROTECTED ROUTE
+// =====================================================
+
+import ProtectedRoute from "./pages/ProtectedRoute";
+
+// =====================================================
 // PUBLIC PAGES
 // =====================================================
 
@@ -61,10 +67,7 @@ import SuperAdminReports from "./pages/SuperAdmin/SuperAdminReports";
 // SUPER ADMIN SETTINGS
 // =====================================================
 
-// Main settings page
 import SuperAdminSettings from "./pages/SuperAdmin/Settings/SuperAdminSettings";
-
-// Individual settings pages
 import HotelSettings from "./pages/SuperAdmin/Settings/HotelSettings";
 import NotificationSettings from "./pages/SuperAdmin/Settings/NotificationSettings";
 import SecuritySettings from "./pages/SuperAdmin/Settings/SecuritySettings";
@@ -157,17 +160,13 @@ function App() {
     <Routes>
 
       {/* =================================================
-          PUBLIC HOME
+          PUBLIC
       ================================================= */}
 
       <Route
         path="/"
         element={<Home />}
       />
-
-      {/* =================================================
-          AUTHENTICATION
-      ================================================= */}
 
       <Route
         path="/get-started"
@@ -193,209 +192,263 @@ function App() {
           SUPER ADMIN
       ================================================= */}
 
-      {/* SUPER ADMIN DASHBOARD */}
-
       <Route
         path="/super-admin-dashboard"
-        element={<SuperAdminDashboard />}
+        element={
+          <ProtectedRoute allowedRoles={["SUPER_ADMIN"]}>
+            <SuperAdminDashboard />
+          </ProtectedRoute>
+        }
       />
-
-      {/* SUPER ADMIN USERS */}
 
       <Route
         path="/super-admin/users"
-        element={<SuperAdminUsers />}
+        element={
+          <ProtectedRoute allowedRoles={["SUPER_ADMIN"]}>
+            <SuperAdminUsers />
+          </ProtectedRoute>
+        }
       />
-
-      {/* SUPER ADMIN ADMINS */}
 
       <Route
         path="/super-admin/admins"
-        element={<SuperAdminManagement />}
+        element={
+          <ProtectedRoute allowedRoles={["SUPER_ADMIN"]}>
+            <SuperAdminManagement />
+          </ProtectedRoute>
+        }
       />
-
-      {/* SUPER ADMIN MANAGEMENT */}
 
       <Route
         path="/super-admin/management"
-        element={<SuperAdminManagement />}
+        element={
+          <ProtectedRoute allowedRoles={["SUPER_ADMIN"]}>
+            <SuperAdminManagement />
+          </ProtectedRoute>
+        }
       />
-
-      {/* SUPER ADMIN HOTELS */}
 
       <Route
         path="/super-admin/hotels"
-        element={<SuperAdminHotels />}
+        element={
+          <ProtectedRoute allowedRoles={["SUPER_ADMIN"]}>
+            <SuperAdminHotels />
+          </ProtectedRoute>
+        }
       />
-
-      {/* SUPER ADMIN REPORTS */}
 
       <Route
         path="/super-admin/reports"
-        element={<SuperAdminReports />}
+        element={
+          <ProtectedRoute allowedRoles={["SUPER_ADMIN"]}>
+            <SuperAdminReports />
+          </ProtectedRoute>
+        }
       />
 
       {/* =================================================
           SUPER ADMIN SETTINGS
       ================================================= */}
 
-      {/* MAIN SETTINGS */}
-
       <Route
         path="/super-admin/settings"
-        element={<SuperAdminSettings />}
+        element={
+          <ProtectedRoute allowedRoles={["SUPER_ADMIN"]}>
+            <SuperAdminSettings />
+          </ProtectedRoute>
+        }
       />
-
-      {/* HOTEL SETTINGS */}
 
       <Route
         path="/super-admin/settings/hotel"
-        element={<HotelSettings />}
+        element={
+          <ProtectedRoute allowedRoles={["SUPER_ADMIN"]}>
+            <HotelSettings />
+          </ProtectedRoute>
+        }
       />
-
-      {/* NOTIFICATION SETTINGS */}
 
       <Route
         path="/super-admin/settings/notifications"
-        element={<NotificationSettings />}
+        element={
+          <ProtectedRoute allowedRoles={["SUPER_ADMIN"]}>
+            <NotificationSettings />
+          </ProtectedRoute>
+        }
       />
-
-      {/* SECURITY SETTINGS */}
 
       <Route
         path="/super-admin/settings/security"
-        element={<SecuritySettings />}
+        element={
+          <ProtectedRoute allowedRoles={["SUPER_ADMIN"]}>
+            <SecuritySettings />
+          </ProtectedRoute>
+        }
       />
-
-      {/* REGIONAL SETTINGS */}
 
       <Route
         path="/super-admin/settings/regional"
-        element={<RegionalSettings />}
+        element={
+          <ProtectedRoute allowedRoles={["SUPER_ADMIN"]}>
+            <RegionalSettings />
+          </ProtectedRoute>
+        }
       />
-
-      {/* DATABASE SETTINGS */}
 
       <Route
         path="/super-admin/settings/database"
-        element={<DatabaseSettings />}
+        element={
+          <ProtectedRoute allowedRoles={["SUPER_ADMIN"]}>
+            <DatabaseSettings />
+          </ProtectedRoute>
+        }
       />
 
       {/* =================================================
           ADMIN
       ================================================= */}
 
-      {/* ADMIN DASHBOARD */}
-
       <Route
         path="/admin-dashboard"
-        element={<AdminDashboard />}
+        element={
+          <ProtectedRoute allowedRoles={["ADMIN"]}>
+            <AdminDashboard />
+          </ProtectedRoute>
+        }
       />
-
-      {/* ADMIN RESERVATIONS */}
 
       <Route
         path="/admin/reservations"
-        element={<Reservations />}
+        element={
+          <ProtectedRoute allowedRoles={["ADMIN"]}>
+            <Reservations />
+          </ProtectedRoute>
+        }
       />
-
-      {/* ADMIN ROOMS */}
 
       <Route
         path="/admin/rooms"
-        element={<Rooms />}
+        element={
+          <ProtectedRoute allowedRoles={["ADMIN"]}>
+            <Rooms />
+          </ProtectedRoute>
+        }
       />
-
-      {/* ADMIN PAYMENTS */}
 
       <Route
         path="/admin/payments"
-        element={<Payments />}
+        element={
+          <ProtectedRoute allowedRoles={["ADMIN"]}>
+            <Payments />
+          </ProtectedRoute>
+        }
       />
-
-      {/* ADMIN CUSTOMER MANAGEMENT */}
 
       <Route
         path="/admin/customers"
-        element={<CustomerManagement />}
+        element={
+          <ProtectedRoute allowedRoles={["ADMIN"]}>
+            <CustomerManagement />
+          </ProtectedRoute>
+        }
       />
-
-      {/* ADMIN SERVICES */}
 
       <Route
         path="/admin/adminservices"
-        element={<AdminServices />}
+        element={
+          <ProtectedRoute allowedRoles={["ADMIN"]}>
+            <AdminServices />
+          </ProtectedRoute>
+        }
       />
-
-      {/* ADMIN REPORTS */}
 
       <Route
         path="/admin/reports"
-        element={<Reports />}
+        element={
+          <ProtectedRoute allowedRoles={["ADMIN"]}>
+            <Reports />
+          </ProtectedRoute>
+        }
       />
-
-      {/* ADMIN SETTINGS */}
 
       <Route
         path="/admin/settings"
-        element={<Settings />}
+        element={
+          <ProtectedRoute allowedRoles={["ADMIN"]}>
+            <Settings />
+          </ProtectedRoute>
+        }
       />
 
       {/* =================================================
           CUSTOMER
       ================================================= */}
 
-      {/* CUSTOMER DASHBOARD */}
-
       <Route
         path="/customer-dashboard"
-        element={<CustomerDashboard />}
+        element={
+          <ProtectedRoute allowedRoles={["CUSTOMER"]}>
+            <CustomerDashboard />
+          </ProtectedRoute>
+        }
       />
-
-      {/* CUSTOMER BOOKINGS */}
 
       <Route
         path="/customer/bookings"
-        element={<CustomerBookings />}
+        element={
+          <ProtectedRoute allowedRoles={["CUSTOMER"]}>
+            <CustomerBookings />
+          </ProtectedRoute>
+        }
       />
-
-      {/* CUSTOMER ROOMS */}
 
       <Route
         path="/customer/rooms"
-        element={<CustomerRooms />}
+        element={
+          <ProtectedRoute allowedRoles={["CUSTOMER"]}>
+            <CustomerRooms />
+          </ProtectedRoute>
+        }
       />
-
-      {/* CUSTOMER SERVICES */}
 
       <Route
         path="/customer/services"
-        element={<CustomerServices />}
+        element={
+          <ProtectedRoute allowedRoles={["CUSTOMER"]}>
+            <CustomerServices />
+          </ProtectedRoute>
+        }
       />
-
-      {/* CUSTOMER PAYMENTS */}
 
       <Route
         path="/customer/payments"
-        element={<CustomerPayments />}
+        element={
+          <ProtectedRoute allowedRoles={["CUSTOMER"]}>
+            <CustomerPayments />
+          </ProtectedRoute>
+        }
       />
-
-      {/* CUSTOMER PROFILE */}
 
       <Route
         path="/customer/profile"
-        element={<CustomerProfile />}
+        element={
+          <ProtectedRoute allowedRoles={["CUSTOMER"]}>
+            <CustomerProfile />
+          </ProtectedRoute>
+        }
       />
-
-      {/* CUSTOMER SETTINGS */}
 
       <Route
         path="/customer/settings"
-        element={<CustomerSettings />}
+        element={
+          <ProtectedRoute allowedRoles={["CUSTOMER"]}>
+            <CustomerSettings />
+          </ProtectedRoute>
+        }
       />
 
       {/* =================================================
-          404 FALLBACK
+          404
       ================================================= */}
 
       <Route

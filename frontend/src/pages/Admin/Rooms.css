@@ -193,3 +193,710 @@
         overflow-x:auto;
     }
 }
+/* ===========================
+   ROOM STATUS BADGES
+=========================== */
+
+.status {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.status.available {
+    background: #10B981;
+}
+
+.status.occupied {
+    background: #F59E0B;
+}
+
+.status.maintenance {
+    background: #EF4444;
+}
+
+
+/* ===========================
+   EDIT ROOM MODAL
+=========================== */
+
+.room-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background: rgba(15, 23, 42, 0.55);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 9999;
+}
+
+
+/* Modal */
+
+.room-modal {
+    width: 500px;
+    max-width: 90%;
+
+    background: #fff;
+
+    border-radius: 16px;
+
+    padding: 28px;
+
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+
+    animation: roomModalOpen 0.2s ease;
+}
+
+
+/* Modal Animation */
+
+@keyframes roomModalOpen {
+
+    from {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* ===========================
+   MODAL HEADER
+=========================== */
+
+.room-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    margin-bottom: 25px;
+}
+
+.room-modal-header h2 {
+    margin: 0;
+
+    font-size: 24px;
+
+    color: #17376E;
+}
+
+.room-modal-header p {
+    margin: 6px 0 0;
+
+    color: #777;
+
+    font-size: 14px;
+}
+
+
+/* Close Button */
+
+.close-modal-btn {
+    width: 36px;
+    height: 36px;
+
+    border: none;
+
+    background: #f1f5f9;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #64748b;
+
+    transition: .3s;
+}
+
+.close-modal-btn:hover {
+    background: #e2e8f0;
+
+    color: #17376E;
+}
+
+
+/* ===========================
+   EDIT FORM
+=========================== */
+
+.room-edit-form {
+    display: flex;
+    flex-direction: column;
+
+    gap: 18px;
+}
+
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+
+.form-group label {
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #334155;
+}
+
+
+.form-group input,
+.form-group select {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    height: 45px;
+
+    border: 1px solid #dbe2ea;
+
+    border-radius: 8px;
+
+    padding: 0 13px;
+
+    font-size: 14px;
+
+    color: #334155;
+
+    background: #fff;
+
+    outline: none;
+
+    transition: .3s;
+}
+
+
+.form-group input:focus,
+.form-group select:focus {
+
+    border-color: #2563EB;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+
+/* ===========================
+   MODAL ACTION BUTTONS
+=========================== */
+
+.room-modal-actions {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 12px;
+
+    margin-top: 10px;
+}
+
+
+.cancel-btn,
+.save-room-btn {
+
+    height: 42px;
+
+    padding: 0 20px;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: .3s;
+}
+
+
+/* Cancel */
+
+.cancel-btn {
+
+    border: 1px solid #dbe2ea;
+
+    background: #fff;
+
+    color: #475569;
+}
+
+.cancel-btn:hover {
+
+    background: #f8fafc;
+}
+
+
+/* Save */
+
+.save-room-btn {
+
+    border: none;
+
+    background: #17376E;
+
+    color: #fff;
+}
+
+.save-room-btn:hover {
+
+    background: #2563EB;
+}
+
+
+.save-room-btn:disabled,
+.cancel-btn:disabled {
+
+    opacity: .6;
+
+    cursor: not-allowed;
+}
+
+
+/* ===========================
+   LOADING / ERROR
+=========================== */
+
+.rooms-message {
+
+    padding: 40px;
+
+    text-align: center;
+
+    color: #64748b;
+
+    font-size: 15px;
+}
+
+
+.rooms-message.error {
+
+    color: #EF4444;
+}
+
+
+/* ===========================
+   MOBILE MODAL
+=========================== */
+
+@media(max-width:768px) {
+
+    .room-modal {
+
+        width: calc(100% - 30px);
+
+        padding: 22px;
+    }
+
+    .room-modal-actions {
+
+        flex-direction: column;
+    }
+
+    .cancel-btn,
+    .save-room-btn {
+
+        width: 100%;
+    }
+
+}
+/* =====================================================
+   STATUS BADGES
+===================================================== */
+
+.status {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.status.available {
+    background: #10B981;
+}
+
+.status.occupied {
+    background: #F59E0B;
+}
+
+.status.maintenance {
+    background: #EF4444;
+}
+
+
+/* =====================================================
+   MODAL OVERLAY
+===================================================== */
+
+.room-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(15, 23, 42, 0.55);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 9999;
+}
+
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+.room-modal {
+    width: 500px;
+    max-width: 90%;
+
+    background: #fff;
+
+    border-radius: 16px;
+
+    padding: 28px;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.2);
+
+    animation:
+        roomModalOpen 0.2s ease;
+}
+
+
+@keyframes roomModalOpen {
+
+    from {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* =====================================================
+   MODAL HEADER
+===================================================== */
+
+.room-modal-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    margin-bottom: 25px;
+
+}
+
+
+.room-modal-header h2 {
+
+    margin: 0;
+
+    font-size: 24px;
+
+    color: #17376E;
+
+}
+
+
+.room-modal-header p {
+
+    margin: 6px 0 0;
+
+    color: #777;
+
+    font-size: 14px;
+
+}
+
+
+/* =====================================================
+   CLOSE BUTTON
+===================================================== */
+
+.close-modal-btn {
+
+    width: 36px;
+    height: 36px;
+
+    border: none;
+
+    background: #f1f5f9;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: #64748b;
+
+}
+
+
+.close-modal-btn:hover {
+
+    background: #e2e8f0;
+
+    color: #17376E;
+
+}
+
+
+/* =====================================================
+   FORM
+===================================================== */
+
+.room-edit-form {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 18px;
+
+}
+
+
+.form-group {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+
+}
+
+
+.form-group label {
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #334155;
+
+}
+
+
+.form-group input,
+.form-group select {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    height: 45px;
+
+    border: 1px solid #dbe2ea;
+
+    border-radius: 8px;
+
+    padding: 0 13px;
+
+    font-size: 14px;
+
+    color: #334155;
+
+    background: #fff;
+
+    outline: none;
+
+}
+
+
+.form-group input:focus,
+.form-group select:focus {
+
+    border-color: #2563EB;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(37, 99, 235, 0.1);
+
+}
+
+
+/* =====================================================
+   MODAL BUTTONS
+===================================================== */
+
+.room-modal-actions {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 12px;
+
+    margin-top: 10px;
+
+}
+
+
+.cancel-btn,
+.save-room-btn {
+
+    height: 42px;
+
+    padding: 0 20px;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+}
+
+
+.cancel-btn {
+
+    border: 1px solid #dbe2ea;
+
+    background: #fff;
+
+    color: #475569;
+
+}
+
+
+.cancel-btn:hover {
+
+    background: #f8fafc;
+
+}
+
+
+.save-room-btn {
+
+    border: none;
+
+    background: #17376E;
+
+    color: #fff;
+
+}
+
+
+.save-room-btn:hover {
+
+    background: #2563EB;
+
+}
+
+
+/* =====================================================
+   DISABLED
+===================================================== */
+
+.cancel-btn:disabled,
+.save-room-btn:disabled {
+
+    opacity: 0.6;
+
+    cursor: not-allowed;
+
+}
+
+
+/* =====================================================
+   MESSAGES
+===================================================== */
+
+.rooms-message {
+
+    padding: 40px;
+
+    text-align: center;
+
+    color: #64748b;
+
+}
+
+
+.rooms-message.error {
+
+    color: #EF4444;
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:768px) {
+
+    .room-modal {
+
+        width: calc(100% - 30px);
+
+        padding: 22px;
+
+    }
+
+
+    .room-modal-actions {
+
+        flex-direction: column;
+
+    }
+
+
+    .cancel-btn,
+    .save-room-btn {
+
+        width: 100%;
+
+    }
+
+}
