@@ -48,6 +48,8 @@ import Settings from "./pages/Admin/Settings";
 import CustomerDashboard from "./pages/Customer/CustomerDashboard";
 import CustomerBookings from "./pages/Customer/CustomerBookings";
 import CustomerRooms from "./pages/Customer/CustomerRooms";
+import CustomerBookRoom from "./pages/Customer/CustomerBookRoom";
+import CustomerConfirmPayment from "./pages/Customer/CustomerConfirmPayment";
 import CustomerServices from "./pages/Customer/CustomerServices";
 import CustomerPayments from "./pages/Customer/CustomerPayments";
 import CustomerProfile from "./pages/Customer/CustomerProfile";
@@ -116,8 +118,8 @@ function NotFound() {
         background: "#f5f7fb",
         color: "#1f2937",
         padding: "20px",
-        textAlign: "center",
         boxSizing: "border-box",
+        textAlign: "center",
       }}
     >
       <h1
@@ -160,7 +162,7 @@ function App() {
     <Routes>
 
       {/* =================================================
-          PUBLIC
+          PUBLIC ROUTES
       ================================================= */}
 
       <Route
@@ -188,9 +190,12 @@ function App() {
         element={<ResetPassword />}
       />
 
+
       {/* =================================================
-          SUPER ADMIN
+          SUPER ADMIN ROUTES
       ================================================= */}
+
+      {/* SUPER ADMIN DASHBOARD */}
 
       <Route
         path="/super-admin-dashboard"
@@ -201,6 +206,9 @@ function App() {
         }
       />
 
+
+      {/* SUPER ADMIN USERS */}
+
       <Route
         path="/super-admin/users"
         element={
@@ -209,6 +217,9 @@ function App() {
           </ProtectedRoute>
         }
       />
+
+
+      {/* SUPER ADMIN ADMINS */}
 
       <Route
         path="/super-admin/admins"
@@ -219,6 +230,9 @@ function App() {
         }
       />
 
+
+      {/* SUPER ADMIN MANAGEMENT */}
+
       <Route
         path="/super-admin/management"
         element={
@@ -227,6 +241,9 @@ function App() {
           </ProtectedRoute>
         }
       />
+
+
+      {/* SUPER ADMIN HOTELS */}
 
       <Route
         path="/super-admin/hotels"
@@ -237,6 +254,9 @@ function App() {
         }
       />
 
+
+      {/* SUPER ADMIN REPORTS */}
+
       <Route
         path="/super-admin/reports"
         element={
@@ -246,9 +266,12 @@ function App() {
         }
       />
 
+
       {/* =================================================
           SUPER ADMIN SETTINGS
       ================================================= */}
+
+      {/* SETTINGS */}
 
       <Route
         path="/super-admin/settings"
@@ -259,6 +282,9 @@ function App() {
         }
       />
 
+
+      {/* HOTEL SETTINGS */}
+
       <Route
         path="/super-admin/settings/hotel"
         element={
@@ -267,6 +293,9 @@ function App() {
           </ProtectedRoute>
         }
       />
+
+
+      {/* NOTIFICATION SETTINGS */}
 
       <Route
         path="/super-admin/settings/notifications"
@@ -277,6 +306,9 @@ function App() {
         }
       />
 
+
+      {/* SECURITY SETTINGS */}
+
       <Route
         path="/super-admin/settings/security"
         element={
@@ -285,6 +317,9 @@ function App() {
           </ProtectedRoute>
         }
       />
+
+
+      {/* REGIONAL SETTINGS */}
 
       <Route
         path="/super-admin/settings/regional"
@@ -295,6 +330,9 @@ function App() {
         }
       />
 
+
+      {/* DATABASE SETTINGS */}
+
       <Route
         path="/super-admin/settings/database"
         element={
@@ -304,9 +342,12 @@ function App() {
         }
       />
 
+
       {/* =================================================
-          ADMIN
+          ADMIN ROUTES
       ================================================= */}
+
+      {/* ADMIN DASHBOARD */}
 
       <Route
         path="/admin-dashboard"
@@ -317,6 +358,9 @@ function App() {
         }
       />
 
+
+      {/* ADMIN RESERVATIONS */}
+
       <Route
         path="/admin/reservations"
         element={
@@ -325,6 +369,9 @@ function App() {
           </ProtectedRoute>
         }
       />
+
+
+      {/* ADMIN ROOMS */}
 
       <Route
         path="/admin/rooms"
@@ -335,6 +382,9 @@ function App() {
         }
       />
 
+
+      {/* ADMIN PAYMENTS */}
+
       <Route
         path="/admin/payments"
         element={
@@ -343,6 +393,9 @@ function App() {
           </ProtectedRoute>
         }
       />
+
+
+      {/* ADMIN CUSTOMERS */}
 
       <Route
         path="/admin/customers"
@@ -353,6 +406,9 @@ function App() {
         }
       />
 
+
+      {/* ADMIN SERVICES */}
+
       <Route
         path="/admin/adminservices"
         element={
@@ -361,6 +417,9 @@ function App() {
           </ProtectedRoute>
         }
       />
+
+
+      {/* ADMIN REPORTS */}
 
       <Route
         path="/admin/reports"
@@ -371,6 +430,9 @@ function App() {
         }
       />
 
+
+      {/* ADMIN SETTINGS */}
+
       <Route
         path="/admin/settings"
         element={
@@ -380,72 +442,168 @@ function App() {
         }
       />
 
+
       {/* =================================================
-          CUSTOMER
+          CUSTOMER ROUTES
       ================================================= */}
+
+      {/* -------------------------------------------------
+          CUSTOMER DASHBOARD
+      ------------------------------------------------- */}
 
       <Route
         path="/customer-dashboard"
         element={
-          <ProtectedRoute allowedRoles={["CUSTOMER"]}>
+          <ProtectedRoute
+            allowedRoles={["CUSTOMER", "VIP"]}
+          >
             <CustomerDashboard />
           </ProtectedRoute>
         }
       />
 
+
+      {/* -------------------------------------------------
+          CUSTOMER BOOKINGS
+      ------------------------------------------------- */}
+
       <Route
         path="/customer/bookings"
         element={
-          <ProtectedRoute allowedRoles={["CUSTOMER"]}>
+          <ProtectedRoute
+            allowedRoles={["CUSTOMER", "VIP"]}
+          >
             <CustomerBookings />
           </ProtectedRoute>
         }
       />
 
+
+      {/* -------------------------------------------------
+          CUSTOMER ROOMS
+      ------------------------------------------------- */}
+
       <Route
         path="/customer/rooms"
         element={
-          <ProtectedRoute allowedRoles={["CUSTOMER"]}>
+          <ProtectedRoute
+            allowedRoles={["CUSTOMER", "VIP"]}
+          >
             <CustomerRooms />
           </ProtectedRoute>
         }
       />
 
+
+      {/* -------------------------------------------------
+          CUSTOMER BOOK ROOM
+          
+          Example:
+          
+          /customer/book-room/1
+          /customer/book-room/2
+          /customer/book-room/3
+      ------------------------------------------------- */}
+
+      <Route
+        path="/customer/book-room/:roomId"
+        element={
+          <ProtectedRoute
+            allowedRoles={["CUSTOMER", "VIP"]}
+          >
+            <CustomerBookRoom />
+          </ProtectedRoute>
+        }
+      />
+
+
+      {/* -------------------------------------------------
+          CUSTOMER CONFIRM PAYMENT
+          
+          Example:
+          
+          /customer/confirm-payment/1
+          /customer/confirm-payment/15
+          /customer/confirm-payment/25
+          
+          The number represents the booking ID.
+      ------------------------------------------------- */}
+
+      <Route
+        path="/customer/confirm-payment/:bookingId"
+        element={
+          <ProtectedRoute
+            allowedRoles={["CUSTOMER", "VIP"]}
+          >
+            <CustomerConfirmPayment />
+          </ProtectedRoute>
+        }
+      />
+
+
+      {/* -------------------------------------------------
+          CUSTOMER SERVICES
+      ------------------------------------------------- */}
+
       <Route
         path="/customer/services"
         element={
-          <ProtectedRoute allowedRoles={["CUSTOMER"]}>
+          <ProtectedRoute
+            allowedRoles={["CUSTOMER", "VIP"]}
+          >
             <CustomerServices />
           </ProtectedRoute>
         }
       />
 
+
+      {/* -------------------------------------------------
+          CUSTOMER PAYMENTS
+      ------------------------------------------------- */}
+
       <Route
         path="/customer/payments"
         element={
-          <ProtectedRoute allowedRoles={["CUSTOMER"]}>
+          <ProtectedRoute
+            allowedRoles={["CUSTOMER", "VIP"]}
+          >
             <CustomerPayments />
           </ProtectedRoute>
         }
       />
 
+
+      {/* -------------------------------------------------
+          CUSTOMER PROFILE
+      ------------------------------------------------- */}
+
       <Route
         path="/customer/profile"
         element={
-          <ProtectedRoute allowedRoles={["CUSTOMER"]}>
+          <ProtectedRoute
+            allowedRoles={["CUSTOMER", "VIP"]}
+          >
             <CustomerProfile />
           </ProtectedRoute>
         }
       />
 
+
+      {/* -------------------------------------------------
+          CUSTOMER SETTINGS
+      ------------------------------------------------- */}
+
       <Route
         path="/customer/settings"
         element={
-          <ProtectedRoute allowedRoles={["CUSTOMER"]}>
+          <ProtectedRoute
+            allowedRoles={["CUSTOMER", "VIP"]}
+          >
             <CustomerSettings />
           </ProtectedRoute>
         }
       />
+
 
       {/* =================================================
           404

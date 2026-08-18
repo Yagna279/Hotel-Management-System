@@ -26,26 +26,20 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   margin-bottom: 28px;
 }
 
 .customer-bookings-header h1 {
   margin: 0;
-
   color: #17376e;
-
   font-size: 28px;
   font-weight: 800;
-
   line-height: 1.2;
 }
 
 .customer-bookings-header p {
   margin: 7px 0 0;
-
   color: #7b8799;
-
   font-size: 14px;
 }
 
@@ -56,7 +50,6 @@
 
 .customer-new-booking-btn {
   height: 46px;
-
   padding: 0 20px;
 
   border: none;
@@ -72,7 +65,6 @@
   gap: 9px;
 
   font-family: inherit;
-
   font-size: 13px;
   font-weight: 700;
 
@@ -89,9 +81,7 @@
 
 .customer-new-booking-btn:hover {
   background: #102d5c;
-
   transform: translateY(-1px);
-
   box-shadow: 0 8px 20px rgba(23, 55, 110, 0.24);
 }
 
@@ -102,11 +92,8 @@
 
 .customer-booking-summary {
   display: grid;
-
   grid-template-columns: repeat(4, 1fr);
-
   gap: 18px;
-
   margin-bottom: 25px;
 }
 
@@ -117,7 +104,6 @@
 
 .customer-booking-summary-card {
   min-height: 105px;
-
   padding: 20px;
 
   box-sizing: border-box;
@@ -125,7 +111,6 @@
   background: #ffffff;
 
   border: 1px solid #e8edf4;
-
   border-radius: 15px;
 
   display: flex;
@@ -140,7 +125,6 @@
 
 .customer-booking-summary-card:hover {
   transform: translateY(-2px);
-
   box-shadow: 0 9px 24px rgba(20, 45, 80, 0.07);
 }
 
@@ -152,7 +136,6 @@
 .customer-booking-summary-icon {
   width: 48px;
   height: 48px;
-
   min-width: 48px;
 
   border-radius: 12px;
@@ -164,32 +147,20 @@
   font-size: 18px;
 }
 
-
-/* BLUE */
-
 .customer-booking-summary-icon.blue {
   background: #1158e7;
   color: #f5f6f9;
 }
-
-
-/* ORANGE */
 
 .customer-booking-summary-icon.orange {
   background: #deaa4a;
   color: #fffefc;
 }
 
-
-/* GREEN */
-
 .customer-booking-summary-icon.green {
   background: #2fe578;
   color: #f4f9f6;
 }
-
-
-/* RED */
 
 .customer-booking-summary-icon.red {
   background: #e85555;
@@ -232,7 +203,6 @@
   background: #ffffff;
 
   border: 1px solid #e8edf4;
-
   border-radius: 17px;
 
   box-shadow: 0 6px 20px rgba(20, 45, 80, 0.05);
@@ -427,6 +397,7 @@
 
 .customer-booking-info span {
   display: flex;
+
   align-items: center;
 
   gap: 6px;
@@ -443,7 +414,6 @@
 
 .customer-booking-info span svg {
   font-size: 10px;
-
   color: #7d8ba0;
 }
 
@@ -487,6 +457,81 @@
 
 
 /* =====================================================
+   PAYMENT STATUS
+===================================================== */
+
+.customer-booking-payment-status {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.customer-booking-payment-label {
+  color: #98a2b2;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  text-transform: uppercase;
+}
+
+
+/* =====================================================
+   PAYMENT BADGE
+===================================================== */
+
+.customer-payment-badge {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: fit-content;
+
+  padding: 6px 10px;
+
+  border-radius: 20px;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+
+/* PAID */
+
+.customer-payment-badge.paid {
+  background: #e8f8ef;
+  color: #16a34a;
+}
+
+
+/* PENDING */
+
+.customer-payment-badge.pending {
+  background: #fff4df;
+  color: #d97706;
+}
+
+
+/* REFUNDED */
+
+.customer-payment-badge.refunded {
+  background: #f1eaff;
+  color: #7c3aed;
+}
+
+
+/* FAILED */
+
+.customer-payment-badge.failed {
+  background: #ffecec;
+  color: #dc2626;
+}
+
+
+/* =====================================================
    STATUS
 ===================================================== */
 
@@ -508,40 +553,37 @@
   white-space: nowrap;
 }
 
-
-/* CONFIRMED */
-
 .customer-booking-status.confirmed {
   background: #e9f8ef;
-
   color: #16a34a;
 }
 
-
-/* UPCOMING */
-
 .customer-booking-status.upcoming {
   background: #fff4df;
-
   color: #d97706;
 }
 
-
-/* COMPLETED */
-
 .customer-booking-status.completed {
   background: #eaf1ff;
-
   color: #2563eb;
 }
 
-
-/* CANCELLED */
-
 .customer-booking-status.cancelled {
   background: #ffecec;
-
   color: #dc2626;
+}
+
+
+/* =====================================================
+   ACTION BUTTON GROUP
+===================================================== */
+
+.customer-booking-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
 }
 
 
@@ -563,6 +605,7 @@
   color: #52627a;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
@@ -588,6 +631,599 @@
   border-color: #17376e;
 
   color: #ffffff;
+}
+
+
+/* =====================================================
+   PAY NOW BUTTON
+===================================================== */
+
+.customer-pay-now-btn {
+  height: 36px;
+
+  padding: 0 13px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background: #16a34a;
+
+  color: #ffffff;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  font-family: inherit;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow: 0 4px 10px rgba(22, 163, 74, 0.15);
+
+  transition: all 0.2s ease;
+}
+
+.customer-pay-now-btn svg {
+  font-size: 12px;
+}
+
+.customer-pay-now-btn:hover {
+  background: #15803d;
+
+  transform: translateY(-1px);
+
+  box-shadow: 0 6px 14px rgba(22, 163, 74, 0.22);
+}
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+.customer-message {
+  min-height: 180px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  color: #7b8799;
+
+  font-size: 14px;
+
+  padding: 30px;
+}
+
+.customer-message p {
+  margin: 0;
+}
+
+.customer-message.error {
+  min-height: auto;
+
+  margin-bottom: 20px;
+
+  padding: 15px 20px;
+
+  border-radius: 10px;
+
+  background: #fff0f0;
+
+  border: 1px solid #ffd4d4;
+
+  color: #dc2626;
+
+  align-items: flex-start;
+}
+
+
+/* =====================================================
+   PAYMENT MODAL OVERLAY
+===================================================== */
+
+.customer-payment-modal-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 9999;
+
+  background: rgba(15, 30, 55, 0.55);
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  box-sizing: border-box;
+
+  backdrop-filter: blur(3px);
+}
+
+
+/* =====================================================
+   PAYMENT MODAL
+===================================================== */
+
+.customer-payment-modal {
+  width: 100%;
+
+  max-width: 480px;
+
+  background: #ffffff;
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 20px 60px rgba(15, 30, 55, 0.25);
+
+  overflow: hidden;
+
+  animation: customerPaymentModalIn 0.2s ease;
+}
+
+
+/* =====================================================
+   MODAL ANIMATION
+===================================================== */
+
+@keyframes customerPaymentModalIn {
+
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+}
+
+
+/* =====================================================
+   MODAL HEADER
+===================================================== */
+
+.customer-payment-modal-header {
+  padding: 20px 22px;
+
+  border-bottom: 1px solid #edf1f6;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+}
+
+.customer-payment-modal-header h2 {
+  margin: 0;
+
+  color: #17376e;
+
+  font-size: 19px;
+
+  font-weight: 800;
+}
+
+.customer-payment-modal-header p {
+  margin: 5px 0 0;
+
+  color: #8994a6;
+
+  font-size: 12px;
+}
+
+
+/* =====================================================
+   CLOSE MODAL BUTTON
+===================================================== */
+
+.customer-payment-modal-close {
+  width: 36px;
+  height: 36px;
+
+  border: none;
+
+  border-radius: 9px;
+
+  background: #f3f5f8;
+
+  color: #6d788b;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.customer-payment-modal-close:hover {
+  background: #ffecec;
+
+  color: #dc2626;
+}
+
+
+/* =====================================================
+   MODAL BODY
+===================================================== */
+
+.customer-payment-modal-body {
+  padding: 22px;
+}
+
+
+/* =====================================================
+   PAYMENT BOOKING DETAILS
+===================================================== */
+
+.customer-payment-booking-details {
+  padding: 16px;
+
+  margin-bottom: 20px;
+
+  border-radius: 12px;
+
+  background: #f7f9fc;
+
+  border: 1px solid #e8edf4;
+}
+
+.customer-payment-booking-details-row {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  margin-bottom: 10px;
+}
+
+.customer-payment-booking-details-row:last-child {
+  margin-bottom: 0;
+}
+
+.customer-payment-booking-details-row span {
+  color: #8994a6;
+
+  font-size: 11px;
+
+  font-weight: 600;
+}
+
+.customer-payment-booking-details-row strong {
+  color: #344563;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  text-align: right;
+}
+
+
+/* =====================================================
+   PAYMENT AMOUNT
+===================================================== */
+
+.customer-payment-amount-box {
+  padding: 16px;
+
+  margin-bottom: 20px;
+
+  border-radius: 12px;
+
+  background: #eaf1ff;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+}
+
+.customer-payment-amount-box span {
+  color: #52627a;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+.customer-payment-amount-box strong {
+  color: #17376e;
+
+  font-size: 22px;
+
+  font-weight: 800;
+}
+
+
+/* =====================================================
+   PAYMENT FORM
+===================================================== */
+
+.customer-payment-form {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 16px;
+}
+
+.customer-payment-form-group {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+.customer-payment-form-group label {
+  color: #344563;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+.customer-payment-form-group input,
+.customer-payment-form-group select {
+  width: 100%;
+
+  height: 44px;
+
+  padding: 0 12px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #dfe5ee;
+
+  border-radius: 9px;
+
+  background: #ffffff;
+
+  color: #344563;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  outline: none;
+
+  transition: all 0.2s ease;
+}
+
+.customer-payment-form-group input:focus,
+.customer-payment-form-group select:focus {
+  border-color: #17376e;
+
+  box-shadow:
+    0 0 0 3px rgba(23, 55, 110, 0.08);
+}
+
+
+/* =====================================================
+   PAYMENT METHOD OPTIONS
+===================================================== */
+
+.customer-payment-method-options {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 10px;
+}
+
+.customer-payment-method-option {
+  min-height: 70px;
+
+  padding: 10px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #dfe5ee;
+
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  color: #52627a;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  cursor: pointer;
+
+  font-family: inherit;
+
+  font-size: 11px;
+
+  font-weight: 650;
+
+  transition: all 0.2s ease;
+}
+
+.customer-payment-method-option svg {
+  font-size: 18px;
+}
+
+.customer-payment-method-option:hover {
+  border-color: #17376e;
+
+  background: #f7f9ff;
+}
+
+.customer-payment-method-option.active {
+  border-color: #17376e;
+
+  background: #eaf1ff;
+
+  color: #17376e;
+
+  box-shadow:
+    0 0 0 2px rgba(23, 55, 110, 0.08);
+}
+
+
+/* =====================================================
+   MODAL FOOTER
+===================================================== */
+
+.customer-payment-modal-footer {
+  padding: 18px 22px;
+
+  border-top: 1px solid #edf1f6;
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 10px;
+}
+
+
+/* =====================================================
+   CANCEL PAYMENT BUTTON
+===================================================== */
+
+.customer-payment-cancel-btn {
+  height: 42px;
+
+  padding: 0 17px;
+
+  border: 1px solid #dfe5ee;
+
+  border-radius: 9px;
+
+  background: #ffffff;
+
+  color: #52627a;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.customer-payment-cancel-btn:hover {
+  background: #f5f7fa;
+}
+
+
+/* =====================================================
+   CONFIRM PAYMENT BUTTON
+===================================================== */
+
+.customer-payment-confirm-btn {
+  height: 42px;
+
+  padding: 0 20px;
+
+  border: none;
+
+  border-radius: 9px;
+
+  background: #16a34a;
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.customer-payment-confirm-btn:hover {
+  background: #15803d;
+
+  transform: translateY(-1px);
+}
+
+.customer-payment-confirm-btn:disabled,
+.customer-payment-cancel-btn:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+
+/* =====================================================
+   PAYMENT ERROR
+===================================================== */
+
+.customer-payment-error {
+  padding: 11px 13px;
+
+  border-radius: 8px;
+
+  background: #fff0f0;
+
+  border: 1px solid #ffd4d4;
+
+  color: #dc2626;
+
+  font-size: 11px;
+
+  font-weight: 600;
+}
+
+
+/* =====================================================
+   PAYMENT SUCCESS
+===================================================== */
+
+.customer-payment-success {
+  padding: 11px 13px;
+
+  border-radius: 8px;
+
+  background: #e9f8ef;
+
+  border: 1px solid #c7efd5;
+
+  color: #15803d;
+
+  font-size: 11px;
+
+  font-weight: 600;
 }
 
 
@@ -631,14 +1267,17 @@
   }
 
   .customer-booking-item {
-    grid-template-columns: 1.5fr 1fr 1fr;
+    grid-template-columns:
+      1.5fr
+      1fr
+      1fr;
 
     gap: 18px;
   }
 
   .customer-booking-price,
   .customer-booking-status,
-  .customer-booking-action {
+  .customer-booking-actions {
     margin-top: 5px;
   }
 
@@ -694,10 +1333,9 @@
   }
 
 
-  /*
-     Convert each booking into a clean
-     mobile card
-  */
+  /* ===================================================
+     MOBILE BOOKING CARD
+  =================================================== */
 
   .customer-booking-item {
     display: flex;
@@ -756,8 +1394,33 @@
   }
 
 
-  .customer-booking-action {
+  .customer-booking-payment-status {
+    flex-direction: row;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding-bottom: 10px;
+
+    border-bottom: 1px solid #f0f2f6;
+  }
+
+
+  .customer-booking-actions {
+    display: flex;
+
     width: 100%;
+
+    gap: 10px;
+
+    margin-top: 0;
+  }
+
+
+  .customer-booking-action,
+  .customer-pay-now-btn {
+    flex: 1;
 
     height: 40px;
   }
@@ -765,6 +1428,63 @@
 
   .customer-booking-status {
     align-self: flex-start;
+  }
+
+
+  /* ===================================================
+     PAYMENT MODAL MOBILE
+  =================================================== */
+
+  .customer-payment-modal-overlay {
+    padding: 15px;
+  }
+
+
+  .customer-payment-modal {
+    max-width: 100%;
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+  }
+
+
+  .customer-payment-modal-header {
+    padding: 18px;
+  }
+
+
+  .customer-payment-modal-body {
+    padding: 18px;
+  }
+
+
+  .customer-payment-modal-footer {
+    padding: 15px 18px;
+
+    flex-direction: column-reverse;
+  }
+
+
+  .customer-payment-cancel-btn,
+  .customer-payment-confirm-btn {
+    width: 100%;
+  }
+
+
+  .customer-payment-method-options {
+    grid-template-columns: 1fr;
+  }
+
+
+  .customer-payment-method-option {
+    min-height: 52px;
+
+    flex-direction: row;
+
+    justify-content: flex-start;
+
+    padding: 10px 14px;
   }
 
 }
@@ -780,18 +1500,33 @@
     padding: 16px;
   }
 
+
   .customer-booking-summary-icon {
     width: 43px;
+
     height: 43px;
+
     min-width: 43px;
   }
+
 
   .customer-bookings-card-header {
     padding: 18px;
   }
 
+
   .customer-booking-item {
     padding: 18px;
+  }
+
+
+  .customer-payment-modal-header h2 {
+    font-size: 17px;
+  }
+
+
+  .customer-payment-amount-box strong {
+    font-size: 19px;
   }
 
 }

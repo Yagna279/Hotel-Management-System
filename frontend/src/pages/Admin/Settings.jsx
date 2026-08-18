@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Sidebar from "./Sidebar";
@@ -19,154 +19,638 @@ import {
 import "./Settings.css";
 
 function Settings() {
-  const [notifications, setNotifications] = useState(true);
+
   const navigate = useNavigate();
 
+  /* =====================================================
+     STATE
+  ===================================================== */
+
+  const [formData, setFormData] = useState({
+    hotelName: "",
+    adminName: "",
+    email: "",
+    phone: "",
+    address: "",
+    currency: "INR",
+    timezone: "Asia/Kolkata",
+    emailNotifications: true,
+  });
+
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+
+
+  /* =====================================================
+     LOAD SETTINGS FROM DATABASE
+  ===================================================== */
+
+  const loadSettings = async () => {
+
+    try {
+
+      setLoading(true);
+      setError("");
+      setMessage("");
+
+      const response = await fetch(
+        "http://localhost:5000/api/admin/settings"
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+
+        throw new Error(
+          data.message ||
+          "Failed to load settings."
+        );
+
+      }
+
+      const hotel = data.hotelSettings || {};
+      const admin = data.admin || {};
+
+      setFormData({
+
+        hotelName:
+          hotel.hotel_name || "",
+
+        adminName:
+          admin.full_name || "",
+
+        email:
+          admin.email || "",
+
+        phone:
+          hotel.phone || "",
+
+        address:
+          hotel.address || "",
+
+        currency:
+          hotel.currency || "INR",
+
+        timezone:
+          hotel.timezone || "Asia/Kolkata",
+
+        emailNotifications:
+          hotel.email_notifications ?? true,
+
+      });
+
+    } catch (error) {
+
+      console.error(
+        "Settings loading error:",
+        error
+      );
+
+      setError(
+        error.message ||
+        "Unable to load settings."
+      );
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
+  };
+
+
+  /* =====================================================
+     LOAD WHEN PAGE OPENS
+  ===================================================== */
+
+  useEffect(() => {
+
+    loadSettings();
+
+  }, []);
+
+
+  /* =====================================================
+     HANDLE INPUT CHANGE
+  ===================================================== */
+
+  const handleChange = (event) => {
+
+    const {
+      name,
+      value,
+      type,
+      checked,
+    } = event.target;
+
+    setFormData((previous) => ({
+
+      ...previous,
+
+      [name]:
+        type === "checkbox"
+          ? checked
+          : value,
+
+    }));
+
+  };
+
+
+  /* =====================================================
+     SAVE SETTINGS
+  ===================================================== */
+
+  const handleSave = async (event) => {
+
+    event.preventDefault();
+
+    try {
+
+      setSaving(true);
+      setError("");
+      setMessage("");
+
+      const response = await fetch(
+        "http://localhost:5000/api/admin/settings",
+        {
+          method: "PUT",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+
+          body: JSON.stringify(formData),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+
+        throw new Error(
+          data.message ||
+          "Failed to save settings."
+        );
+
+      }
+
+      setMessage(
+        "Settings saved successfully."
+      );
+
+      /*
+        Reload settings from database
+        after saving.
+      */
+
+      await loadSettings();
+
+    } catch (error) {
+
+      console.error(
+        "Settings save error:",
+        error
+      );
+
+      setError(
+        error.message ||
+        "Unable to save settings."
+      );
+
+    } finally {
+
+      setSaving(false);
+
+    }
+
+  };
+
+
+  /* =====================================================
+     LOADING SCREEN
+  ===================================================== */
+
+  if (loading) {
+
+    return (
+
+      <div className="admin-container">
+
+        <Sidebar />
+
+        <div className="admin-main">
+
+          <Topbar />
+
+          <div className="admin-content">
+
+            <div className="settings-header">
+
+              <h1>
+                Settings
+              </h1>
+
+              <p>
+                Loading hotel settings...
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    );
+
+  }
+
+
+  /* =====================================================
+     MAIN PAGE
+  ===================================================== */
+
   return (
+
     <div className="admin-container">
+
       <Sidebar />
 
       <div className="admin-main">
+
         <Topbar />
 
         <div className="admin-content">
-          {/* Header */}
+
+
+          {/* =================================================
+              HEADER
+          ================================================= */}
 
           <div className="settings-header">
-            <h1>Settings</h1>
-            <p>Manage hotel preferences and admin account</p>
+
+            <h1>
+              Settings
+            </h1>
+
+            <p>
+              Manage hotel preferences and admin account
+            </p>
+
           </div>
 
-          {/* Settings Card */}
 
-          <div className="settings-card">
-            {/* Form Grid */}
+          {/* =================================================
+              SUCCESS MESSAGE
+          ================================================= */}
+
+          {message && (
+
+            <div className="settings-success">
+
+              {message}
+
+            </div>
+
+          )}
+
+
+          {/* =================================================
+              ERROR MESSAGE
+          ================================================= */}
+
+          {error && (
+
+            <div className="settings-error">
+
+              {error}
+
+            </div>
+
+          )}
+
+
+          {/* =================================================
+              SETTINGS CARD
+          ================================================= */}
+
+          <form
+            className="settings-card"
+            onSubmit={handleSave}
+          >
+
+
+            {/* =================================================
+                FORM GRID
+            ================================================= */}
 
             <div className="settings-grid">
+
+
+              {/* =================================================
+                  HOTEL NAME
+              ================================================= */}
+
               <div className="input-box">
+
                 <label>
-                  <FaHotel /> Hotel Name
+
+                  <FaHotel />
+
+                  Hotel Name
+
                 </label>
 
                 <input
                   type="text"
-                  defaultValue="Shnoor Hotel"
+                  name="hotelName"
+                  value={formData.hotelName}
+                  onChange={handleChange}
+                  required
                 />
+
               </div>
 
+
+              {/* =================================================
+                  ADMIN NAME
+              ================================================= */}
+
               <div className="input-box">
+
                 <label>
-                  <FaUser /> Admin Name
+
+                  <FaUser />
+
+                  Admin Name
+
                 </label>
 
                 <input
                   type="text"
-                  defaultValue="Administrator"
+                  name="adminName"
+                  value={formData.adminName}
+                  onChange={handleChange}
+                  required
                 />
+
               </div>
 
+
+              {/* =================================================
+                  EMAIL - READ ONLY
+              ================================================= */}
+
               <div className="input-box">
+
                 <label>
-                  <FaEnvelope /> Email
+
+                  <FaEnvelope />
+
+                  Email
+
                 </label>
 
                 <input
                   type="email"
-                  defaultValue="admin@shnoor.com"
+                  name="email"
+                  value={formData.email}
+                  readOnly
+                  className="readonly-input"
                 />
+
+                <small className="readonly-text">
+                  Email cannot be changed from Settings.
+                </small>
+
               </div>
 
+
+              {/* =================================================
+                  PHONE
+              ================================================= */}
+
               <div className="input-box">
+
                 <label>
-                  <FaPhone /> Phone
+
+                  <FaPhone />
+
+                  Phone
+
                 </label>
 
                 <input
                   type="text"
-                  defaultValue="+91 9876543210"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
                 />
+
               </div>
 
+
+              {/* =================================================
+                  ADDRESS
+              ================================================= */}
+
               <div className="input-box full-width">
+
                 <label>
-                  <FaMapMarkerAlt /> Address
+
+                  <FaMapMarkerAlt />
+
+                  Address
+
                 </label>
 
                 <input
                   type="text"
-                  defaultValue="Hyderabad, Telangana, India"
+                  name="address"
+                  value={formData.address}
+                  onChange={handleChange}
                 />
+
               </div>
+
+
+              {/* =================================================
+                  CURRENCY
+              ================================================= */}
 
               <div className="input-box">
+
                 <label>
-                  <FaGlobe /> Currency
+
+                  <FaGlobe />
+
+                  Currency
+
                 </label>
 
-                <select>
-                  <option>INR (₹)</option>
-                  <option>USD ($)</option>
-                  <option>EUR (€)</option>
+                <select
+                  name="currency"
+                  value={formData.currency}
+                  onChange={handleChange}
+                >
+
+                  <option value="INR">
+                    INR (₹)
+                  </option>
+
+                  <option value="USD">
+                    USD ($)
+                  </option>
+
+                  <option value="EUR">
+                    EUR (€)
+                  </option>
+
                 </select>
+
               </div>
+
+
+              {/* =================================================
+                  TIME ZONE
+              ================================================= */}
 
               <div className="input-box">
+
                 <label>
-                  <FaGlobe /> Time Zone
+
+                  <FaGlobe />
+
+                  Time Zone
+
                 </label>
 
-                <select>
-                  <option>Asia/Kolkata</option>
-                  <option>UTC</option>
-                  <option>America/New_York</option>
+                <select
+                  name="timezone"
+                  value={formData.timezone}
+                  onChange={handleChange}
+                >
+
+                  <option value="Asia/Kolkata">
+                    Asia/Kolkata
+                  </option>
+
+                  <option value="UTC">
+                    UTC
+                  </option>
+
+                  <option value="America/New_York">
+                    America/New_York
+                  </option>
+
                 </select>
+
               </div>
+
+
+              {/* =================================================
+                  CHANGE PASSWORD
+              ================================================= */}
 
               <div className="input-box full-width">
+
                 <label>
-                  <FaLock /> Change Password
+
+                  <FaLock />
+
+                  Change Password
+
                 </label>
 
                 <div className="change-password-wrapper">
+
                   <button
+                    type="button"
                     className="change-password-btn"
-                    onClick={() => navigate("/forgot-password")}
+                    onClick={() =>
+                      navigate("/forgot-password")
+                    }
                   >
+
                     Change Password
+
                   </button>
+
                 </div>
+
               </div>
+
             </div>
 
-            {/* Notifications */}
+
+            {/* =================================================
+                NOTIFICATIONS
+            ================================================= */}
 
             <div className="notification-row">
+
               <div>
+
                 <FaBell />
-                <span>Enable Email Notifications</span>
+
+                <span>
+                  Enable Email Notifications
+                </span>
+
               </div>
 
+
               <label className="switch">
+
                 <input
                   type="checkbox"
-                  checked={notifications}
-                  onChange={() => setNotifications(!notifications)}
+                  name="emailNotifications"
+                  checked={
+                    formData.emailNotifications
+                  }
+                  onChange={handleChange}
                 />
 
                 <span className="slider"></span>
+
               </label>
+
             </div>
 
-            {/* Save Button */}
 
-            <button className="save-btn">
+            {/* =================================================
+                SAVE BUTTON
+            ================================================= */}
+
+            <button
+              className="save-btn"
+              type="submit"
+              disabled={saving}
+            >
+
               <FaSave />
-              Save Changes
+
+              {saving
+                ? "Saving..."
+                : "Save Changes"}
+
             </button>
-          </div>
+
+          </form>
+
         </div>
+
       </div>
+
     </div>
+
   );
 }
 

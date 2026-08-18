@@ -2,391 +2,509 @@
    RESET
 ========================== */
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, Helvetica, sans-serif;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-body{
-    background:#ffffff;
+body {
+    background: #ffffff;
 }
+
 
 /* ==========================
    MAIN LAYOUT
 ========================== */
 
-.admin-container{
-    display:flex;
-    min-height:100vh;
-    background:#ffffff;
+.admin-container {
+    display: flex;
+    min-height: 100vh;
+    background: #ffffff;
 }
 
-.admin-main{
-    flex:1;
-    margin-left:280px;
-    display:flex;
-    flex-direction:column;
-    background:#ffffff;
-    transition:.3s;
+.admin-main {
+    flex: 1;
+    margin-left: 280px;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    transition: 0.3s;
 }
 
-.admin-content{
-    flex:1;
-    padding:30px;
-    background:#ffffff;
+.admin-content {
+    flex: 1;
+    padding: 30px;
+    background: #ffffff;
 }
+
 
 /* ==========================
    DASHBOARD HEADER
 ========================== */
 
-.dashboard-header{
-    margin-bottom:30px;
+.dashboard-header {
+    margin-bottom: 30px;
 }
 
-.dashboard-header h1{
-    font-size:34px;
-    color:#17376E;
-    margin-bottom:8px;
+.dashboard-header h1 {
+    font-size: 34px;
+    color: #17376e;
+    margin-bottom: 8px;
 }
 
-.dashboard-header p{
-    color:#777;
-    font-size:18px;
+.dashboard-header p {
+    color: #777;
+    font-size: 18px;
 }
+
 
 /* ==========================
    STATISTICS
 ========================== */
 
-.stats-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:22px;
-    margin-bottom:30px;
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+    margin-bottom: 30px;
 }
 
-.stat-card{
-    background:#ffffff;
-    border-radius:18px;
-    padding:25px;
-    display:flex;
-    align-items:center;
-    gap:18px;
-    border:1px solid #edf2f7;
-    box-shadow:0 10px 25px rgba(0,0,0,.06);
-    transition:.35s;
+.stat-card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 25px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+
+    border: 1px solid #edf2f7;
+
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.06);
+
+    transition: 0.35s;
 }
 
-.stat-card:hover{
-    transform:translateY(-6px);
-    box-shadow:0 15px 35px rgba(0,0,0,.12);
+.stat-card:hover {
+    transform: translateY(-6px);
+
+    box-shadow:
+        0 15px 35px rgba(0, 0, 0, 0.12);
 }
+
 
 /* ==========================
    ICON BOXES
 ========================== */
 
-.icon-box{
-    width:68px;
-    height:68px;
-    border-radius:18px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-shrink:0;
+.icon-box {
+    width: 68px;
+    height: 68px;
+
+    border-radius: 18px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex-shrink: 0;
 }
 
-.stat-icon{
-    color:#fff;
-    font-size:30px;
+.stat-icon {
+    color: #ffffff;
+    font-size: 30px;
 }
 
-.icon-box.blue{
-    background:#526692;
+.icon-box.blue {
+    background: #526692;
 }
 
-.icon-box.green{
-    background:#659887;
+.icon-box.green {
+    background: #659887;
 }
 
-.icon-box.orange{
-    background:#e9bd73;
+.icon-box.orange {
+    background: #e9bd73;
 }
 
-.icon-box.purple{
-    background:#c1acf0;
+.icon-box.purple {
+    background: #c1acf0;
 }
 
-.icon-box.red{
-    background:#bd0b0b;
+.icon-box.red {
+    background: #bd0b0b;
 }
 
-.stat-card h3{
-    color:#01040a;
-    font-size:30px;
-    margin-bottom:5px;
+
+/* ==========================
+   STAT TEXT
+========================== */
+
+.stat-card h3 {
+    color: #01040a;
+    font-size: 30px;
+    margin-bottom: 5px;
 }
 
-.stat-card p{
-    color:#64748B;
-    font-size:15px;
+.stat-card p {
+    color: #64748b;
+    font-size: 15px;
 }
+
 
 /* ==========================
    BOTTOM GRID
 ========================== */
 
-.dashboard-bottom{
-    display:grid;
-    grid-template-columns:2fr 1fr;
-    gap:22px;
+.dashboard-bottom {
+    display: grid;
+
+    grid-template-columns: 2fr 1fr;
+
+    gap: 22px;
 }
+
 
 /* ==========================
-   BOXES
+   DASHBOARD BOXES
 ========================== */
 
-.dashboard-box{
-    background:#ffffff;
-    border-radius:18px;
-    padding:25px;
-    border:1px solid #edf2f7;
-    box-shadow:0 10px 25px rgba(0,0,0,.06);
+.dashboard-box {
+    background: #ffffff;
+
+    border-radius: 18px;
+
+    padding: 25px;
+
+    border: 1px solid #edf2f7;
+
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.06);
 }
 
-.dashboard-box h2{
-    color:#023da3;
-    margin-bottom:20px;
-    font-size:22px;
-    font-weight:700;
+.dashboard-box h2 {
+    color: #023da3;
+
+    margin-bottom: 20px;
+
+    font-size: 22px;
+
+    font-weight: 700;
 }
+
+
 /* ==========================
-   TABLES
+   TABLE
 ========================== */
 
-table{
-    width:100%;
-    border-collapse:collapse;
+table {
+    width: 100%;
+    border-collapse: collapse;
 }
 
-table th{
-    background:hwb(220 94% 5%);
-    color:#130202;
-    padding:16px;
-    text-align:left;
-    font-size:15px;
-    font-weight:600;
+table th {
+    background: #f5f7fb;
+
+    color: #130202;
+
+    padding: 16px;
+
+    text-align: left;
+
+    font-size: 15px;
+
+    font-weight: 600;
 }
 
-table td{
-    padding:16px;
-    border-bottom:1px solid #edf2f7;
-    color:#555;
-    font-size:15px;
+table td {
+    padding: 16px;
+
+    border-bottom:
+        1px solid #edf2f7;
+
+    color: #555;
+
+    font-size: 15px;
 }
 
-table tbody tr{
-    transition:.3s;
+table tbody tr {
+    transition: 0.3s;
 }
 
-table tbody tr:hover{
-    background:#f8fafc;
+table tbody tr:hover {
+    background: #f8fafc;
 }
+
 
 /* ==========================
    STATUS BADGES
 ========================== */
 
-.status{
-    display:inline-flex;
-    justify-content:center;
-    align-items:center;
-    padding:7px 15px;
-    border-radius:30px;
-    color:#ffffff;
-    font-size:13px;
-    font-weight:600;
+.status {
+    display: inline-flex;
+
+    justify-content: center;
+    align-items: center;
+
+    padding: 7px 15px;
+
+    border-radius: 30px;
+
+    font-size: 13px;
+
+    font-weight: 600;
 }
 
-.confirmed{
-    background:#ECFDF5;
-    color:#a0ebbc;
+
+/* Confirmed */
+
+.status.confirmed {
+    background: #dcfce7;
+    color: #166534;
 }
 
-.pending{
-    background:#FFFBEB;
-    color:#f4ca9b;
+
+/* Pending */
+
+.status.pending {
+    background: #fef3c7;
+    color: #92400e;
 }
 
-.checked{
-    background:#EFF6FF;
-    color:#92afee;
+
+/* Checked In */
+
+.status.checked {
+    background: #dbeafe;
+    color: #1e40af;
 }
+
+
+/* Cancelled */
+
+.status.cancelled {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+
+/* Completed */
+
+.status.completed {
+    background: #dcfce7;
+    color: #166534;
+}
+
 
 /* ==========================
    ROOM STATUS
 ========================== */
 
-.room-status{
-    display:flex;
-    flex-direction:column;
-    gap:18px;
+.room-status {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 18px;
 }
 
-.status-card{
-    display:flex;
-    align-items:center;
-    gap:16px;
-    background:#ffffff;
-    border:1px solid #edf2f7;
-    border-radius:16px;
-    padding:18px;
-    transition:.3s;
+.status-card {
+    display: flex;
+
+    align-items: center;
+
+    gap: 16px;
+
+    background: #ffffff;
+
+    border: 1px solid #edf2f7;
+
+    border-radius: 16px;
+
+    padding: 18px;
+
+    transition: 0.3s;
 }
 
-.status-card:hover{
-    transform:translateY(-4px);
-    box-shadow:0 10px 22px rgba(0,0,0,.08);
+.status-card:hover {
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 10px 22px rgba(0, 0, 0, 0.08);
 }
 
-/* Icon Box */
 
-.status-icon-box{
-    width:55px;
-    height:55px;
-    border-radius:14px;
+/* ==========================
+   ROOM STATUS ICON
+========================== */
 
-    display:flex;
-    justify-content:center;
-    align-items:center;
+.status-icon-box {
+    width: 55px;
+    height: 55px;
 
-    flex-shrink:0;
+    border-radius: 14px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    flex-shrink: 0;
 }
 
-.status-icon{
-    font-size:24px;
-    color:#ffffff;
+.status-icon {
+    font-size: 24px;
+    color: #ffffff;
 }
 
-.status-icon-box.green{
-    background:#8edec3;
+
+/* Available */
+
+.status-icon-box.green {
+    background: #8edec3;
 }
 
-.status-icon-box.orange{
-    background:#d6b780;
+
+/* Occupied */
+
+.status-icon-box.orange {
+    background: #d6b780;
 }
 
-.status-icon-box.red{
-    background:#f28f8f;
+
+/* Maintenance */
+
+.status-icon-box.red {
+    background: #f28f8f;
 }
 
-/* Text */
 
-.status-info{
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
+/* ==========================
+   ROOM STATUS TEXT
+========================== */
+
+.status-info {
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
 }
 
-.status-info h3{
-    margin:0;
-    color:#00040b;
-    font-size:24px;
-    line-height:1;
+.status-info h3 {
+    margin: 0;
+
+    color: #00040b;
+
+    font-size: 24px;
+
+    line-height: 1;
 }
 
-.status-info p{
-    margin-top:6px;
-    color:#777;
-    font-size:14px;
+.status-info p {
+    margin-top: 6px;
+
+    color: #777;
+
+    font-size: 14px;
 }
+
 
 /* ==========================
    RESPONSIVE
 ========================== */
 
-@media(max-width:1200px){
+@media (max-width: 1200px) {
 
-    .stats-grid{
-        grid-template-columns:repeat(2,1fr);
+    .stats-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
     }
 
-    .dashboard-bottom{
-        grid-template-columns:1fr;
+    .dashboard-bottom {
+        grid-template-columns: 1fr;
     }
-
 }
 
-@media(max-width:768px){
 
-    .admin-main{
-        margin-left:80px;
+/* ==========================
+   TABLET
+========================== */
+
+@media (max-width: 768px) {
+
+    .admin-main {
+        margin-left: 80px;
     }
 
-    .admin-content{
-        padding:20px;
+    .admin-content {
+        padding: 20px;
     }
 
-    .stats-grid{
-        grid-template-columns:1fr;
+    .stats-grid {
+        grid-template-columns: 1fr;
     }
 
-    .dashboard-box{
-        overflow-x:auto;
+    .dashboard-box {
+        overflow-x: auto;
     }
 
-    table{
-        min-width:600px;
+    table {
+        min-width: 600px;
     }
-
 }
 
-@media(max-width:576px){
 
-    .admin-main{
-        margin-left:0;
-        margin-bottom:70px;
+/* ==========================
+   MOBILE
+========================== */
+
+@media (max-width: 576px) {
+
+    .admin-main {
+        margin-left: 0;
+        margin-bottom: 70px;
     }
 
-    .admin-content{
-        padding:15px;
+    .admin-content {
+        padding: 15px;
     }
 
-    .dashboard-header h1{
-        font-size:28px;
+    .dashboard-header h1 {
+        font-size: 28px;
     }
 
-    .dashboard-header p{
-        font-size:14px;
+    .dashboard-header p {
+        font-size: 14px;
     }
 
-    .stat-card{
-        padding:20px;
+    .stat-card {
+        padding: 20px;
     }
 
-    .icon-box{
-        width:60px;
-        height:60px;
+    .icon-box {
+        width: 60px;
+        height: 60px;
     }
 
-    .stat-icon{
-        font-size:26px;
+    .stat-icon {
+        font-size: 26px;
     }
 
-    .status-card{
-        padding:16px;
+    .status-card {
+        padding: 16px;
     }
 
-    .status-icon-box{
-        width:50px;
-        height:50px;
+    .status-icon-box {
+        width: 50px;
+        height: 50px;
     }
 
-    .status-info h3{
-        font-size:22px;
+    .status-info h3 {
+        font-size: 22px;
     }
-
 }

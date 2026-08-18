@@ -155,3 +155,315 @@
     background:#17376E;
     color:#fff;
 }
+/* =====================================================
+   MOBILE MENU BUTTON
+===================================================== */
+
+.menu-toggle {
+    display: none;
+
+    border: none;
+    background: transparent;
+
+    color: #17376E;
+
+    font-size: 28px;
+
+    cursor: pointer;
+
+    padding: 8px;
+}
+
+
+/* =====================================================
+   MOBILE MENU
+===================================================== */
+
+.mobile-menu {
+    display: none;
+}
+
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 1100px) {
+
+    .navbar {
+        padding: 0 25px;
+    }
+
+    .logo-section {
+        min-width: auto;
+    }
+
+    .nav-links {
+        width: 520px;
+        padding: 0 10px;
+    }
+
+    .nav-links span {
+        font-size: 15px;
+    }
+
+    .nav-buttons {
+        gap: 8px;
+    }
+
+    .get-started-btn,
+    .login-btn {
+        padding: 10px 16px;
+        font-size: 14px;
+    }
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 768px) {
+
+    /* Navbar */
+
+    .navbar {
+        height: 75px;
+
+        padding: 0 18px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+
+    /* Logo */
+
+    .logo-section {
+        min-width: 0;
+
+        display: flex;
+        align-items: center;
+
+        gap: 8px;
+    }
+
+    .logo-section img {
+        width: 45px;
+        height: 45px;
+
+        flex-shrink: 0;
+    }
+
+
+    /* Logo Text */
+
+    .logo-text {
+        min-width: 0;
+    }
+
+    .logo-text h2 {
+        font-size: 13px;
+
+        white-space: nowrap;
+
+        overflow: hidden;
+
+        text-overflow: ellipsis;
+    }
+
+    .logo-text p {
+        font-size: 10px;
+
+        white-space: nowrap;
+    }
+
+
+    /* Hide Desktop Navigation */
+
+    .nav-links {
+        display: none;
+    }
+
+
+    /* Hide Desktop Buttons */
+
+    .nav-buttons {
+        display: none;
+    }
+
+
+    /* Show Hamburger */
+
+    .menu-toggle {
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        width: 45px;
+        height: 45px;
+
+        flex-shrink: 0;
+    }
+
+
+    /* =================================================
+       MOBILE DROPDOWN
+    ================================================= */
+
+    .mobile-menu {
+        position: absolute;
+
+        top: 75px;
+        left: 0;
+
+        width: 100%;
+
+        background: #ffffff;
+
+        display: flex;
+
+        flex-direction: column;
+
+        padding: 15px 18px 20px;
+
+        gap: 3px;
+
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+
+        opacity: 0;
+
+        visibility: hidden;
+
+        transform: translateY(-15px);
+
+        transition:
+            opacity 0.3s ease,
+            transform 0.3s ease,
+            visibility 0.3s ease;
+
+        z-index: 999;
+    }
+
+
+    /* Open Menu */
+
+    .mobile-menu.open {
+        opacity: 1;
+
+        visibility: visible;
+
+        transform: translateY(0);
+    }
+
+
+    /* Mobile Navigation Links */
+
+    .mobile-menu > span {
+        display: block;
+
+        width: 100%;
+
+        padding: 14px 12px;
+
+        border-radius: 8px;
+
+        color: #333;
+
+        font-size: 16px;
+
+        font-weight: 600;
+
+        cursor: pointer;
+
+        transition: 0.3s;
+    }
+
+    .mobile-menu > span:hover {
+        background: #f4f6fa;
+
+        color: #17376E;
+    }
+
+
+    /* =================================================
+       MOBILE BUTTONS
+    ================================================= */
+
+    .mobile-buttons {
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 10px;
+
+        margin-top: 10px;
+
+        padding-top: 10px;
+
+        border-top: 1px solid #eeeeee;
+    }
+
+
+    .mobile-buttons .get-started-btn,
+    .mobile-buttons .login-btn {
+        width: 100%;
+
+        text-align: center;
+
+        padding: 13px 20px;
+
+        border-radius: 10px;
+    }
+}
+
+
+/* =====================================================
+   SMALL PHONES
+   iPhone SE / Smaller Android Phones
+===================================================== */
+
+@media (max-width: 480px) {
+
+    .navbar {
+        height: 70px;
+
+        padding: 0 14px;
+    }
+
+
+    .logo-section {
+        gap: 7px;
+    }
+
+
+    .logo-section img {
+        width: 42px;
+        height: 42px;
+    }
+
+
+    .logo-text h2 {
+        font-size: 11px;
+    }
+
+
+    .logo-text p {
+        font-size: 9px;
+    }
+
+
+    .menu-toggle {
+        width: 42px;
+        height: 42px;
+
+        font-size: 25px;
+    }
+
+
+    .mobile-menu {
+        top: 70px;
+    }
+}

@@ -94,35 +94,35 @@ function Login() {
       // =================================================
 
       switch (role) {
-        case "SUPER_ADMIN":
-          navigate("/super-admin-dashboard", {
-            replace: true,
-          });
-          break;
 
-        case "ADMIN":
-          navigate("/admin-dashboard", {
-            replace: true,
-          });
-          break;
+  case "SUPER_ADMIN":
+    navigate("/super-admin-dashboard", {
+      replace: true,
+    });
+    break;
 
-        case "CUSTOMER":
-          navigate("/customer-dashboard", {
-            replace: true,
-          });
-          break;
+  case "ADMIN":
+    navigate("/admin-dashboard", {
+      replace: true,
+    });
+    break;
 
-        default:
-          // Invalid role
-          localStorage.removeItem("token");
-          localStorage.removeItem("user");
+  case "CUSTOMER":
+  case "VIP":
+    navigate("/customer-dashboard", {
+      replace: true,
+    });
+    break;
 
-          alert(
-            "Unknown user role. Please contact the administrator."
-          );
-          break;
-      }
+  default:
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
 
+    alert(
+      "Unknown user role. Please contact the administrator."
+    );
+    break;
+}
     } catch (error) {
       console.error("Login Error:", error);
 

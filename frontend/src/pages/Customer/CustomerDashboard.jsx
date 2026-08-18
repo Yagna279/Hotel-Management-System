@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import CustomerSidebar from "./CustomerSidebar";
 import CustomerTopbar from "./CustomerTopbar";
 
@@ -14,108 +16,548 @@ import {
 import "./Customer.css";
 
 function CustomerDashboard() {
+
+  // =====================================================
+  // NAVIGATION
+  // =====================================================
+
+  const navigate = useNavigate();
+
+  // =====================================================
+  // STATE
+  // =====================================================
+
+  const [user, setUser] = useState(null);
+
+  const [dashboardData, setDashboardData] = useState(null);
+
+  const [loading, setLoading] = useState(true);
+
+  const [error, setError] = useState("");
+
+  // =====================================================
+  // BOOK ROOM
+  // =====================================================
+
+  const handleBookRoom = () => {
+    navigate("/customer/rooms");
+  };
+
+  // =====================================================
+  // LOAD CUSTOMER DASHBOARD
+  // =====================================================
+
+  useEffect(() => {
+
+    const loadDashboard = async () => {
+
+      try {
+
+        // =================================================
+        // GET LOGGED-IN USER
+        // =================================================
+
+        const storedUser =
+          localStorage.getItem("user");
+
+        if (!storedUser) {
+
+          setError(
+            "Customer login information not found."
+          );
+
+          setLoading(false);
+
+          return;
+        }
+
+        // =================================================
+        // PARSE USER
+        // =================================================
+
+        let loggedInUser;
+
+        try {
+
+          loggedInUser =
+            JSON.parse(storedUser);
+
+        } catch (parseError) {
+
+          console.error(
+            "Invalid user data:",
+            parseError
+          );
+
+          setError(
+            "Invalid customer login information."
+          );
+
+          setLoading(false);
+
+          return;
+        }
+
+        console.log(
+          "Logged-in user:",
+          loggedInUser
+        );
+
+        // =================================================
+        // CUSTOMER ID
+        // =================================================
+
+        const customerId =
+          loggedInUser?.id;
+
+        if (!customerId) {
+
+          console.error(
+            "Customer ID missing:",
+            loggedInUser
+          );
+
+          setError(
+            "Customer ID not found."
+          );
+
+          setLoading(false);
+
+          return;
+        }
+
+        // =================================================
+        // SAVE USER
+        // =================================================
+
+        setUser(loggedInUser);
+
+        // =================================================
+        // FETCH DASHBOARD FROM DATABASE
+        // =================================================
+
+        const response = await fetch(
+          `http://localhost:5000/api/customer-dashboard/${customerId}`
+        );
+
+        const data =
+          await response.json();
+
+        console.log(
+          "Customer Dashboard API:",
+          data
+        );
+
+        // =================================================
+        // API ERROR
+        // =================================================
+
+        if (!response.ok) {
+
+          setError(
+            data.message ||
+            "Failed to load customer dashboard."
+          );
+
+          setLoading(false);
+
+          return;
+        }
+
+        // =================================================
+        // SAVE DATABASE DATA
+        // =================================================
+
+        setDashboardData(data);
+
+        setLoading(false);
+
+      } catch (error) {
+
+        console.error(
+          "Dashboard loading error:",
+          error
+        );
+
+        setError(
+          "Unable to connect to the server."
+        );
+
+        setLoading(false);
+      }
+    };
+
+    loadDashboard();
+
+  }, []);
+
+  // =====================================================
+  // LOADING
+  // =====================================================
+
+  if (loading) {
+
+    return (
+      <div className="customer-layout">
+
+        <CustomerSidebar />
+
+        <div className="customer-main">
+
+          <CustomerTopbar />
+
+          <main className="customer-dashboard">
+
+            <div className="customer-message">
+
+              Loading your dashboard...
+
+            </div>
+
+          </main>
+
+        </div>
+
+      </div>
+    );
+  }
+
+  // =====================================================
+  // ERROR
+  // =====================================================
+
+  if (error) {
+
+    return (
+      <div className="customer-layout">
+
+        <CustomerSidebar />
+
+        <div className="customer-main">
+
+          <CustomerTopbar />
+
+          <main className="customer-dashboard">
+
+            <div className="customer-message error">
+
+              {error}
+
+            </div>
+
+          </main>
+
+        </div>
+
+      </div>
+    );
+  }
+
+  // =====================================================
+  // DATABASE CUSTOMER
+  // =====================================================
+
+  const customer =
+    dashboardData?.customer || user;
+
+  // =====================================================
+  // DATABASE STATISTICS
+  // =====================================================
+
+  const statistics =
+    dashboardData?.statistics || {};
+
+  // =====================================================
+  // DATABASE BOOKINGS
+  // =====================================================
+
+  const recentBookings =
+    dashboardData?.recentBookings || [];
+
+  // =====================================================
+  // CUSTOMER NAME
+  // =====================================================
+
+  const customerName =
+    customer?.full_name || "Guest";
+
+  // =====================================================
+  // FORMAT MONEY
+  // =====================================================
+
+  const formatMoney = (amount) => {
+
+    return `₹${Number(amount || 0).toLocaleString(
+      "en-IN"
+    )}`;
+
+  };
+
+  // =====================================================
+  // FORMAT DATE
+  // =====================================================
+
+  const formatDate = (date) => {
+
+    if (!date) {
+      return "-";
+    }
+
+    const formattedDate =
+      new Date(date);
+
+    if (
+      Number.isNaN(
+        formattedDate.getTime()
+      )
+    ) {
+
+      return date;
+
+    }
+
+    return formattedDate.toLocaleDateString(
+      "en-IN",
+      {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      }
+    );
+
+  };
+
+  // =====================================================
+  // TOTAL GUESTS
+  // =====================================================
+
+  const getGuestCount = (booking) => {
+
+    const adults =
+      Number(booking?.adults || 0);
+
+    const children =
+      Number(booking?.children || 0);
+
+    const total =
+      adults + children;
+
+    return total > 0
+      ? `${total} Guests`
+      : "Guests";
+  };
+
+  // =====================================================
+  // VIEW ALL BOOKINGS
+  // =====================================================
+
+  const handleViewAllBookings = () => {
+
+    navigate("/customer/bookings");
+
+  };
+
+  // =====================================================
+  // JSX
+  // =====================================================
+
   return (
+
     <div className="customer-layout">
 
-      {/* ================= SIDEBAR ================= */}
+      {/* =================================================
+          SIDEBAR
+      ================================================= */}
 
       <CustomerSidebar />
 
-      {/* ================= MAIN ================= */}
+
+      {/* =================================================
+          MAIN
+      ================================================= */}
 
       <div className="customer-main">
 
-        {/* TOPBAR */}
+        {/* =================================================
+            TOPBAR
+        ================================================= */}
+
         <CustomerTopbar />
 
-        {/* DASHBOARD CONTENT */}
+
+        {/* =================================================
+            DASHBOARD
+        ================================================= */}
 
         <main className="customer-dashboard">
 
-          {/* HEADER */}
+
+          {/* =================================================
+              HEADER
+          ================================================= */}
 
           <div className="customer-dashboard-header">
 
             <div>
-              <h1>Dashboard</h1>
-              <p>Welcome back, Guest</p>
+
+              <h1>
+                Dashboard
+              </h1>
+
+              <p>
+                Welcome back, {customerName}
+              </p>
+
             </div>
 
-            <button className="book-room-btn">
+
+            {/* =================================================
+                BOOK ROOM BUTTON
+            ================================================= */}
+
+            <button
+              type="button"
+              className="book-room-btn"
+              onClick={handleBookRoom}
+            >
+
               <FaBed />
+
               Book a Room
+
             </button>
 
           </div>
 
 
-          {/* ================= STATISTICS ================= */}
+          {/* =================================================
+              STATISTICS
+          ================================================= */}
 
           <div className="customer-stats-grid">
 
-            {/* Total Bookings */}
+
+            {/* =================================================
+                TOTAL BOOKINGS
+            ================================================= */}
 
             <div className="customer-stat-card">
 
               <div className="customer-stat-icon blue">
+
                 <FaCalendarCheck />
+
               </div>
 
               <div className="customer-stat-info">
-                <span>Total Bookings</span>
-                <strong>5</strong>
-                <small>All reservations</small>
+
+                <span>
+                  Total Bookings
+                </span>
+
+                <strong>
+                  {statistics.totalBookings || 0}
+                </strong>
+
+                <small>
+                  All reservations
+                </small>
+
               </div>
 
             </div>
 
 
-            {/* Upcoming */}
+            {/* =================================================
+                UPCOMING
+            ================================================= */}
 
             <div className="customer-stat-card">
 
               <div className="customer-stat-icon orange">
+
                 <FaClock />
+
               </div>
 
               <div className="customer-stat-info">
-                <span>Upcoming</span>
-                <strong>2</strong>
-                <small>Reservations</small>
+
+                <span>
+                  Upcoming
+                </span>
+
+                <strong>
+                  {statistics.upcoming || 0}
+                </strong>
+
+                <small>
+                  Reservations
+                </small>
+
               </div>
 
             </div>
 
 
-            {/* Completed */}
+            {/* =================================================
+                COMPLETED
+            ================================================= */}
 
             <div className="customer-stat-card">
 
               <div className="customer-stat-icon green">
+
                 <FaCheckCircle />
+
               </div>
 
               <div className="customer-stat-info">
-                <span>Completed</span>
-                <strong>2</strong>
-                <small>Completed stays</small>
+
+                <span>
+                  Completed
+                </span>
+
+                <strong>
+                  {statistics.completed || 0}
+                </strong>
+
+                <small>
+                  Completed stays
+                </small>
+
               </div>
 
             </div>
 
 
-            {/* Total Spent */}
+            {/* =================================================
+                TOTAL SPENT
+            ================================================= */}
 
             <div className="customer-stat-card">
 
               <div className="customer-stat-icon purple">
+
                 <FaMoneyBillWave />
+
               </div>
 
               <div className="customer-stat-info">
-                <span>Total Spent</span>
-                <strong>₹35,500</strong>
-                <small>Overall payments</small>
+
+                <span>
+                  Total Spent
+                </span>
+
+                <strong>
+                  {formatMoney(
+                    statistics.totalSpent
+                  )}
+                </strong>
+
+                <small>
+                  Overall payments
+                </small>
+
               </div>
 
             </div>
@@ -123,113 +565,189 @@ function CustomerDashboard() {
           </div>
 
 
-          {/* ================= BOTTOM AREA ================= */}
+          {/* =================================================
+              BOTTOM AREA
+          ================================================= */}
 
           <div className="customer-dashboard-grid">
 
-            {/* ================= RECENT BOOKINGS ================= */}
+
+            {/* =================================================
+                RECENT BOOKINGS
+            ================================================= */}
 
             <div className="customer-dashboard-card">
+
+
+              {/* =================================================
+                  CARD HEADER
+              ================================================= */}
 
               <div className="customer-card-header">
 
                 <div>
-                  <h2>My Recent Bookings</h2>
-                  <p>Your latest hotel reservations</p>
+
+                  <h2>
+                    My Recent Bookings
+                  </h2>
+
+                  <p>
+                    Your latest hotel reservations
+                  </p>
+
                 </div>
 
-                <button className="view-all-btn">
+
+                {/* =================================================
+                    VIEW ALL
+                ================================================= */}
+
+                <button
+                  type="button"
+                  className="view-all-btn"
+                  onClick={
+                    handleViewAllBookings
+                  }
+                >
+
                   View All
+
                   <FaArrowRight />
+
                 </button>
 
               </div>
 
 
+              {/* =================================================
+                  BOOKING TABLE
+              ================================================= */}
+
               <div className="booking-table-wrapper">
 
                 <table className="customer-booking-table">
 
+
+                  {/* =================================================
+                      TABLE HEADER
+                  ================================================= */}
+
                   <thead>
+
                     <tr>
-                      <th>Room</th>
-                      <th>Check In</th>
-                      <th>Check Out</th>
+
+                      <th>
+                        Room
+                      </th>
+
+                      <th>
+                        Check In
+                      </th>
+
+                      <th>
+                        Check Out
+                      </th>
+
                     </tr>
+
                   </thead>
+
+
+                  {/* =================================================
+                      TABLE BODY
+                  ================================================= */}
 
                   <tbody>
 
-                    <tr>
+                    {recentBookings.length === 0 ? (
 
-                      <td>
-                        <div className="room-cell">
+                      <tr>
 
-                          <div className="room-small-icon">
-                            <FaBed />
-                          </div>
+                        <td
+                          colSpan="3"
+                          className="no-bookings"
+                        >
 
-                          <div>
-                            <strong>101 - Deluxe Room</strong>
-                            <span>2 Guests</span>
-                          </div>
+                          No bookings found.
 
-                        </div>
-                      </td>
+                        </td>
 
-                      <td>06 Aug 2026</td>
+                      </tr>
 
-                      <td>08 Aug 2026</td>
+                    ) : (
 
-                    </tr>
+                      recentBookings.map(
+                        (booking) => (
 
+                          <tr
+                            key={booking.id}
+                          >
 
-                    <tr>
+                            {/* ROOM */}
 
-                      <td>
-                        <div className="room-cell">
+                            <td>
 
-                          <div className="room-small-icon">
-                            <FaBed />
-                          </div>
+                              <div className="room-cell">
 
-                          <div>
-                            <strong>205 - Premium Room</strong>
-                            <span>2 Guests</span>
-                          </div>
+                                <div className="room-small-icon">
 
-                        </div>
-                      </td>
+                                  <FaBed />
 
-                      <td>15 Aug 2026</td>
-
-                      <td>18 Aug 2026</td>
-
-                    </tr>
+                                </div>
 
 
-                    <tr>
+                                <div>
 
-                      <td>
-                        <div className="room-cell">
+                                  <strong>
 
-                          <div className="room-small-icon">
-                            <FaBed />
-                          </div>
+                                    {booking.room_number}
+                                    {" - "}
+                                    {booking.room_type}
 
-                          <div>
-                            <strong>309 - Suite Room</strong>
-                            <span>3 Guests</span>
-                          </div>
+                                  </strong>
 
-                        </div>
-                      </td>
+                                  <span>
 
-                      <td>22 Jul 2026</td>
+                                    {getGuestCount(
+                                      booking
+                                    )}
 
-                      <td>25 Jul 2026</td>
+                                  </span>
 
-                    </tr>
+                                </div>
+
+                              </div>
+
+                            </td>
+
+
+                            {/* CHECK IN */}
+
+                            <td>
+
+                              {formatDate(
+                                booking.check_in
+                              )}
+
+                            </td>
+
+
+                            {/* CHECK OUT */}
+
+                            <td>
+
+                              {formatDate(
+                                booking.check_out
+                              )}
+
+                            </td>
+
+                          </tr>
+
+                        )
+                      )
+
+                    )}
 
                   </tbody>
 
@@ -240,72 +758,136 @@ function CustomerDashboard() {
             </div>
 
 
-            {/* ================= BOOKING STATUS ================= */}
+            {/* =================================================
+                BOOKING STATUS
+            ================================================= */}
 
             <div className="customer-dashboard-card booking-status-card">
+
+
+              {/* =================================================
+                  STATUS HEADER
+              ================================================= */}
 
               <div className="customer-card-header">
 
                 <div>
-                  <h2>Booking Status</h2>
-                  <p>Overview of your reservations</p>
+
+                  <h2>
+                    Booking Status
+                  </h2>
+
+                  <p>
+                    Overview of your reservations
+                  </p>
+
                 </div>
 
               </div>
 
 
+              {/* =================================================
+                  STATUS LIST
+              ================================================= */}
+
               <div className="booking-status-list">
 
-                {/* Upcoming */}
+
+                {/* =================================================
+                    UPCOMING
+                ================================================= */}
 
                 <div className="booking-status-item">
 
                   <div className="booking-status-icon upcoming">
+
                     <FaClock />
+
                   </div>
+
 
                   <div className="booking-status-info">
-                    <strong>2</strong>
-                    <span>Upcoming</span>
+
+                    <strong>
+                      {statistics.upcoming || 0}
+                    </strong>
+
+                    <span>
+                      Upcoming
+                    </span>
+
                   </div>
 
-                  <FaArrowRight className="status-arrow" />
+
+                  <FaArrowRight
+                    className="status-arrow"
+                  />
 
                 </div>
 
 
-                {/* Confirmed */}
+                {/* =================================================
+                    CONFIRMED
+                ================================================= */}
 
                 <div className="booking-status-item">
 
                   <div className="booking-status-icon confirmed">
+
                     <FaCheckCircle />
+
                   </div>
+
 
                   <div className="booking-status-info">
-                    <strong>2</strong>
-                    <span>Confirmed</span>
+
+                    <strong>
+                      {statistics.confirmed || 0}
+                    </strong>
+
+                    <span>
+                      Confirmed
+                    </span>
+
                   </div>
 
-                  <FaArrowRight className="status-arrow" />
+
+                  <FaArrowRight
+                    className="status-arrow"
+                  />
 
                 </div>
 
 
-                {/* Cancelled */}
+                {/* =================================================
+                    CANCELLED
+                ================================================= */}
 
                 <div className="booking-status-item">
 
                   <div className="booking-status-icon cancelled">
+
                     <FaCheckCircle />
+
                   </div>
+
 
                   <div className="booking-status-info">
-                    <strong>1</strong>
-                    <span>Cancelled</span>
+
+                    <strong>
+                      {statistics.cancelled || 0}
+                    </strong>
+
+                    <span>
+                      Cancelled
+                    </span>
+
                   </div>
 
-                  <FaArrowRight className="status-arrow" />
+
+                  <FaArrowRight
+                    className="status-arrow"
+                  />
 
                 </div>
 
@@ -320,6 +902,7 @@ function CustomerDashboard() {
       </div>
 
     </div>
+
   );
 }
 

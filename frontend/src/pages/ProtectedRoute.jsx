@@ -38,17 +38,11 @@ function ProtectedRoute({ children, allowedRoles = [] }) {
   } catch (error) {
     console.error("Invalid user data:", error);
 
-    // Remove invalid authentication data
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     localStorage.removeItem("googleUser");
 
-    return (
-      <Navigate
-        to="/login"
-        replace
-      />
-    );
+    return <Navigate to="/login" replace />;
   }
 
   // =====================================================
@@ -62,27 +56,28 @@ function ProtectedRoute({ children, allowedRoles = [] }) {
     localStorage.removeItem("user");
     localStorage.removeItem("googleUser");
 
-    return (
-      <Navigate
-        to="/login"
-        replace
-      />
-    );
+    return <Navigate to="/login" replace />;
   }
 
   // =====================================================
-  // GET ROLE
+  // GET USER ROLE
   // =====================================================
 
   const userRole = String(user.role).toUpperCase();
 
+  console.log("Protected Route User Role:", userRole);
+
   // =====================================================
-  // CHECK ALLOWED ROLE
+  // NORMALIZE ALLOWED ROLES
   // =====================================================
 
   const normalizedAllowedRoles = allowedRoles.map((role) =>
     String(role).toUpperCase()
   );
+
+  // =====================================================
+  // CHECK PERMISSION
+  // =====================================================
 
   const hasPermission =
     normalizedAllowedRoles.length === 0 ||
@@ -99,6 +94,10 @@ function ProtectedRoute({ children, allowedRoles = [] }) {
 
     // Send user to their correct dashboard
     switch (userRole) {
+      // =================================================
+      // SUPER ADMIN
+      // =================================================
+
       case "SUPER_ADMIN":
         return (
           <Navigate
@@ -106,6 +105,10 @@ function ProtectedRoute({ children, allowedRoles = [] }) {
             replace
           />
         );
+
+      // =================================================
+      // ADMIN
+      // =================================================
 
       case "ADMIN":
         return (
@@ -115,6 +118,10 @@ function ProtectedRoute({ children, allowedRoles = [] }) {
           />
         );
 
+      // =================================================
+      // CUSTOMER
+      // =================================================
+
       case "CUSTOMER":
         return (
           <Navigate
@@ -122,6 +129,22 @@ function ProtectedRoute({ children, allowedRoles = [] }) {
             replace
           />
         );
+
+      // =================================================
+      // VIP CUSTOMER
+      // =================================================
+
+      case "VIP":
+        return (
+          <Navigate
+            to="/customer-dashboard"
+            replace
+          />
+        );
+
+      // =================================================
+      // UNKNOWN ROLE
+      // =================================================
 
       default:
         localStorage.removeItem("token");

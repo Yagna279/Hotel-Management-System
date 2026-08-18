@@ -1,23 +1,50 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   FaSearch,
   FaBell,
   FaUserCircle,
 } from "react-icons/fa";
 import "./Topbar.css";
-function Topbar() {
+
+function Topbar({ onSearch }) {
+
+  const [searchText, setSearchText] = useState("");
+
+  const handleSearch = (value) => {
+    setSearchText(value);
+
+    if (onSearch) {
+      onSearch(value);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSearch(searchText);
+    }
+  };
+
   return (
     <div className="topbar">
 
       {/* Search */}
       <div className="search-box">
-        <FaSearch className="search-icon" />
+
+        <FaSearch
+          className="search-icon"
+          onClick={() => handleSearch(searchText)}
+        />
 
         <input
           type="text"
           placeholder="Search..."
+          value={searchText}
+          onChange={(e) => handleSearch(e.target.value)}
+          onKeyDown={handleKeyDown}
         />
+
       </div>
+
 
       {/* Right Side */}
       <div className="topbar-right">
@@ -28,6 +55,7 @@ function Topbar() {
         </div>
 
         <div className="admin-profile">
+
           <FaUserCircle className="profile-icon" />
 
           <div>

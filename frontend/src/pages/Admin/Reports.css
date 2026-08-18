@@ -22,6 +22,7 @@
     font-size:15px;
 }
 
+
 /* =====================================================
    EXPORT BUTTON
 ===================================================== */
@@ -29,23 +30,40 @@
 .download-btn{
     display:flex;
     align-items:center;
+    justify-content:center;
     gap:10px;
-    background:linear-gradient(135deg,#17376E,#2563EB);
+
+    background:linear-gradient(
+        135deg,
+        #17376E,
+        #2563EB
+    );
+
     color:#fff;
+
     border:none;
     border-radius:12px;
+
     padding:12px 22px;
+
     font-size:15px;
     font-weight:600;
+
     cursor:pointer;
+
     transition:.3s;
-    box-shadow:0 8px 18px rgba(37,99,235,.25);
+
+    box-shadow:
+        0 8px 18px rgba(37,99,235,.25);
 }
 
 .download-btn:hover{
     transform:translateY(-2px);
-    box-shadow:0 12px 25px rgba(37,99,235,.35);
+
+    box-shadow:
+        0 12px 25px rgba(37,99,235,.35);
 }
+
 
 /* =====================================================
    STATISTICS
@@ -58,39 +76,56 @@
     margin-bottom:30px;
 }
 
+
 /* =====================================================
    REPORT CARD
 ===================================================== */
 
 .report-card{
     background:#fff;
+
     border-radius:20px;
+
     padding:25px;
+
     display:flex;
     align-items:center;
+
     gap:18px;
+
     border:1px solid #EDF2F7;
-    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,.08);
+
     transition:.3s;
 }
 
 .report-card:hover{
     transform:translateY(-6px);
-    box-shadow:0 18px 35px rgba(0,0,0,.12);
+
+    box-shadow:
+        0 18px 35px rgba(0,0,0,.12);
 }
 
 .report-card h2{
     margin:0;
+
     color:#17376E;
+
     font-size:28px;
+
     font-weight:700;
 }
 
 .report-card p{
     margin-top:6px;
+
     color:#64748B;
+
     font-size:14px;
 }
+
 
 /* =====================================================
    ICON BOX
@@ -99,10 +134,14 @@
 .icon-box{
     width:70px;
     height:70px;
+
     border-radius:18px;
+
     display:flex;
+
     justify-content:center;
     align-items:center;
+
     flex-shrink:0;
 }
 
@@ -111,54 +150,124 @@
     font-size:30px;
 }
 
+
 /* =====================================================
    ICON COLORS
 ===================================================== */
 
 .icon-box.blue{
-    background:linear-gradient(135deg,#2563EB,#60A5FA);
+    background:
+        linear-gradient(
+            135deg,
+            #2563EB,
+            #60A5FA
+        );
 }
 
 .icon-box.green{
-    background:linear-gradient(135deg,#10B981,#34D399);
+    background:
+        linear-gradient(
+            135deg,
+            #10B981,
+            #34D399
+        );
 }
 
 .icon-box.orange{
-    background:linear-gradient(135deg,#F59E0B,#FBBF24);
+    background:
+        linear-gradient(
+            135deg,
+            #F59E0B,
+            #FBBF24
+        );
 }
 
 .icon-box.purple{
-    background:linear-gradient(135deg,#8B5CF6,#A855F7);
+    background:
+        linear-gradient(
+            135deg,
+            #8B5CF6,
+            #A855F7
+        );
 }
 
+
 /* =====================================================
-   ANALYSIS SECTION
+   ANALYSIS GRID
 ===================================================== */
 
 .analysis-grid{
     display:grid;
-    grid-template-columns:2fr 1fr;
+
+    /*
+       Revenue box is wider,
+       Room analysis box is smaller.
+    */
+
+    grid-template-columns:1.7fr 1fr;
+
     gap:22px;
+
     margin-bottom:30px;
+
+    align-items:start;
 }
+
+
+/* =====================================================
+   ANALYSIS CARD
+===================================================== */
 
 .analysis-card{
     background:#fff;
+
     border-radius:20px;
+
     padding:25px;
+
     border:1px solid #EDF2F7;
-    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+    box-sizing:border-box;
+
+    min-width:0;
+}
+
+.analysis-card:hover{
+    transform:translateY(-4px);
+
+    box-shadow:
+        0 16px 35px rgba(0,0,0,.10);
 }
 
 .analysis-card h2{
     margin:0 0 22px;
+
     color:#17376E;
+
     font-size:24px;
+
     font-weight:700;
+
+    letter-spacing:.3px;
 }
 
+
 /* =====================================================
-   PROGRESS BARS
+   REVENUE OVERVIEW
+===================================================== */
+
+.revenue-card{
+    min-height:280px;
+}
+
+
+/* =====================================================
+   PROGRESS GROUP
 ===================================================== */
 
 .progress-group{
@@ -169,110 +278,335 @@
     margin-bottom:0;
 }
 
-.progress-group label{
+
+/* =====================================================
+   PROGRESS LABEL
+===================================================== */
+
+.progress-label{
     display:flex;
+
     justify-content:space-between;
-    font-weight:600;
-    color:#17376E;
+
+    align-items:center;
+
+    gap:15px;
+
     margin-bottom:8px;
+
+    color:#17376E;
+
+    font-size:14px;
+
+    font-weight:600;
 }
+
+.progress-label span{
+    color:#17376E;
+}
+
+.progress-label strong{
+    color:#17376E;
+
+    font-size:14px;
+
+    white-space:nowrap;
+}
+
+
+/* =====================================================
+   PROGRESS BAR BACKGROUND
+===================================================== */
 
 .progress-bar{
     width:100%;
-    height:12px;
+
+    height:14px;
+
     background:#E8EEF5;
+
     border-radius:20px;
+
     overflow:hidden;
+
+    display:block;
+
+    position:relative;
 }
+
+
+/* =====================================================
+   IMPORTANT:
+   DYNAMIC REVENUE BAR
+===================================================== */
 
 .progress{
     height:100%;
+
+    min-width:6px;
+
+    display:block;
+
     border-radius:20px;
+
+    transition:
+        width .7s ease;
+
+    opacity:1;
 }
 
-.fill1{
-    width:90%;
-    background:linear-gradient(135deg,#2563EB,#60A5FA);
-}
 
-.fill2{
-    width:75%;
-    background:linear-gradient(135deg,#10B981,#34D399);
-}
-
-.fill3{
-    width:60%;
-    background:linear-gradient(135deg,#F59E0B,#FBBF24);
-}
-
-.fill4{
-    width:45%;
-    background:linear-gradient(135deg,#8B5CF6,#A855F7);
-}
 /* =====================================================
-   ROOM TYPE TABLE
+   REVENUE BAR COLORS
 ===================================================== */
 
-.analysis-card table{
+.revenue-blue{
+    background:
+        linear-gradient(
+            90deg,
+            #2563EB,
+            #60A5FA
+        ) !important;
+}
+
+.revenue-green{
+    background:
+        linear-gradient(
+            90deg,
+            #10B981,
+            #34D399
+        ) !important;
+}
+
+.revenue-orange{
+    background:
+        linear-gradient(
+            90deg,
+            #F59E0B,
+            #FBBF24
+        ) !important;
+}
+
+.revenue-purple{
+    background:
+        linear-gradient(
+            90deg,
+            #8B5CF6,
+            #A855F7
+        ) !important;
+}
+
+.revenue-red{
+    background:
+        linear-gradient(
+            90deg,
+            #EF4444,
+            #F87171
+        ) !important;
+}
+
+.revenue-teal{
+    background:
+        linear-gradient(
+            90deg,
+            #0D9488,
+            #2DD4BF
+        ) !important;
+}
+
+
+/* =====================================================
+   PERCENTAGE UNDER BAR
+===================================================== */
+
+.percentage-text{
+    margin-top:6px;
+
+    text-align:right;
+
+    color:#64748B;
+
+    font-size:12px;
+
+    font-weight:600;
+}
+
+
+/* =====================================================
+   ROOM TYPE ANALYSIS
+===================================================== */
+
+.room-analysis-card{
+    min-height:280px;
+}
+
+.room-analysis-card table{
     width:100%;
+
     border-collapse:collapse;
 }
 
-.analysis-card tr{
-    transition:.3s;
-}
-
-.analysis-card tr:hover{
+.room-analysis-card thead{
     background:#F8FAFC;
 }
 
-.analysis-card td{
-    padding:16px 12px;
-    border-bottom:1px solid #EDF2F7;
-    color:#475569;
-    font-size:15px;
-}
+.room-analysis-card th{
+    padding:13px 12px;
 
-.analysis-card td:last-child{
-    text-align:right;
+    text-align:left;
+
+    color:#64748B;
+
+    font-size:13px;
+
     font-weight:700;
-    color:#17376E;
+
+    border-bottom:1px solid #EDF2F7;
 }
 
-.analysis-card tr:last-child td{
+.room-analysis-card th:last-child{
+    text-align:right;
+}
+
+.room-analysis-card td{
+    padding:15px 12px;
+
+    border-bottom:1px solid #EDF2F7;
+
+    color:#475569;
+
+    font-size:14px;
+
+    font-weight:500;
+}
+
+.room-analysis-card td:last-child{
+    text-align:right;
+}
+
+.room-analysis-card tr:last-child td{
     border-bottom:none;
 }
 
+.room-analysis-card tbody tr{
+    transition:.2s;
+}
+
+.room-analysis-card tbody tr:hover{
+    background:#F8FAFC;
+}
+
+
 /* =====================================================
-   MONTHLY REVENUE TABLE
+   ROOM PERCENTAGE
+===================================================== */
+
+.room-percentage{
+    display:flex;
+
+    justify-content:flex-end;
+
+    align-items:center;
+}
+
+.room-percentage span{
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    min-width:58px;
+
+    padding:7px 12px;
+
+    border-radius:20px;
+
+    background:#EEF5FF;
+
+    color:#2563EB;
+
+    font-size:13px;
+
+    font-weight:700;
+
+    border:1px solid #D6E6FF;
+}
+
+
+/* =====================================================
+   MONTHLY REVENUE
 ===================================================== */
 
 .report-table{
     background:#fff;
+
     border-radius:20px;
+
     padding:25px;
+
     border:1px solid #EDF2F7;
-    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+    box-sizing:border-box;
+}
+
+.report-table:hover{
+    transform:translateY(-4px);
+
+    box-shadow:
+        0 16px 35px rgba(0,0,0,.10);
 }
 
 .report-table h2{
     margin:0 0 22px;
+
     color:#17376E;
+
     font-size:24px;
+
     font-weight:700;
+}
+
+
+/* =====================================================
+   MONTHLY TABLE
+===================================================== */
+
+.monthly-table-wrapper{
+    width:100%;
+
+    overflow-x:auto;
 }
 
 .report-table table{
     width:100%;
+
     border-collapse:collapse;
+
+    min-width:500px;
 }
 
 .report-table thead th{
-    background:linear-gradient(135deg,#17376E,#2563EB);
+    background:
+        linear-gradient(
+            135deg,
+            #17376E,
+            #2563EB
+        );
+
     color:#fff;
+
     padding:16px;
+
     font-size:15px;
+
     font-weight:600;
+
     text-align:left;
 }
 
@@ -298,8 +632,11 @@
 
 .report-table td{
     padding:16px;
+
     border-bottom:1px solid #EDF2F7;
+
     color:#475569;
+
     font-size:15px;
 }
 
@@ -307,21 +644,50 @@
     border-bottom:none;
 }
 
+
 /* =====================================================
-   CARD ANIMATIONS
+   EMPTY DATA
 ===================================================== */
 
-.report-card,
-.analysis-card,
-.report-table{
-    transition:.3s ease;
+.no-data{
+    color:#64748B;
+
+    font-size:14px;
+
+    padding:15px 0;
 }
 
-.analysis-card:hover,
-.report-table:hover{
-    transform:translateY(-4px);
-    box-shadow:0 16px 35px rgba(0,0,0,.10);
+.empty-table{
+    text-align:center;
+
+    padding:25px !important;
+
+    color:#64748B !important;
 }
+
+
+/* =====================================================
+   CUSTOMER ERROR MESSAGE
+===================================================== */
+
+.customer-message{
+    padding:14px 18px;
+
+    border-radius:10px;
+
+    margin-bottom:20px;
+
+    font-size:14px;
+}
+
+.customer-message.error{
+    background:#FEF2F2;
+
+    color:#B91C1C;
+
+    border:1px solid #FECACA;
+}
+
 
 /* =====================================================
    SCROLLBAR
@@ -338,12 +704,14 @@
 
 ::-webkit-scrollbar-thumb{
     background:#CBD5E1;
+
     border-radius:20px;
 }
 
 ::-webkit-scrollbar-thumb:hover{
     background:#94A3B8;
 }
+
 
 /* =====================================================
    RESPONSIVE
@@ -356,21 +724,47 @@
     }
 
     .analysis-grid{
-        grid-template-columns:1fr;
+        grid-template-columns:1.5fr 1fr;
     }
 
 }
+
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media(max-width:992px){
+
+    .analysis-grid{
+        grid-template-columns:1fr;
+    }
+
+    .revenue-card,
+    .room-analysis-card{
+        min-height:auto;
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
 
 @media(max-width:768px){
 
     .reports-header{
         flex-direction:column;
+
         align-items:flex-start;
+
         gap:20px;
     }
 
     .download-btn{
         width:100%;
+
         justify-content:center;
     }
 
@@ -391,31 +785,70 @@
         font-size:26px;
     }
 
-    .report-table{
-        overflow-x:auto;
+    .analysis-card{
+        padding:20px;
     }
 
-    .analysis-card{
-        overflow-x:auto;
+    .analysis-card h2{
+        font-size:21px;
+    }
+
+    .report-table{
+        padding:20px;
     }
 
 }
 
+
 /* =====================================================
-   PREMIUM FINISH
+   SMALL MOBILE
 ===================================================== */
 
-.report-card h2,
-.analysis-card h2,
-.report-table h2{
-    letter-spacing:.3px;
+@media(max-width:576px){
+
+    .reports-header h1{
+        font-size:27px;
+    }
+
+    .reports-header p{
+        font-size:14px;
+    }
+
+    .report-card h2{
+        font-size:24px;
+    }
+
+    .progress-label{
+        font-size:13px;
+    }
+
+    .progress-label strong{
+        font-size:12px;
+    }
+
+    .progress-bar{
+        height:12px;
+    }
+
+    .room-analysis-card th,
+    .room-analysis-card td{
+        padding:12px 8px;
+    }
+
+}
+
+
+/* =====================================================
+   SMOOTH ANIMATION
+===================================================== */
+
+.report-card,
+.analysis-card,
+.report-table,
+.download-btn{
+    transition:all .3s ease;
 }
 
 .progress{
-    transition:width .6s ease;
-}
-
-.report-table table,
-.analysis-card table{
-    min-width:500px;
+    transition:width .7s ease;
 }

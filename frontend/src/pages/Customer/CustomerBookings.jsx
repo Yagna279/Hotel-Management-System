@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import CustomerSidebar from "./CustomerSidebar";
 import CustomerTopbar from "./CustomerTopbar";
 
@@ -6,7 +8,6 @@ import {
   FaBed,
   FaCalendarAlt,
   FaUsers,
-  FaMoneyBillWave,
   FaEye,
   FaTimes,
   FaCheckCircle,
@@ -16,53 +17,487 @@ import {
 import "./CustomerBookings.css";
 
 function CustomerBookings() {
+
+  // =====================================================
+  // NAVIGATION
+  // =====================================================
+
+  const navigate = useNavigate();
+
+  // =====================================================
+  // STATE
+  // =====================================================
+
+  const [customer, setCustomer] = useState(null);
+
+  const [bookings, setBookings] = useState([]);
+
+  const [statistics, setStatistics] = useState({
+    totalBookings: 0,
+    upcoming: 0,
+    completed: 0,
+    cancelled: 0,
+  });
+
+  const [loading, setLoading] = useState(true);
+
+  const [error, setError] = useState("");
+
+  const [filter, setFilter] = useState("all");
+
+  // =====================================================
+  // GET LOGGED-IN CUSTOMER AND BOOKINGS
+  // =====================================================
+
+  useEffect(() => {
+
+    const fetchCustomerBookings = async () => {
+
+      try {
+
+        // ===============================================
+        // GET USER FROM LOCAL STORAGE
+        // ===============================================
+
+        const storedUser =
+          localStorage.getItem("user");
+
+        if (!storedUser) {
+
+          setError(
+            "Customer login information not found."
+          );
+
+          setLoading(false);
+
+          return;
+        }
+
+        let user;
+
+        try {
+
+          user = JSON.parse(storedUser);
+
+        } catch (parseError) {
+
+          console.error(
+            "Invalid customer data:",
+            parseError
+          );
+
+          setError(
+            "Invalid customer login information."
+          );
+
+          setLoading(false);
+
+          return;
+        }
+
+        console.log(
+          "Logged-in customer:",
+          user
+        );
+
+        // ===============================================
+        // GET CUSTOMER ID
+        // ===============================================
+
+        const customerId = user?.id;
+
+        if (!customerId) {
+
+          setError(
+            "Customer ID not found."
+          );
+
+          setLoading(false);
+
+          return;
+        }
+
+        console.log(
+          "Customer ID:",
+          customerId
+        );
+
+        // ===============================================
+        // API REQUEST
+        // ===============================================
+
+        const response = await fetch(
+          `http://localhost:5000/api/customer-bookings/${customerId}`
+        );
+
+        const data =
+          await response.json();
+
+        console.log(
+          "Customer bookings response:",
+          data
+        );
+
+        // ===============================================
+        // API ERROR
+        // ===============================================
+
+        if (!response.ok) {
+
+          throw new Error(
+            data.message ||
+            "Failed to load bookings."
+          );
+
+        }
+
+        // ===============================================
+        // SAVE DATABASE DATA
+        // ===============================================
+
+        setCustomer(
+          data.customer
+        );
+
+        setBookings(
+          data.bookings || []
+        );
+
+        setStatistics(
+          data.statistics || {
+            totalBookings: 0,
+            upcoming: 0,
+            completed: 0,
+            cancelled: 0,
+          }
+        );
+
+      } catch (error) {
+
+        console.error(
+          "Customer bookings error:",
+          error
+        );
+
+        setError(
+          error.message ||
+          "Unable to load bookings."
+        );
+
+      } finally {
+
+        setLoading(false);
+
+      }
+
+    };
+
+    fetchCustomerBookings();
+
+  }, []);
+
+  // =====================================================
+  // FILTER BOOKINGS
+  // =====================================================
+
+  const filteredBookings =
+    bookings.filter((booking) => {
+
+      const status =
+        String(
+          booking.booking_status || ""
+        ).toLowerCase();
+
+      // ===============================================
+      // ALL
+      // ===============================================
+
+      if (filter === "all") {
+
+        return true;
+
+      }
+
+      // ===============================================
+      // UPCOMING
+      // ===============================================
+
+      if (filter === "upcoming") {
+
+        return (
+          booking.check_in &&
+          new Date(booking.check_in) >=
+            new Date() &&
+          status !== "cancelled"
+        );
+
+      }
+
+      // ===============================================
+      // COMPLETED
+      // ===============================================
+
+      if (filter === "completed") {
+
+        return status === "completed";
+
+      }
+
+      // ===============================================
+      // CANCELLED
+      // ===============================================
+
+      if (filter === "cancelled") {
+
+        return status === "cancelled";
+
+      }
+
+      return true;
+
+    });
+
+  // =====================================================
+  // FORMAT DATE
+  // =====================================================
+
+  const formatDate = (date) => {
+
+    if (!date) {
+
+      return "-";
+
+    }
+
+    const parsedDate =
+      new Date(date);
+
+    if (
+      Number.isNaN(
+        parsedDate.getTime()
+      )
+    ) {
+
+      return date;
+
+    }
+
+    return parsedDate.toLocaleDateString(
+      "en-IN",
+      {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      }
+    );
+
+  };
+
+  // =====================================================
+  // FORMAT CURRENCY
+  // =====================================================
+
+  const formatCurrency = (amount) => {
+
+    return `₹${Number(
+      amount || 0
+    ).toLocaleString("en-IN")}`;
+
+  };
+
+  // =====================================================
+  // GET STATUS CLASS
+  // =====================================================
+
+  const getStatusClass = (status) => {
+
+    const normalizedStatus =
+      String(
+        status || ""
+      ).toLowerCase();
+
+    if (
+      normalizedStatus ===
+      "cancelled"
+    ) {
+
+      return "cancelled";
+
+    }
+
+    if (
+      normalizedStatus ===
+      "completed"
+    ) {
+
+      return "completed";
+
+    }
+
+    if (
+      normalizedStatus ===
+      "upcoming"
+    ) {
+
+      return "upcoming";
+
+    }
+
+    return "confirmed";
+
+  };
+
+  // =====================================================
+  // GET DISPLAY STATUS
+  // =====================================================
+
+  const getDisplayStatus = (booking) => {
+
+    const status =
+      String(
+        booking.booking_status || ""
+      ).toLowerCase();
+
+    if (status) {
+
+      return (
+        status.charAt(0).toUpperCase() +
+        status.slice(1)
+      );
+
+    }
+
+    return "Confirmed";
+
+  };
+
+  // =====================================================
+  // LOADING
+  // =====================================================
+
+  if (loading) {
+
+    return (
+
+      <div className="customer-bookings-layout">
+
+        <CustomerSidebar />
+
+        <div className="customer-main">
+
+          <CustomerTopbar />
+
+          <main className="customer-bookings-content">
+
+            <div className="customer-message">
+
+              Loading your bookings...
+
+            </div>
+
+          </main>
+
+        </div>
+
+      </div>
+
+    );
+
+  }
+
+  // =====================================================
+  // MAIN JSX
+  // =====================================================
+
   return (
+
     <div className="customer-bookings-layout">
 
-      {/* =====================================================
+      {/* =================================================
           SIDEBAR
-      ===================================================== */}
+      ================================================= */}
 
       <CustomerSidebar />
 
 
-      {/* =====================================================
-          MAIN AREA
-      ===================================================== */}
+      {/* =================================================
+          MAIN
+      ================================================= */}
 
       <div className="customer-main">
 
-        {/* TOPBAR */}
+        {/* =================================================
+            TOPBAR
+        ================================================= */}
 
         <CustomerTopbar />
 
 
-        {/* =====================================================
-            BOOKINGS CONTENT
-        ===================================================== */}
+        {/* =================================================
+            CONTENT
+        ================================================= */}
 
         <main className="customer-bookings-content">
 
           {/* =================================================
-              PAGE HEADER
+              HEADER
           ================================================= */}
 
           <div className="customer-bookings-header">
 
             <div>
-              <h1>My Bookings</h1>
+
+              <h1>
+                My Bookings
+              </h1>
 
               <p>
-                View and manage all your hotel reservations
+
+                {customer?.full_name
+
+                  ? `View and manage your hotel reservations, ${customer.full_name}`
+
+                  : "View and manage all your hotel reservations"}
+
               </p>
+
             </div>
 
-            <button className="customer-new-booking-btn">
+
+            {/* =================================================
+                BOOK A ROOM BUTTON
+            ================================================= */}
+
+            <button
+              className="customer-new-booking-btn"
+              type="button"
+              onClick={() =>
+                navigate("/customer/rooms")
+              }
+            >
+
               <FaBed />
+
               Book a Room
+
             </button>
 
           </div>
+
+
+          {/* =================================================
+              ERROR
+          ================================================= */}
+
+          {error && (
+
+            <div className="customer-message error">
+
+              {error}
+
+            </div>
+
+          )}
 
 
           {/* =================================================
@@ -71,65 +506,109 @@ function CustomerBookings() {
 
           <div className="customer-booking-summary">
 
-            {/* Total */}
+            {/* =================================================
+                TOTAL BOOKINGS
+            ================================================= */}
 
             <div className="customer-booking-summary-card">
 
               <div className="customer-booking-summary-icon blue">
+
                 <FaCalendarAlt />
+
               </div>
 
               <div>
-                <span>Total Bookings</span>
-                <strong>5</strong>
+
+                <span>
+                  Total Bookings
+                </span>
+
+                <strong>
+                  {statistics.totalBookings || 0}
+                </strong>
+
               </div>
 
             </div>
 
 
-            {/* Upcoming */}
+            {/* =================================================
+                UPCOMING
+            ================================================= */}
 
             <div className="customer-booking-summary-card">
 
               <div className="customer-booking-summary-icon orange">
+
                 <FaClock />
+
               </div>
 
               <div>
-                <span>Upcoming</span>
-                <strong>2</strong>
+
+                <span>
+                  Upcoming
+                </span>
+
+                <strong>
+                  {statistics.upcoming || 0}
+                </strong>
+
               </div>
 
             </div>
 
 
-            {/* Completed */}
+            {/* =================================================
+                COMPLETED
+            ================================================= */}
 
             <div className="customer-booking-summary-card">
 
               <div className="customer-booking-summary-icon green">
+
                 <FaCheckCircle />
+
               </div>
 
               <div>
-                <span>Completed</span>
-                <strong>2</strong>
+
+                <span>
+                  Completed
+                </span>
+
+                <strong>
+                  {statistics.completed || 0}
+                </strong>
+
               </div>
 
             </div>
 
 
-            {/* Cancelled */}
+            {/* =================================================
+                CANCELLED
+            ================================================= */}
 
             <div className="customer-booking-summary-card">
 
               <div className="customer-booking-summary-icon red">
+
                 <FaTimes />
+
               </div>
 
               <div>
-                <span>Cancelled</span>
-                <strong>1</strong>
+
+                <span>
+                  Cancelled
+                </span>
+
+                <strong>
+                  {statistics.cancelled || 0}
+                </strong>
+
               </div>
 
             </div>
@@ -143,22 +622,36 @@ function CustomerBookings() {
 
           <div className="customer-bookings-card">
 
-            {/* Card Header */}
+            {/* =================================================
+                HEADER
+            ================================================= */}
 
             <div className="customer-bookings-card-header">
 
               <div>
-                <h2>All Reservations</h2>
+
+                <h2>
+                  All Reservations
+                </h2>
 
                 <p>
                   Your recent and previous hotel bookings
                 </p>
+
               </div>
 
 
-              {/* Filter */}
+              {/* =================================================
+                  FILTER
+              ================================================= */}
 
-              <select className="customer-booking-filter">
+              <select
+                className="customer-booking-filter"
+                value={filter}
+                onChange={(e) =>
+                  setFilter(e.target.value)
+                }
+              >
 
                 <option value="all">
                   All Bookings
@@ -187,414 +680,230 @@ function CustomerBookings() {
 
             <div className="customer-booking-list">
 
-
               {/* =================================================
-                  BOOKING 1
+                  NO BOOKINGS
               ================================================= */}
 
-              <div className="customer-booking-item">
+              {filteredBookings.length === 0 && (
 
-                {/* Room */}
+                <div className="customer-message">
 
-                <div className="customer-booking-room">
+                  <FaBed
+                    style={{
+                      fontSize: "40px",
+                      marginBottom: "15px",
+                    }}
+                  />
 
-                  <div className="customer-booking-room-icon">
-                    <FaBed />
-                  </div>
+                  <p>
 
-                  <div>
+                    {bookings.length === 0
 
-                    <h3>
-                      Deluxe Room
-                    </h3>
+                      ? "You don't have any bookings yet."
 
-                    <span>
-                      Room 101
-                    </span>
+                      : "No bookings found for this filter."}
 
-                  </div>
-
-                </div>
-
-
-                {/* Dates */}
-
-                <div className="customer-booking-info">
-
-                  <span>
-                    <FaCalendarAlt />
-                    Check In
-                  </span>
-
-                  <strong>
-                    06 Aug 2026
-                  </strong>
+                  </p>
 
                 </div>
 
-
-                <div className="customer-booking-info">
-
-                  <span>
-                    <FaCalendarAlt />
-                    Check Out
-                  </span>
-
-                  <strong>
-                    08 Aug 2026
-                  </strong>
-
-                </div>
-
-
-                {/* Guests */}
-
-                <div className="customer-booking-info">
-
-                  <span>
-                    <FaUsers />
-                    Guests
-                  </span>
-
-                  <strong>
-                    2 Guests
-                  </strong>
-
-                </div>
-
-
-                {/* Price */}
-
-                <div className="customer-booking-price">
-
-                  <span>
-                    Total
-                  </span>
-
-                  <strong>
-                    ₹8,500
-                  </strong>
-
-                </div>
-
-
-                {/* Status */}
-
-                <div>
-
-                  <span className="customer-booking-status confirmed">
-                    Confirmed
-                  </span>
-
-                </div>
-
-
-                {/* Action */}
-
-                <button className="customer-booking-action">
-                  <FaEye />
-                  View
-                </button>
-
-              </div>
+              )}
 
 
               {/* =================================================
-                  BOOKING 2
+                  BOOKINGS
               ================================================= */}
 
-              <div className="customer-booking-item">
+              {filteredBookings.map(
+                (booking) => (
 
-                <div className="customer-booking-room">
+                  <div
+                    className="customer-booking-item"
+                    key={booking.id}
+                  >
 
-                  <div className="customer-booking-room-icon">
-                    <FaBed />
-                  </div>
+                    {/* =================================================
+                        ROOM
+                    ================================================= */}
 
-                  <div>
+                    <div className="customer-booking-room">
 
-                    <h3>
-                      Premium Room
-                    </h3>
+                      <div className="customer-booking-room-icon">
 
-                    <span>
-                      Room 205
-                    </span>
+                        <FaBed />
 
-                  </div>
+                      </div>
 
-                </div>
+                      <div>
 
+                        <h3>
 
-                <div className="customer-booking-info">
+                          {booking.room_type ||
+                            "Room"}
 
-                  <span>
-                    <FaCalendarAlt />
-                    Check In
-                  </span>
+                        </h3>
 
-                  <strong>
-                    15 Aug 2026
-                  </strong>
+                        <span>
 
-                </div>
+                          Room{" "}
 
+                          {booking.room_number ||
+                            "-"}
 
-                <div className="customer-booking-info">
+                        </span>
 
-                  <span>
-                    <FaCalendarAlt />
-                    Check Out
-                  </span>
+                      </div>
 
-                  <strong>
-                    18 Aug 2026
-                  </strong>
+                    </div>
 
-                </div>
 
+                    {/* =================================================
+                        CHECK IN
+                    ================================================= */}
 
-                <div className="customer-booking-info">
+                    <div className="customer-booking-info">
 
-                  <span>
-                    <FaUsers />
-                    Guests
-                  </span>
+                      <span>
 
-                  <strong>
-                    2 Guests
-                  </strong>
+                        <FaCalendarAlt />
 
-                </div>
+                        Check In
 
+                      </span>
 
-                <div className="customer-booking-price">
+                      <strong>
 
-                  <span>
-                    Total
-                  </span>
+                        {formatDate(
+                          booking.check_in
+                        )}
 
-                  <strong>
-                    ₹12,500
-                  </strong>
+                      </strong>
 
-                </div>
+                    </div>
 
 
-                <div>
+                    {/* =================================================
+                        CHECK OUT
+                    ================================================= */}
 
-                  <span className="customer-booking-status upcoming">
-                    Upcoming
-                  </span>
+                    <div className="customer-booking-info">
 
-                </div>
+                      <span>
 
+                        <FaCalendarAlt />
 
-                <button className="customer-booking-action">
-                  <FaEye />
-                  View
-                </button>
+                        Check Out
 
-              </div>
+                      </span>
 
+                      <strong>
 
-              {/* =================================================
-                  BOOKING 3
-              ================================================= */}
+                        {formatDate(
+                          booking.check_out
+                        )}
 
-              <div className="customer-booking-item">
+                      </strong>
 
-                <div className="customer-booking-room">
+                    </div>
 
-                  <div className="customer-booking-room-icon">
-                    <FaBed />
-                  </div>
 
-                  <div>
+                    {/* =================================================
+                        GUESTS
+                    ================================================= */}
 
-                    <h3>
-                      Suite Room
-                    </h3>
+                    <div className="customer-booking-info">
 
-                    <span>
-                      Room 309
-                    </span>
+                      <span>
 
-                  </div>
+                        <FaUsers />
 
-                </div>
+                        Guests
 
+                      </span>
 
-                <div className="customer-booking-info">
+                      <strong>
 
-                  <span>
-                    <FaCalendarAlt />
-                    Check In
-                  </span>
+                        {(
+                          Number(
+                            booking.adults
+                          ) || 0
+                        ) +
+                          (
+                            Number(
+                              booking.children
+                            ) || 0
+                          )}{" "}
 
-                  <strong>
-                    22 Jul 2026
-                  </strong>
+                        Guests
 
-                </div>
+                      </strong>
 
+                    </div>
 
-                <div className="customer-booking-info">
 
-                  <span>
-                    <FaCalendarAlt />
-                    Check Out
-                  </span>
+                    {/* =================================================
+                        PRICE
+                    ================================================= */}
 
-                  <strong>
-                    25 Jul 2026
-                  </strong>
+                    <div className="customer-booking-price">
 
-                </div>
+                      <span>
+                        Total
+                      </span>
 
+                      <strong>
 
-                <div className="customer-booking-info">
+                        {formatCurrency(
+                          booking.total_amount
+                        )}
 
-                  <span>
-                    <FaUsers />
-                    Guests
-                  </span>
+                      </strong>
 
-                  <strong>
-                    3 Guests
-                  </strong>
+                    </div>
 
-                </div>
 
+                    {/* =================================================
+                        STATUS
+                    ================================================= */}
 
-                <div className="customer-booking-price">
+                    <div>
 
-                  <span>
-                    Total
-                  </span>
+                      <span
+                        className={`customer-booking-status ${getStatusClass(
+                          booking.booking_status
+                        )}`}
+                      >
 
-                  <strong>
-                    ₹14,500
-                  </strong>
+                        {getDisplayStatus(
+                          booking
+                        )}
 
-                </div>
+                      </span>
 
+                    </div>
 
-                <div>
 
-                  <span className="customer-booking-status completed">
-                    Completed
-                  </span>
+                    {/* =================================================
+                        VIEW
+                    ================================================= */}
 
-                </div>
-
-
-                <button className="customer-booking-action">
-                  <FaEye />
-                  View
-                </button>
-
-              </div>
-
-
-              {/* =================================================
-                  BOOKING 4
-              ================================================= */}
-
-              <div className="customer-booking-item">
-
-                <div className="customer-booking-room">
-
-                  <div className="customer-booking-room-icon">
-                    <FaBed />
-                  </div>
-
-                  <div>
-
-                    <h3>
-                      Standard Room
-                    </h3>
-
-                    <span>
-                      Room 112
-                    </span>
+                    <button
+  type="button"
+  className="customer-booking-action"
+  onClick={() =>
+    navigate(
+      `/customer/confirm-payment/${booking.id}`
+    )
+  }
+>
+  <FaEye />
+  View
+</button>
 
                   </div>
 
-                </div>
-
-
-                <div className="customer-booking-info">
-
-                  <span>
-                    <FaCalendarAlt />
-                    Check In
-                  </span>
-
-                  <strong>
-                    10 Jun 2026
-                  </strong>
-
-                </div>
-
-
-                <div className="customer-booking-info">
-
-                  <span>
-                    <FaCalendarAlt />
-                    Check Out
-                  </span>
-
-                  <strong>
-                    12 Jun 2026
-                  </strong>
-
-                </div>
-
-
-                <div className="customer-booking-info">
-
-                  <span>
-                    <FaUsers />
-                    Guests
-                  </span>
-
-                  <strong>
-                    2 Guests
-                  </strong>
-
-                </div>
-
-
-                <div className="customer-booking-price">
-
-                  <span>
-                    Total
-                  </span>
-
-                  <strong>
-                    ₹5,500
-                  </strong>
-
-                </div>
-
-
-                <div>
-
-                  <span className="customer-booking-status cancelled">
-                    Cancelled
-                  </span>
-
-                </div>
-
-
-                <button className="customer-booking-action">
-                  <FaEye />
-                  View
-                </button>
-
-              </div>
-
+                )
+              )}
 
             </div>
 
@@ -605,7 +914,9 @@ function CustomerBookings() {
       </div>
 
     </div>
+
   );
+
 }
 
 export default CustomerBookings;

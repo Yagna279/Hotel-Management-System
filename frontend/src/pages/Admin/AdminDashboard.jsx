@@ -1,6 +1,11 @@
-import React from "react";
+import React, {
+  useEffect,
+  useState,
+} from "react";
+
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
+
 import "./Admin.css";
 
 import {
@@ -13,200 +18,822 @@ import {
 
 import { MdHotel } from "react-icons/md";
 
+
 function AdminDashboard() {
+
+  // =====================================================
+  // STATE
+  // =====================================================
+
+  const [statistics, setStatistics] = useState({
+
+    totalRooms: 0,
+
+    reservations: 0,
+
+    customers: 0,
+
+    totalRevenue: 0,
+
+  });
+
+
+  const [roomStatus, setRoomStatus] = useState({
+
+    available: 0,
+
+    occupied: 0,
+
+    maintenance: 0,
+
+  });
+
+
+  const [recentReservations, setRecentReservations] =
+    useState([]);
+
+
+  const [loading, setLoading] =
+    useState(true);
+
+
+  const [error, setError] =
+    useState("");
+
+
+  // =====================================================
+  // LOAD DASHBOARD
+  // =====================================================
+
+  useEffect(() => {
+
+    const loadDashboard = async () => {
+
+      try {
+
+        setLoading(true);
+
+        setError("");
+
+
+        const response =
+          await fetch(
+            "http://localhost:5000/api/admin/dashboard"
+          );
+
+
+        const data =
+          await response.json();
+
+
+        console.log(
+          "Admin dashboard data:",
+          data
+        );
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            data.message ||
+            "Failed to load dashboard."
+          );
+
+        }
+
+
+        // =================================================
+        // STATISTICS
+        // =================================================
+
+        setStatistics(
+
+          data.statistics || {
+
+            totalRooms: 0,
+
+            reservations: 0,
+
+            customers: 0,
+
+            totalRevenue: 0,
+
+          }
+
+        );
+
+
+        // =================================================
+        // ROOM STATUS
+        // =================================================
+
+        setRoomStatus(
+
+          data.roomStatus || {
+
+            available: 0,
+
+            occupied: 0,
+
+            maintenance: 0,
+
+          }
+
+        );
+
+
+        // =================================================
+        // RECENT RESERVATIONS
+        // =================================================
+
+        setRecentReservations(
+
+          data.recentReservations || []
+
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Dashboard error:",
+          error
+        );
+
+
+        setError(
+
+          error.message ||
+          "Unable to load dashboard."
+
+        );
+
+      } finally {
+
+        setLoading(false);
+
+      }
+
+    };
+
+
+    loadDashboard();
+
+  }, []);
+
+
+  // =====================================================
+  // FORMAT CURRENCY
+  // =====================================================
+
+  const formatCurrency = (amount) => {
+
+    return `₹${Number(
+      amount || 0
+    ).toLocaleString("en-IN")}`;
+
+  };
+
+
+  // =====================================================
+  // FORMAT DATE
+  // =====================================================
+
+  const formatDate = (date) => {
+
+    if (!date) {
+
+      return "-";
+
+    }
+
+
+    const parsedDate =
+      new Date(date);
+
+
+    if (
+      Number.isNaN(
+        parsedDate.getTime()
+      )
+    ) {
+
+      return "-";
+
+    }
+
+
+    return parsedDate.toLocaleDateString(
+      "en-IN",
+      {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      }
+    );
+
+  };
+
+
+  // =====================================================
+  // STATUS
+  // =====================================================
+
+  const getStatusClass = (status) => {
+
+    const normalizedStatus =
+      String(
+        status || ""
+      ).toLowerCase();
+
+
+    if (
+      normalizedStatus ===
+      "confirmed"
+    ) {
+
+      return "confirmed";
+
+    }
+
+
+    if (
+      normalizedStatus ===
+      "pending"
+    ) {
+
+      return "pending";
+
+    }
+
+
+    if (
+      normalizedStatus ===
+      "checked in"
+    ) {
+
+      return "checked";
+
+    }
+
+
+    if (
+      normalizedStatus ===
+      "checked_in"
+    ) {
+
+      return "checked";
+
+    }
+
+
+    if (
+      normalizedStatus ===
+      "completed"
+    ) {
+
+      return "confirmed";
+
+    }
+
+
+    if (
+      normalizedStatus ===
+      "cancelled"
+    ) {
+
+      return "pending";
+
+    }
+
+
+    return "pending";
+
+  };
+
+
+  // =====================================================
+  // DISPLAY STATUS
+  // =====================================================
+
+  const getDisplayStatus = (status) => {
+
+    if (!status) {
+
+      return "Pending";
+
+    }
+
+
+    const normalizedStatus =
+      String(status)
+        .toLowerCase();
+
+
+    if (
+      normalizedStatus ===
+      "checked_in"
+    ) {
+
+      return "Checked In";
+
+    }
+
+
+    return (
+
+      String(status)
+        .charAt(0)
+        .toUpperCase() +
+
+      String(status)
+        .slice(1)
+
+    );
+
+  };
+
+
+  // =====================================================
+  // LOADING
+  // =====================================================
+
+  if (loading) {
+
+    return (
+
+      <div className="admin-container">
+
+        <Sidebar />
+
+        <div className="admin-main">
+
+          <Topbar />
+
+          <div className="admin-content">
+
+            <div className="dashboard-header">
+
+              <h1>
+                Dashboard
+              </h1>
+
+              <p>
+                Loading dashboard data...
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    );
+
+  }
+
+
+  // =====================================================
+  // MAIN
+  // =====================================================
+
   return (
+
     <div className="admin-container">
 
       <Sidebar />
+
 
       <div className="admin-main">
 
         <Topbar />
 
+
         <div className="admin-content">
 
-          {/* Header */}
+
+          {/* =================================================
+              HEADER
+          ================================================= */}
 
           <div className="dashboard-header">
-            <h1>Dashboard</h1>
-            <p>Welcome back, Admin</p>
+
+            <h1>
+              Dashboard
+            </h1>
+
+            <p>
+              Welcome back, Admin
+            </p>
+
           </div>
 
-          {/* Statistics */}
+
+          {/* =================================================
+              ERROR
+          ================================================= */}
+
+          {error && (
+
+            <div className="customer-message error">
+
+              {error}
+
+            </div>
+
+          )}
+
+
+          {/* =================================================
+              STATISTICS
+          ================================================= */}
 
           <div className="stats-grid">
 
-            {/* Total Rooms */}
+
+            {/* =================================================
+                TOTAL ROOMS
+            ================================================= */}
 
             <div className="stat-card">
+
               <div className="icon-box blue">
-                <MdHotel className="stat-icon" />
+
+                <MdHotel
+                  className="stat-icon"
+                />
+
               </div>
+
 
               <div>
-                <h3>150</h3>
-                <p>Total Rooms</p>
+
+                <h3>
+
+                  {statistics.totalRooms}
+
+                </h3>
+
+                <p>
+                  Total Rooms
+                </p>
+
               </div>
+
             </div>
 
-            {/* Reservations */}
+
+            {/* =================================================
+                RESERVATIONS
+            ================================================= */}
 
             <div className="stat-card">
+
               <div className="icon-box green">
-                <FaCalendarCheck className="stat-icon" />
+
+                <FaCalendarCheck
+                  className="stat-icon"
+                />
+
               </div>
+
 
               <div>
-                <h3>82</h3>
-                <p>Reservations</p>
+
+                <h3>
+
+                  {statistics.reservations}
+
+                </h3>
+
+                <p>
+                  Reservations
+                </p>
+
               </div>
+
             </div>
 
-            {/* Customers */}
+
+            {/* =================================================
+                CUSTOMERS
+            ================================================= */}
 
             <div className="stat-card">
+
               <div className="icon-box orange">
-                <FaUsers className="stat-icon" />
+
+                <FaUsers
+                  className="stat-icon"
+                />
+
               </div>
+
 
               <div>
-                <h3>245</h3>
-                <p>Customers</p>
+
+                <h3>
+
+                  {statistics.customers}
+
+                </h3>
+
+                <p>
+                  Customers
+                </p>
+
               </div>
+
             </div>
 
-            {/* Revenue */}
+
+            {/* =================================================
+                REVENUE
+            ================================================= */}
 
             <div className="stat-card">
+
               <div className="icon-box purple">
-                <FaMoneyBillWave className="stat-icon" />
+
+                <FaMoneyBillWave
+                  className="stat-icon"
+                />
+
               </div>
 
+
               <div>
-                <h3>₹1,45,677</h3>
-                <p>Total Revenue</p>
+
+                <h3>
+
+                  {formatCurrency(
+                    statistics.totalRevenue
+                  )}
+
+                </h3>
+
+                <p>
+                  Total Revenue
+                </p>
+
               </div>
+
             </div>
+
 
           </div>
 
-          {/* Bottom Section */}
+
+          {/* =================================================
+              BOTTOM SECTION
+          ================================================= */}
 
           <div className="dashboard-bottom">
 
-            {/* Recent Reservations */}
+
+            {/* =================================================
+                RECENT RESERVATIONS
+            ================================================= */}
 
             <div className="dashboard-box">
 
-              <h2>Recent Reservations</h2>
+              <h2>
+                Recent Reservations
+              </h2>
+
 
               <table>
 
                 <thead>
+
                   <tr>
-                    <th>Guest</th>
-                    <th>Room</th>
-                    <th>Check In Date</th>
-                    <th>Status</th>
+
+                    <th>
+                      Guest
+                    </th>
+
+                    <th>
+                      Room
+                    </th>
+
+                    <th>
+                      Check In Date
+                    </th>
+
+                    <th>
+                      Status
+                    </th>
+
                   </tr>
+
                 </thead>
+
 
                 <tbody>
 
-                  <tr>
-                    <td>Yagna</td>
-                    <td>101</td>
-                    <td>06 Aug 2026</td>
-                    <td>
-                      <span className="status confirmed">
-                        Confirmed
-                      </span>
-                    </td>
-                  </tr>
 
-                  <tr>
-                    <td>Dileep</td>
-                    <td>205</td>
-                    <td>08 Aug 2026</td>
-                    <td>
-                      <span className="status pending">
-                        Pending
-                      </span>
-                    </td>
-                  </tr>
+                  {recentReservations.length === 0 ? (
 
-                  <tr>
-                    <td>Dhoni</td>
-                    <td>309</td>
-                    <td>10 Aug 2026</td>
-                    <td>
-                      <span className="status checked">
-                        Checked In
-                      </span>
-                    </td>
-                  </tr>
+                    <tr>
+
+                      <td
+                        colSpan="4"
+                        style={{
+                          textAlign:
+                            "center",
+                          padding:
+                            "25px",
+                        }}
+                      >
+
+                        No reservations found.
+
+                      </td>
+
+                    </tr>
+
+                  ) : (
+
+                    recentReservations.map(
+                      (reservation) => (
+
+                        <tr
+                          key={
+                            reservation.id
+                          }
+                        >
+
+                          <td>
+
+                            {reservation.guest_name ||
+                              "Unknown"}
+
+                          </td>
+
+
+                          <td>
+
+                            {reservation.room_number ||
+                              "-"}
+
+                          </td>
+
+
+                          <td>
+
+                            {formatDate(
+                              reservation.check_in
+                            )}
+
+                          </td>
+
+
+                          <td>
+
+                            <span
+                              className={`status ${getStatusClass(
+                                reservation.booking_status
+                              )}`}
+                            >
+
+                              {getDisplayStatus(
+                                reservation.booking_status
+                              )}
+
+                            </span>
+
+                          </td>
+
+                        </tr>
+
+                      )
+                    )
+
+                  )}
 
                 </tbody>
 
               </table>
 
             </div>
-                        {/* Room Status */}
+
+
+            {/* =================================================
+                ROOM STATUS
+            ================================================= */}
 
             <div className="dashboard-box">
 
-              <h2>Room Status</h2>
+              <h2>
+                Room Status
+              </h2>
+
 
               <div className="room-status">
 
-                {/* Available */}
+
+                {/* =================================================
+                    AVAILABLE
+                ================================================= */}
 
                 <div className="status-card">
 
                   <div className="status-icon-box green">
-                    <FaDoorOpen className="status-icon" />
+
+                    <FaDoorOpen
+                      className="status-icon"
+                    />
+
                   </div>
 
+
                   <div className="status-info">
-                    <h3>120</h3>
-                    <p>Available</p>
+
+                    <h3>
+
+                      {roomStatus.available}
+
+                    </h3>
+
+                    <p>
+                      Available
+                    </p>
+
                   </div>
 
                 </div>
 
-                {/* Occupied */}
+
+                {/* =================================================
+                    OCCUPIED
+                ================================================= */}
 
                 <div className="status-card">
 
                   <div className="status-icon-box orange">
-                    <MdHotel className="status-icon" />
+
+                    <MdHotel
+                      className="status-icon"
+                    />
+
                   </div>
 
+
                   <div className="status-info">
-                    <h3>25</h3>
-                    <p>Occupied</p>
+
+                    <h3>
+
+                      {roomStatus.occupied}
+
+                    </h3>
+
+                    <p>
+                      Occupied
+                    </p>
+
                   </div>
 
                 </div>
 
-                {/* Maintenance */}
+
+                {/* =================================================
+                    MAINTENANCE
+                ================================================= */}
 
                 <div className="status-card">
 
                   <div className="status-icon-box red">
-                    <FaTools className="status-icon" />
+
+                    <FaTools
+                      className="status-icon"
+                    />
+
                   </div>
 
+
                   <div className="status-info">
-                    <h3>5</h3>
-                    <p>Maintenance</p>
+
+                    <h3>
+
+                      {roomStatus.maintenance}
+
+                    </h3>
+
+                    <p>
+                      Maintenance
+                    </p>
+
                   </div>
 
                 </div>
 
+
               </div>
 
             </div>
+
 
           </div>
 
@@ -217,6 +844,8 @@ function AdminDashboard() {
     </div>
 
   );
+
 }
+
 
 export default AdminDashboard;

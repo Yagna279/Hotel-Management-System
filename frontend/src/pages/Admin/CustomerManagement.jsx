@@ -1,40 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
-
-import {
-  FaUsers,
-  FaUserPlus,
-  FaCrown,
-  FaSearch,
-  FaTimes,
-  FaEdit,
-} from "react-icons/fa";
-
 import "./CustomerManagement.css";
 
-
-// =====================================================
-// API
-// =====================================================
-
-const API_URL = "http://localhost:5000/api/customers";
-
-
-// =====================================================
-// CUSTOMER MANAGEMENT
-// =====================================================
+import {
+  FaUserPlus,
+  FaUsers,
+  FaUserCheck,
+  FaUserClock,
+  FaSearch,
+  FaTimes,
+} from "react-icons/fa";
 
 function CustomerManagement() {
 
-  const navigate = useNavigate();
-
-
-  // =====================================================
-  // CUSTOMERS
-  // =====================================================
+  // =========================
+  // CUSTOMER DATA
+  // =========================
 
   const [customers, setCustomers] = useState([]);
 
@@ -42,90 +24,81 @@ function CustomerManagement() {
 
   const [error, setError] = useState("");
 
-
-  // =====================================================
+  // =========================
   // SEARCH
-  // =====================================================
+  // =========================
 
   const [searchTerm, setSearchTerm] = useState("");
 
+  // =========================
+  // ADD CUSTOMER MODAL
+  // =========================
 
-  // =====================================================
-  // EDIT CUSTOMER
-  // =====================================================
+  const [showAddModal, setShowAddModal] = useState(false);
 
-  const [selectedCustomer, setSelectedCustomer] =
-    useState(null);
+  const [addingCustomer, setAddingCustomer] = useState(false);
 
-  const [showEditModal, setShowEditModal] =
-    useState(false);
+  const [addError, setAddError] = useState("");
 
+  // =========================
+  // ADD CUSTOMER FORM
+  // =========================
 
-  // =====================================================
-  // SAVING
-  // =====================================================
-
-  const [saving, setSaving] = useState(false);
-
-
-  // =====================================================
-  // EDIT FORM
-  // =====================================================
-
-  const [editForm, setEditForm] = useState({
-
+  const [customerForm, setCustomerForm] = useState({
     full_name: "",
-
     email: "",
-
     phone: "",
-
+    password: "",
     role: "customer",
-
-    status: "active",
-
   });
 
+  // =========================
+  // EDIT CUSTOMER
+  // =========================
 
-  // =====================================================
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
+
+  const [showEditModal, setShowEditModal] = useState(false);
+
+  const [editForm, setEditForm] = useState({
+    full_name: "",
+    email: "",
+    phone: "",
+    role: "customer",
+    status: "active",
+  });
+
+  const [savingEdit, setSavingEdit] = useState(false);
+
+  const [editError, setEditError] = useState("");
+
+  // ============================================================
   // FETCH CUSTOMERS
-  // =====================================================
+  // ============================================================
 
   useEffect(() => {
-
     fetchCustomers();
-
   }, []);
-
 
   const fetchCustomers = async () => {
 
     try {
 
       setLoading(true);
-
       setError("");
 
-
-      const response = await fetch(API_URL);
-
+      const response = await fetch(
+        "http://localhost:5000/api/customers"
+      );
 
       if (!response.ok) {
-
-        throw new Error(
-          "Failed to fetch customers"
-        );
-
+        throw new Error("Failed to fetch customers");
       }
-
 
       const data = await response.json();
 
-
       /*
-        Your backend may return either:
-
-        1. An array directly
+        Backend may return:
 
         [
           {...},
@@ -134,30 +107,17 @@ function CustomerManagement() {
 
         OR
 
-        2. An object
-
         {
-          success: true,
           customers: [...]
         }
-
-        This handles both.
       */
 
       if (Array.isArray(data)) {
-
         setCustomers(data);
-
-      } else if (
-        Array.isArray(data.customers)
-      ) {
-
+      } else if (Array.isArray(data.customers)) {
         setCustomers(data.customers);
-
       } else {
-
         setCustomers([]);
-
       }
 
     } catch (error) {
@@ -176,528 +136,452 @@ function CustomerManagement() {
       setLoading(false);
 
     }
-
   };
 
+  // ============================================================
+  // ADD CUSTOMER BUTTON
+  // ============================================================
 
-  // =====================================================
-  // SEARCH CUSTOMERS
-  // =====================================================
+  const handleOpenAddCustomer = () => {
 
-  const filteredCustomers =
-    customers.filter((customer) => {
-
-      const search =
-        searchTerm
-          .toLowerCase()
-          .trim();
-
-
-      if (!search) {
-
-        return true;
-
-      }
-
-
-      return (
-
-        customer.full_name
-          ?.toLowerCase()
-          .includes(search)
-
-        ||
-
-        customer.email
-          ?.toLowerCase()
-          .includes(search)
-
-        ||
-
-        customer.phone
-          ?.toLowerCase()
-          .includes(search)
-
-        ||
-
-        customer.role
-          ?.toLowerCase()
-          .includes(search)
-
-        ||
-
-        customer.status
-          ?.toLowerCase()
-          .includes(search)
-
-      );
-
+    setCustomerForm({
+      full_name: "",
+      email: "",
+      phone: "",
+      password: "",
+      role: "customer",
     });
 
+    setAddError("");
 
-  // =====================================================
-  // STATISTICS
-  // =====================================================
-
-  const totalCustomers =
-    customers.length;
-
-
-  const activeCustomers =
-    customers.filter(
-      (customer) =>
-        customer.status
-          ?.toLowerCase() === "active"
-    ).length;
-
-
-  const vipCustomers =
-    customers.filter(
-      (customer) => {
-
-        const role =
-          customer.role
-            ?.toLowerCase();
-
-        return (
-          role === "vip" ||
-          role === "vip customer"
-        );
-
-      }
-    ).length;
-
-
-  const newCustomers =
-    customers.filter(
-      (customer) => {
-
-        if (!customer.created_at) {
-
-          return false;
-
-        }
-
-
-        const createdDate =
-          new Date(
-            customer.created_at
-          );
-
-
-        const now =
-          new Date();
-
-
-        return (
-
-          createdDate.getMonth() ===
-            now.getMonth()
-
-          &&
-
-          createdDate.getFullYear() ===
-            now.getFullYear()
-
-        );
-
-      }
-    ).length;
-
-
-  // =====================================================
-  // ADD CUSTOMER
-  // =====================================================
-
-  const handleAddCustomer = () => {
-
-    /*
-      Admin clicks Add Customer.
-
-      This sends the admin to the existing
-      Get Started page.
-
-      The Get Started page will create
-      the customer in the customers table.
-    */
-
-    navigate("/get-started");
-
+    setShowAddModal(true);
   };
 
+  // ============================================================
+  // CLOSE ADD CUSTOMER MODAL
+  // ============================================================
 
-  // =====================================================
-  // OPEN EDIT MODAL
-  // =====================================================
+  const handleCloseAddCustomer = () => {
+
+    if (addingCustomer) {
+      return;
+    }
+
+    setShowAddModal(false);
+
+    setAddError("");
+
+    setCustomerForm({
+      full_name: "",
+      email: "",
+      phone: "",
+      password: "",
+      role: "customer",
+    });
+  };
+
+  // ============================================================
+  // ADD CUSTOMER FORM CHANGE
+  // ============================================================
+
+  const handleCustomerFormChange = (e) => {
+
+    const { name, value } = e.target;
+
+    setCustomerForm((previous) => ({
+      ...previous,
+      [name]: value,
+    }));
+  };
+
+  // ============================================================
+  // ADD CUSTOMER
+  // ============================================================
+
+  const handleAddCustomer = async (e) => {
+
+    e.preventDefault();
+
+    setAddError("");
+
+    // Basic validation
+
+    if (!customerForm.full_name.trim()) {
+      setAddError("Full name is required.");
+      return;
+    }
+
+    if (!customerForm.email.trim()) {
+      setAddError("Email is required.");
+      return;
+    }
+
+    if (!customerForm.phone.trim()) {
+      setAddError("Phone number is required.");
+      return;
+    }
+
+    if (!customerForm.password) {
+      setAddError("Password is required.");
+      return;
+    }
+
+    if (customerForm.password.length < 6) {
+      setAddError(
+        "Password must contain at least 6 characters."
+      );
+      return;
+    }
+
+    try {
+
+      setAddingCustomer(true);
+
+      const response = await fetch(
+        "http://localhost:5000/api/customers",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+          },
+
+          body: JSON.stringify({
+            full_name: customerForm.full_name.trim(),
+            email: customerForm.email.trim(),
+            phone: customerForm.phone.trim(),
+            password: customerForm.password,
+            role: customerForm.role,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+
+        throw new Error(
+          data.message ||
+          "Failed to add customer."
+        );
+      }
+
+      // Close modal
+
+      setShowAddModal(false);
+
+      // Clear form
+
+      setCustomerForm({
+        full_name: "",
+        email: "",
+        phone: "",
+        password: "",
+        role: "customer",
+      });
+
+      // Refresh customers from database
+
+      await fetchCustomers();
+
+    } catch (error) {
+
+      console.error(
+        "Error adding customer:",
+        error
+      );
+
+      setAddError(
+        error.message ||
+        "Failed to add customer."
+      );
+
+    } finally {
+
+      setAddingCustomer(false);
+
+    }
+  };
+
+  // ============================================================
+  // EDIT CUSTOMER
+  // ============================================================
 
   const handleEdit = (customer) => {
 
     setSelectedCustomer(customer);
 
-
     setEditForm({
-
-      full_name:
-        customer.full_name || "",
-
-      email:
-        customer.email || "",
-
-      phone:
-        customer.phone || "",
-
-      role:
-        customer.role || "customer",
-
-      status:
-        customer.status || "active",
-
+      full_name: customer.full_name || "",
+      email: customer.email || "",
+      phone: customer.phone || "",
+      role: customer.role || "customer",
+      status: customer.status || "active",
     });
 
+    setEditError("");
 
     setShowEditModal(true);
-
   };
 
-
-  // =====================================================
-  // EDIT FORM CHANGE
-  // =====================================================
-
-  const handleEditChange = (e) => {
-
-    const {
-      name,
-      value,
-    } = e.target;
-
-
-    setEditForm(
-      (previous) => ({
-
-        ...previous,
-
-        [name]: value,
-
-      })
-    );
-
-  };
-
-
-  // =====================================================
+  // ============================================================
   // CLOSE EDIT MODAL
-  // =====================================================
+  // ============================================================
 
-  const closeEditModal = () => {
+  const handleCloseEdit = () => {
 
-    if (saving) {
-
+    if (savingEdit) {
       return;
-
     }
-
 
     setShowEditModal(false);
 
     setSelectedCustomer(null);
 
-
-    setEditForm({
-
-      full_name: "",
-
-      email: "",
-
-      phone: "",
-
-      role: "customer",
-
-      status: "active",
-
-    });
+    setEditError("");
 
   };
 
+  // ============================================================
+  // EDIT FORM CHANGE
+  // ============================================================
 
-  // =====================================================
-  // UPDATE CUSTOMER
-  // =====================================================
+  const handleEditChange = (e) => {
 
-  const handleUpdateCustomer =
-    async (e) => {
+    const { name, value } = e.target;
 
-      e.preventDefault();
+    setEditForm((previous) => ({
+      ...previous,
+      [name]: value,
+    }));
 
+  };
 
-      if (!selectedCustomer) {
+  // ============================================================
+  // SAVE CUSTOMER EDIT
+  // ============================================================
 
-        return;
+  const handleSaveEdit = async (e) => {
 
-      }
+    e.preventDefault();
 
+    if (!selectedCustomer) {
+      return;
+    }
 
-      try {
+    setEditError("");
 
-        setSaving(true);
+    try {
 
+      setSavingEdit(true);
 
-        const response =
-          await fetch(
-            `${API_URL}/${selectedCustomer.id}`,
-            {
+      const response = await fetch(
+        `http://localhost:5000/api/customers/${selectedCustomer.id}`,
+        {
+          method: "PUT",
 
-              method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
 
-              headers: {
-
-                "Content-Type":
-                  "application/json",
-
-              },
-
-              body: JSON.stringify({
-
-                full_name:
-                  editForm.full_name,
-
-                email:
-                  editForm.email,
-
-                phone:
-                  editForm.phone,
-
-                role:
-                  editForm.role,
-
-                status:
-                  editForm.status,
-
-              }),
-
-            }
-          );
-
-
-        const data =
-          await response.json();
-
-
-        if (!response.ok) {
-
-          throw new Error(
-            data.message ||
-            "Failed to update customer"
-          );
-
+          body: JSON.stringify({
+            full_name: editForm.full_name,
+            email: editForm.email,
+            phone: editForm.phone,
+            role: editForm.role,
+            status: editForm.status,
+          }),
         }
+      );
 
+      const data = await response.json();
 
-        alert(
-          "Customer updated successfully"
+      if (!response.ok) {
+
+        throw new Error(
+          data.message ||
+          "Failed to update customer."
         );
-
-
-        closeEditModal();
-
-
-        /*
-          Fetch again from PostgreSQL.
-
-          This guarantees that the table
-          displays the latest database values.
-        */
-
-        await fetchCustomers();
-
-      } catch (error) {
-
-        console.error(
-          "Error updating customer:",
-          error
-        );
-
-
-        alert(
-          error.message ||
-          "Failed to update customer"
-        );
-
-      } finally {
-
-        setSaving(false);
-
       }
 
-    };
+      // Close modal
 
+      handleCloseEdit();
 
-  // =====================================================
+      // Refresh from database
+
+      await fetchCustomers();
+
+    } catch (error) {
+
+      console.error(
+        "Error updating customer:",
+        error
+      );
+
+      setEditError(
+        error.message ||
+        "Failed to update customer."
+      );
+
+    } finally {
+
+      setSavingEdit(false);
+
+    }
+  };
+
+  // ============================================================
+  // SEARCH CUSTOMERS
+  // ============================================================
+
+  const filteredCustomers = customers.filter(
+    (customer) => {
+
+      const search = searchTerm
+        .toLowerCase()
+        .trim();
+
+      if (!search) {
+        return true;
+      }
+
+      return (
+        customer.full_name
+          ?.toLowerCase()
+          .includes(search) ||
+
+        customer.email
+          ?.toLowerCase()
+          .includes(search) ||
+
+        customer.phone
+          ?.toLowerCase()
+          .includes(search) ||
+
+        customer.role
+          ?.toLowerCase()
+          .includes(search)
+      );
+    }
+  );
+
+  // ============================================================
+  // STATISTICS
+  // ============================================================
+
+  const totalCustomers = customers.length;
+
+  const activeCustomers = customers.filter(
+    (customer) =>
+      customer.status?.toLowerCase() === "active"
+  ).length;
+
+  const inactiveCustomers = customers.filter(
+    (customer) =>
+      customer.status?.toLowerCase() === "inactive"
+  ).length;
+
+  const vipCustomers = customers.filter(
+    (customer) =>
+      customer.role?.toLowerCase() === "vip"
+  ).length;
+
+  // ============================================================
   // STATUS CLASS
-  // =====================================================
+  // ============================================================
 
   const getStatusClass = (status) => {
 
-    switch (
-      status?.toLowerCase()
-    ) {
+    switch (status?.toLowerCase()) {
 
       case "active":
-
         return "active";
 
-
-      case "checked_in":
-
-        return "checked-in";
-
-
-      case "checked-out":
-
-      case "checked_out":
-
-        return "checked-out";
-
+      case "inactive":
+        return "inactive";
 
       default:
-
-        return "customer";
-
+        return "";
     }
 
   };
 
-
-  // =====================================================
-  // STATUS TEXT
-  // =====================================================
-
-  const getStatusText = (status) => {
-
-    switch (
-      status?.toLowerCase()
-    ) {
-
-      case "active":
-
-        return "Active";
-
-
-      case "checked_in":
-
-        return "Checked In";
-
-
-      case "checked-out":
-
-      case "checked_out":
-
-        return "Checked Out";
-
-
-      default:
-
-        return status || "Not Set";
-
-    }
-
-  };
-
-
-  // =====================================================
-  // ROLE TEXT
-  // =====================================================
-
-  const getRoleText = (role) => {
-
-    const currentRole =
-      role?.toLowerCase();
-
-
-    if (
-      currentRole === "vip" ||
-      currentRole === "vip customer"
-    ) {
-
-      return "VIP";
-
-    }
-
-
-    if (
-      currentRole === "customer"
-    ) {
-
-      return "Customer";
-
-    }
-
-
-    return role || "Not Set";
-
-  };
-
-
-  // =====================================================
+  // ============================================================
   // ROLE CLASS
-  // =====================================================
+  // ============================================================
 
   const getRoleClass = (role) => {
 
-    const currentRole =
-      role?.toLowerCase();
+    switch (role?.toLowerCase()) {
 
+      case "vip":
+        return "vip";
 
-    if (
-      currentRole === "vip" ||
-      currentRole === "vip customer"
-    ) {
+      case "customer":
+        return "customer";
 
-      return "vip";
-
+      default:
+        return "";
     }
-
-
-    return "customer";
 
   };
 
+  // ============================================================
+  // DISPLAY ROLE
+  // ============================================================
 
-  // =====================================================
-  // RENDER
-  // =====================================================
+  const formatRole = (role) => {
+
+    if (!role) {
+      return "Customer";
+    }
+
+    return (
+      role.charAt(0).toUpperCase() +
+      role.slice(1)
+    );
+
+  };
+
+  // ============================================================
+  // DISPLAY STATUS
+  // ============================================================
+
+  const formatStatus = (status) => {
+
+    if (!status) {
+      return "Active";
+    }
+
+    return (
+      status.charAt(0).toUpperCase() +
+      status.slice(1)
+    );
+
+  };
+
+  // ============================================================
+  // RETURN
+  // ============================================================
 
   return (
 
     <div className="admin-container">
 
-
-      {/* =================================================
-          SIDEBAR
-      ================================================= */}
-
       <Sidebar />
-
 
       <div className="admin-main">
 
-
-        {/* =================================================
-            TOPBAR
-        ================================================= */}
-
         <Topbar />
-
 
         <div className="admin-content">
 
-
-          {/* =================================================
+          {/* =====================================================
               HEADER
-          ================================================= */}
+          ====================================================== */}
 
           <div className="customer-header">
-
 
             <div>
 
@@ -706,20 +590,14 @@ function CustomerManagement() {
               </h1>
 
               <p>
-                Manage hotel customers
+                Manage hotel customers efficiently
               </p>
 
             </div>
 
-
-            {/* =================================================
-                ADD CUSTOMER
-            ================================================= */}
-
             <button
-              type="button"
               className="add-customer-btn"
-              onClick={handleAddCustomer}
+              onClick={handleOpenAddCustomer}
             >
 
               <FaUserPlus />
@@ -728,151 +606,142 @@ function CustomerManagement() {
 
             </button>
 
-
           </div>
 
 
-          {/* =================================================
-              STATISTICS
-          ================================================= */}
-
-          <div className="customer-stats">
-
-
-            {/* TOTAL CUSTOMERS */}
-
-            <div className="customer-card">
-
-              <div className="icon-box blue">
-
-                <FaUsers
-                  className="customer-icon"
-                />
-
-              </div>
-
-
-              <h2>
-                {totalCustomers}
-              </h2>
-
-
-              <p>
-                Total Customers
-              </p>
-
-            </div>
-
-
-            {/* ACTIVE CUSTOMERS */}
-
-            <div className="customer-card">
-
-              <div className="icon-box green">
-
-                <FaUsers
-                  className="customer-icon"
-                />
-
-              </div>
-
-
-              <h2>
-                {activeCustomers}
-              </h2>
-
-
-              <p>
-                Active Customers
-              </p>
-
-            </div>
-
-
-            {/* VIP CUSTOMERS */}
-
-            <div className="customer-card">
-
-              <div className="icon-box orange">
-
-                <FaCrown
-                  className="customer-icon"
-                />
-
-              </div>
-
-
-              <h2>
-                {vipCustomers}
-              </h2>
-
-
-              <p>
-                VIP Customers
-              </p>
-
-            </div>
-
-
-            {/* NEW CUSTOMERS */}
-
-            <div className="customer-card">
-
-              <div className="icon-box purple">
-
-                <FaUserPlus
-                  className="customer-icon"
-                />
-
-              </div>
-
-
-              <h2>
-                {newCustomers}
-              </h2>
-
-
-              <p>
-                New This Month
-              </p>
-
-            </div>
-
-
-          </div>
-
-
-          {/* =================================================
+          {/* =====================================================
               SEARCH
-          ================================================= */}
+          ====================================================== */}
 
           <div className="customer-search">
 
             <FaSearch />
 
-
             <input
               type="text"
-              placeholder="Search customers..."
+              placeholder="Search customers by name, email, phone or role..."
               value={searchTerm}
               onChange={(e) =>
-                setSearchTerm(
-                  e.target.value
-                )
+                setSearchTerm(e.target.value)
               }
             />
 
           </div>
 
 
-          {/* =================================================
+          {/* =====================================================
+              STATISTICS
+          ====================================================== */}
+
+          <div className="customer-stats">
+
+            {/* TOTAL */}
+
+            <div className="customer-card">
+
+              <div className="customer-icon blue">
+
+                <FaUsers />
+
+              </div>
+
+              <div>
+
+                <h2>
+                  {totalCustomers}
+                </h2>
+
+                <p>
+                  Total Customers
+                </p>
+
+              </div>
+
+            </div>
+
+
+            {/* ACTIVE */}
+
+            <div className="customer-card">
+
+              <div className="customer-icon green">
+
+                <FaUserCheck />
+
+              </div>
+
+              <div>
+
+                <h2>
+                  {activeCustomers}
+                </h2>
+
+                <p>
+                  Active Customers
+                </p>
+
+              </div>
+
+            </div>
+
+
+            {/* INACTIVE */}
+
+            <div className="customer-card">
+
+              <div className="customer-icon orange">
+
+                <FaUserClock />
+
+              </div>
+
+              <div>
+
+                <h2>
+                  {inactiveCustomers}
+                </h2>
+
+                <p>
+                  Inactive Customers
+                </p>
+
+              </div>
+
+            </div>
+
+
+            {/* VIP */}
+
+            <div className="customer-card">
+
+              <div className="customer-icon purple">
+
+                <FaUserCheck />
+
+              </div>
+
+              <div>
+
+                <h2>
+                  {vipCustomers}
+                </h2>
+
+                <p>
+                  VIP Customers
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          {/* =====================================================
               CUSTOMER TABLE
-          ================================================= */}
+          ====================================================== */}
 
           <div className="customer-table-card">
-
-
-            {/* LOADING */}
 
             {loading && (
 
@@ -885,501 +754,604 @@ function CustomerManagement() {
             )}
 
 
-            {/* ERROR */}
-
-            {error && !loading && (
+            {error && (
 
               <div className="customer-message error">
 
                 {error}
-
-
-                <br />
-
-
-                <button
-                  type="button"
-                  className="edit-btn"
-                  onClick={fetchCustomers}
-                  style={{
-                    marginTop: "15px",
-                  }}
-                >
-
-                  Retry
-
-                </button>
 
               </div>
 
             )}
 
 
-            {/* TABLE */}
+            {!loading && !error && (
 
-            {!loading &&
-              !error && (
+              <table>
 
-                <table>
+                <thead>
+
+                  <tr>
+
+                    <th>
+                      ID
+                    </th>
+
+                    <th>
+                      Full Name
+                    </th>
+
+                    <th>
+                      Email
+                    </th>
+
+                    <th>
+                      Phone
+                    </th>
+
+                    <th>
+                      Role
+                    </th>
+
+                    <th>
+                      Status
+                    </th>
+
+                    <th>
+                      Action
+                    </th>
+
+                  </tr>
+
+                </thead>
 
 
-                  <thead>
+                <tbody>
+
+                  {filteredCustomers.length === 0 ? (
 
                     <tr>
 
-                      <th>
-                        Name
-                      </th>
+                      <td
+                        colSpan="7"
+                        style={{
+                          textAlign: "center",
+                          padding: "30px",
+                        }}
+                      >
 
-                      <th>
-                        Email
-                      </th>
+                        No customers found
 
-                      <th>
-                        Phone
-                      </th>
-
-                      <th>
-                        Role
-                      </th>
-
-                      <th>
-                        Status
-                      </th>
-
-                      <th>
-                        Action
-                      </th>
+                      </td>
 
                     </tr>
 
-                  </thead>
+                  ) : (
 
+                    filteredCustomers.map(
+                      (customer) => (
 
-                  <tbody>
-
-
-                    {/* NO CUSTOMERS */}
-
-                    {filteredCustomers.length ===
-                    0 ? (
-
-                      <tr>
-
-                        <td
-                          colSpan="6"
-                          className="no-customers"
+                        <tr
+                          key={customer.id}
                         >
 
-                          {searchTerm
-                            ? "No customers found for your search."
-                            : "No customers found."}
+                          <td>
+                            {customer.id}
+                          </td>
 
-                        </td>
+                          <td>
+                            {customer.full_name}
+                          </td>
 
-                      </tr>
+                          <td>
+                            {customer.email}
+                          </td>
 
-                    ) : (
+                          <td>
+                            {customer.phone || "-"}
+                          </td>
 
+                          <td>
 
-                      /* CUSTOMER ROWS */
+                            <span
+                              className={`customer-role ${getRoleClass(
+                                customer.role
+                              )}`}
+                            >
 
-                      filteredCustomers.map(
-                        (customer) => (
+                              {formatRole(
+                                customer.role
+                              )}
 
-                          <tr
-                            key={
-                              customer.id
-                            }
-                          >
+                            </span>
 
+                          </td>
 
-                            {/* NAME */}
+                          <td>
 
-                            <td>
+                            <span
+                              className={`customer-status ${getStatusClass(
+                                customer.status
+                              )}`}
+                            >
 
-                              {customer.full_name ||
-                                "Not provided"}
+                              {formatStatus(
+                                customer.status
+                              )}
 
-                            </td>
+                            </span>
 
+                          </td>
 
-                            {/* EMAIL */}
+                          <td>
 
-                            <td>
+                            <button
+                              className="customer-edit-btn"
+                              onClick={() =>
+                                handleEdit(
+                                  customer
+                                )
+                              }
+                            >
 
-                              {customer.email ||
-                                "Not provided"}
+                              Edit
 
-                            </td>
+                            </button>
 
+                          </td>
 
-                            {/* PHONE */}
+                        </tr>
 
-                            <td>
-
-                              {customer.phone ||
-                                "Not provided"}
-
-                            </td>
-
-
-                            {/* ROLE */}
-
-                            <td>
-
-                              <span
-                                className={`status ${getRoleClass(
-                                  customer.role
-                                )}`}
-                              >
-
-                                {getRoleText(
-                                  customer.role
-                                )}
-
-                              </span>
-
-                            </td>
-
-
-                            {/* STATUS */}
-
-                            <td>
-
-                              <span
-                                className={`status ${getStatusClass(
-                                  customer.status
-                                )}`}
-                              >
-
-                                {getStatusText(
-                                  customer.status
-                                )}
-
-                              </span>
-
-                            </td>
-
-
-                            {/* EDIT */}
-
-                            <td>
-
-                              <button
-                                type="button"
-                                className="edit-btn"
-                                onClick={() =>
-                                  handleEdit(
-                                    customer
-                                  )
-                                }
-                              >
-
-                                <FaEdit
-                                  style={{
-                                    marginRight:
-                                      "6px",
-                                  }}
-                                />
-
-                                Edit
-
-                              </button>
-
-                            </td>
-
-
-                          </tr>
-
-                        )
                       )
+                    )
 
-                    )}
+                  )}
 
-                  </tbody>
+                </tbody>
 
+              </table>
 
-                </table>
-
-              )}
-
+            )}
 
           </div>
 
-
         </div>
-
 
       </div>
 
 
-      {/* =====================================================
-          EDIT CUSTOMER MODAL
-      ===================================================== */}
+      {/* ==========================================================
+          ADD CUSTOMER MODAL
+      =========================================================== */}
 
-      {showEditModal &&
-        selectedCustomer && (
+      {showAddModal && (
 
-          <div
-            className="customer-modal-overlay"
-            onClick={closeEditModal}
-          >
+        <div className="customer-modal-overlay">
 
+          <div className="customer-modal">
 
-            <div
-              className="customer-modal"
-              onClick={(e) =>
-                e.stopPropagation()
-              }
-            >
+            {/* MODAL HEADER */}
 
+            <div className="customer-modal-header">
 
-              {/* =================================================
-                  MODAL HEADER
-              ================================================= */}
+              <div>
 
-              <div className="customer-modal-header">
+                <h2>
+                  Add Customer
+                </h2>
 
-
-                <div>
-
-                  <h2>
-                    Edit Customer
-                  </h2>
-
-                  <p>
-                    Update customer details
-                  </p>
-
-                </div>
-
-
-                <button
-                  type="button"
-                  className="close-customer-btn"
-                  onClick={
-                    closeEditModal
-                  }
-                  disabled={saving}
-                >
-
-                  <FaTimes />
-
-                </button>
-
+                <p>
+                  Create a new customer account
+                </p>
 
               </div>
 
-
-              {/* =================================================
-                  EDIT FORM
-              ================================================= */}
-
-              <form
-                className="customer-form"
-                onSubmit={
-                  handleUpdateCustomer
-                }
+              <button
+                type="button"
+                className="customer-close-btn"
+                onClick={handleCloseAddCustomer}
+                disabled={addingCustomer}
               >
 
+                <FaTimes />
 
-                {/* FULL NAME */}
-
-                <div className="customer-form-group">
-
-                  <label>
-                    Full Name
-                  </label>
-
-
-                  <input
-                    type="text"
-                    name="full_name"
-                    value={
-                      editForm.full_name
-                    }
-                    onChange={
-                      handleEditChange
-                    }
-                    required
-                  />
-
-                </div>
-
-
-                {/* EMAIL */}
-
-                <div className="customer-form-group">
-
-                  <label>
-                    Email
-                  </label>
-
-
-                  <input
-                    type="email"
-                    name="email"
-                    value={
-                      editForm.email
-                    }
-                    onChange={
-                      handleEditChange
-                    }
-                    required
-                  />
-
-                </div>
-
-
-                {/* PHONE */}
-
-                <div className="customer-form-group">
-
-                  <label>
-                    Phone
-                  </label>
-
-
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={
-                      editForm.phone
-                    }
-                    onChange={
-                      handleEditChange
-                    }
-                    placeholder="Enter phone number"
-                  />
-
-                </div>
-
-
-                {/* ROLE */}
-
-                <div className="customer-form-group">
-
-                  <label>
-                    Role
-                  </label>
-
-
-                  <select
-                    name="role"
-                    value={
-                      editForm.role
-                    }
-                    onChange={
-                      handleEditChange
-                    }
-                  >
-
-                    <option value="customer">
-                      Customer
-                    </option>
-
-
-                    <option value="vip">
-                      VIP Customer
-                    </option>
-
-                  </select>
-
-                </div>
-
-
-                {/* STATUS */}
-
-                <div className="customer-form-group">
-
-                  <label>
-                    Status
-                  </label>
-
-
-                  <select
-                    name="status"
-                    value={
-                      editForm.status
-                    }
-                    onChange={
-                      handleEditChange
-                    }
-                  >
-
-                    <option value="active">
-                      Active
-                    </option>
-
-
-                    <option value="checked_in">
-                      Checked In
-                    </option>
-
-
-                    <option value="checked_out">
-                      Checked Out
-                    </option>
-
-                  </select>
-
-                </div>
-
-
-                {/* =================================================
-                    ACTIONS
-                ================================================= */}
-
-                <div className="customer-modal-actions">
-
-
-                  <button
-                    type="button"
-                    className="cancel-btn"
-                    onClick={
-                      closeEditModal
-                    }
-                    disabled={saving}
-                  >
-
-                    Cancel
-
-                  </button>
-
-
-                  <button
-                    type="submit"
-                    className="save-customer-btn"
-                    disabled={saving}
-                  >
-
-                    {saving
-                      ? "Saving..."
-                      : "Save Changes"}
-
-                  </button>
-
-
-                </div>
-
-
-              </form>
-
+              </button>
 
             </div>
 
 
+            {/* ADD FORM */}
+
+            <form
+              onSubmit={handleAddCustomer}
+              className="customer-form"
+            >
+
+              {/* ERROR */}
+
+              {addError && (
+
+                <div className="customer-form-error">
+
+                  {addError}
+
+                </div>
+
+              )}
+
+
+              {/* FULL NAME */}
+
+              <div className="customer-form-group">
+
+                <label>
+                  Full Name
+                </label>
+
+                <input
+                  type="text"
+                  name="full_name"
+                  placeholder="Enter full name"
+                  value={customerForm.full_name}
+                  onChange={
+                    handleCustomerFormChange
+                  }
+                  required
+                />
+
+              </div>
+
+
+              {/* EMAIL */}
+
+              <div className="customer-form-group">
+
+                <label>
+                  Email
+                </label>
+
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Enter email address"
+                  value={customerForm.email}
+                  onChange={
+                    handleCustomerFormChange
+                  }
+                  required
+                />
+
+              </div>
+
+
+              {/* PHONE */}
+
+              <div className="customer-form-group">
+
+                <label>
+                  Phone
+                </label>
+
+                <input
+                  type="tel"
+                  name="phone"
+                  placeholder="Enter phone number"
+                  value={customerForm.phone}
+                  onChange={
+                    handleCustomerFormChange
+                  }
+                  required
+                />
+
+              </div>
+
+
+              {/* PASSWORD */}
+
+              <div className="customer-form-group">
+
+                <label>
+                  Password
+                </label>
+
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Enter login password"
+                  value={customerForm.password}
+                  onChange={
+                    handleCustomerFormChange
+                  }
+                  minLength="6"
+                  required
+                />
+
+                <small>
+                  This password will be used by the
+                  customer to login.
+                </small>
+
+              </div>
+
+
+              {/* ROLE */}
+
+              <div className="customer-form-group">
+
+                <label>
+                  Role
+                </label>
+
+                <select
+                  name="role"
+                  value={customerForm.role}
+                  onChange={
+                    handleCustomerFormChange
+                  }
+                >
+
+                  <option value="customer">
+                    Customer
+                  </option>
+
+                  <option value="vip">
+                    VIP
+                  </option>
+
+                </select>
+
+              </div>
+
+
+              {/* BUTTONS */}
+
+              <div className="customer-modal-actions">
+
+                <button
+                  type="button"
+                  className="customer-cancel-btn"
+                  onClick={
+                    handleCloseAddCustomer
+                  }
+                  disabled={addingCustomer}
+                >
+
+                  Cancel
+
+                </button>
+
+                <button
+                  type="submit"
+                  className="customer-save-btn"
+                  disabled={addingCustomer}
+                >
+
+                  {addingCustomer
+                    ? "Adding..."
+                    : "Add Customer"}
+
+                </button>
+
+              </div>
+
+            </form>
+
           </div>
 
-        )}
+        </div>
 
+      )}
+
+
+      {/* ==========================================================
+          EDIT CUSTOMER MODAL
+      =========================================================== */}
+
+      {showEditModal && selectedCustomer && (
+
+        <div className="customer-modal-overlay">
+
+          <div className="customer-modal">
+
+            {/* HEADER */}
+
+            <div className="customer-modal-header">
+
+              <div>
+
+                <h2>
+                  Edit Customer
+                </h2>
+
+                <p>
+                  Update customer details
+                </p>
+
+              </div>
+
+              <button
+                type="button"
+                className="customer-close-btn"
+                onClick={handleCloseEdit}
+                disabled={savingEdit}
+              >
+
+                <FaTimes />
+
+              </button>
+
+            </div>
+
+
+            {/* EDIT FORM */}
+
+            <form
+              onSubmit={handleSaveEdit}
+              className="customer-form"
+            >
+
+              {editError && (
+
+                <div className="customer-form-error">
+
+                  {editError}
+
+                </div>
+
+              )}
+
+
+              {/* FULL NAME */}
+
+              <div className="customer-form-group">
+
+                <label>
+                  Full Name
+                </label>
+
+                <input
+                  type="text"
+                  name="full_name"
+                  value={editForm.full_name}
+                  onChange={handleEditChange}
+                  required
+                />
+
+              </div>
+
+
+              {/* EMAIL */}
+
+              <div className="customer-form-group">
+
+                <label>
+                  Email
+                </label>
+
+                <input
+                  type="email"
+                  name="email"
+                  value={editForm.email}
+                  onChange={handleEditChange}
+                  required
+                />
+
+              </div>
+
+
+              {/* PHONE */}
+
+              <div className="customer-form-group">
+
+                <label>
+                  Phone
+                </label>
+
+                <input
+                  type="tel"
+                  name="phone"
+                  value={editForm.phone}
+                  onChange={handleEditChange}
+                  required
+                />
+
+              </div>
+
+
+              {/* ROLE */}
+
+              <div className="customer-form-group">
+
+                <label>
+                  Role
+                </label>
+
+                <select
+                  name="role"
+                  value={editForm.role}
+                  onChange={handleEditChange}
+                >
+
+                  <option value="customer">
+                    Customer
+                  </option>
+
+                  <option value="vip">
+                    VIP
+                  </option>
+
+                </select>
+
+              </div>
+
+
+              {/* STATUS */}
+
+              <div className="customer-form-group">
+
+                <label>
+                  Status
+                </label>
+
+                <select
+                  name="status"
+                  value={editForm.status}
+                  onChange={handleEditChange}
+                >
+
+                  <option value="active">
+                    Active
+                  </option>
+
+                  <option value="inactive">
+                    Inactive
+                  </option>
+
+                </select>
+
+              </div>
+
+
+              {/* BUTTONS */}
+
+              <div className="customer-modal-actions">
+
+                <button
+                  type="button"
+                  className="customer-cancel-btn"
+                  onClick={handleCloseEdit}
+                  disabled={savingEdit}
+                >
+
+                  Cancel
+
+                </button>
+
+                <button
+                  type="submit"
+                  className="customer-save-btn"
+                  disabled={savingEdit}
+                >
+
+                  {savingEdit
+                    ? "Saving..."
+                    : "Save Changes"}
+
+                </button>
+
+              </div>
+
+            </form>
+
+          </div>
+
+        </div>
+
+      )}
 
     </div>
 
   );
-
 }
-
 
 export default CustomerManagement;
