@@ -1,4 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, {
+  useEffect,
+  useState,
+} from "react";
+
 import { useNavigate } from "react-router-dom";
 
 import CustomerSidebar from "./CustomerSidebar";
@@ -16,6 +20,7 @@ import {
 
 import "./CustomerBookings.css";
 
+
 function CustomerBookings() {
 
   // =====================================================
@@ -24,244 +29,486 @@ function CustomerBookings() {
 
   const navigate = useNavigate();
 
+
   // =====================================================
   // STATE
   // =====================================================
 
-  const [customer, setCustomer] = useState(null);
+  const [customer, setCustomer] =
+    useState(null);
 
-  const [bookings, setBookings] = useState([]);
 
-  const [statistics, setStatistics] = useState({
-    totalBookings: 0,
-    upcoming: 0,
-    completed: 0,
-    cancelled: 0,
-  });
+  const [bookings, setBookings] =
+    useState([]);
 
-  const [loading, setLoading] = useState(true);
 
-  const [error, setError] = useState("");
+  const [statistics, setStatistics] =
+    useState({
 
-  const [filter, setFilter] = useState("all");
+      totalBookings: 0,
+
+      upcoming: 0,
+
+      checkedOut: 0,
+
+      cancelled: 0,
+
+    });
+
+
+  const [loading, setLoading] =
+    useState(true);
+
+
+  const [error, setError] =
+    useState("");
+
+
+  const [filter, setFilter] =
+    useState("all");
+
 
   // =====================================================
-  // GET LOGGED-IN CUSTOMER AND BOOKINGS
+  // GET CUSTOMER BOOKINGS
   // =====================================================
 
   useEffect(() => {
 
-    const fetchCustomerBookings = async () => {
-
-      try {
-
-        // ===============================================
-        // GET USER FROM LOCAL STORAGE
-        // ===============================================
-
-        const storedUser =
-          localStorage.getItem("user");
-
-        if (!storedUser) {
-
-          setError(
-            "Customer login information not found."
-          );
-
-          setLoading(false);
-
-          return;
-        }
-
-        let user;
+    const fetchCustomerBookings =
+      async () => {
 
         try {
 
-          user = JSON.parse(storedUser);
+          // =============================================
+          // GET USER FROM LOCAL STORAGE
+          // =============================================
 
-        } catch (parseError) {
+          const storedUser =
+            localStorage.getItem("user");
+
+
+          if (!storedUser) {
+
+            setError(
+              "Customer login information not found."
+            );
+
+            setLoading(false);
+
+            return;
+
+          }
+
+
+          // =============================================
+          // PARSE USER
+          // =============================================
+
+          let user;
+
+
+          try {
+
+            user =
+              JSON.parse(
+                storedUser
+              );
+
+          } catch (parseError) {
+
+            console.error(
+              "Invalid customer data:",
+              parseError
+            );
+
+            setError(
+              "Invalid customer login information."
+            );
+
+            setLoading(false);
+
+            return;
+
+          }
+
+
+          console.log(
+            "Logged-in customer:",
+            user
+          );
+
+
+          // =============================================
+          // GET CUSTOMER ID
+          // =============================================
+
+          const customerId =
+            user?.id;
+
+
+          if (!customerId) {
+
+            setError(
+              "Customer ID not found."
+            );
+
+            setLoading(false);
+
+            return;
+
+          }
+
+
+          console.log(
+            "Customer ID:",
+            customerId
+          );
+
+
+          // =============================================
+          // API REQUEST
+          // =============================================
+
+          const response =
+            await fetch(
+              `http://localhost:5000/api/customer-bookings/${customerId}`
+            );
+
+
+          const data =
+            await response.json();
+
+
+          console.log(
+            "Customer bookings response:",
+            data
+          );
+
+
+          // =============================================
+          // CHECK API RESPONSE
+          // =============================================
+
+          if (!response.ok) {
+
+            throw new Error(
+              data.message ||
+              "Failed to load bookings."
+            );
+
+          }
+
+
+          // =============================================
+          // SAVE CUSTOMER
+          // =============================================
+
+          setCustomer(
+            data.customer
+          );
+
+
+          // =============================================
+          // SAVE BOOKINGS
+          // =============================================
+
+          setBookings(
+            data.bookings || []
+          );
+
+
+          // =============================================
+          // SAVE STATISTICS
+          // =============================================
+
+          setStatistics(
+            data.statistics || {
+
+              totalBookings: 0,
+
+              upcoming: 0,
+
+              checkedOut: 0,
+
+              cancelled: 0,
+
+            }
+          );
+
+
+        } catch (error) {
 
           console.error(
-            "Invalid customer data:",
-            parseError
+            "Customer bookings error:",
+            error
           );
 
+
           setError(
-            "Invalid customer login information."
+            error.message ||
+            "Unable to load bookings."
           );
+
+
+        } finally {
 
           setLoading(false);
 
-          return;
         }
 
-        console.log(
-          "Logged-in customer:",
-          user
-        );
+      };
 
-        // ===============================================
-        // GET CUSTOMER ID
-        // ===============================================
-
-        const customerId = user?.id;
-
-        if (!customerId) {
-
-          setError(
-            "Customer ID not found."
-          );
-
-          setLoading(false);
-
-          return;
-        }
-
-        console.log(
-          "Customer ID:",
-          customerId
-        );
-
-        // ===============================================
-        // API REQUEST
-        // ===============================================
-
-        const response = await fetch(
-          `http://localhost:5000/api/customer-bookings/${customerId}`
-        );
-
-        const data =
-          await response.json();
-
-        console.log(
-          "Customer bookings response:",
-          data
-        );
-
-        // ===============================================
-        // API ERROR
-        // ===============================================
-
-        if (!response.ok) {
-
-          throw new Error(
-            data.message ||
-            "Failed to load bookings."
-          );
-
-        }
-
-        // ===============================================
-        // SAVE DATABASE DATA
-        // ===============================================
-
-        setCustomer(
-          data.customer
-        );
-
-        setBookings(
-          data.bookings || []
-        );
-
-        setStatistics(
-          data.statistics || {
-            totalBookings: 0,
-            upcoming: 0,
-            completed: 0,
-            cancelled: 0,
-          }
-        );
-
-      } catch (error) {
-
-        console.error(
-          "Customer bookings error:",
-          error
-        );
-
-        setError(
-          error.message ||
-          "Unable to load bookings."
-        );
-
-      } finally {
-
-        setLoading(false);
-
-      }
-
-    };
 
     fetchCustomerBookings();
 
   }, []);
+
+
+  // =====================================================
+  // CHECK WHETHER BOOKING CAN BE CANCELLED
+  // =====================================================
+
+  const canCancelBooking = (
+    booking
+  ) => {
+
+    // ===============================================
+    // GET STATUS
+    // ===============================================
+
+    const status =
+      String(
+        booking.booking_status || ""
+      ).trim().toLowerCase();
+
+
+    // ===============================================
+    // ALREADY CANCELLED
+    // ===============================================
+
+    if (
+      status === "cancelled"
+    ) {
+
+      return false;
+
+    }
+
+
+    // ===============================================
+    // ALREADY CHECKED OUT
+    // ===============================================
+
+    if (
+      status === "checked_out"
+    ) {
+
+      return false;
+
+    }
+
+
+    // ===============================================
+    // CHECKOUT DATE REQUIRED
+    // ===============================================
+
+    if (
+      !booking.check_out
+    ) {
+
+      return false;
+
+    }
+
+
+    // ===============================================
+    // TODAY
+    // ===============================================
+
+    const today =
+      new Date();
+
+
+    today.setHours(
+      0,
+      0,
+      0,
+      0
+    );
+
+
+    // ===============================================
+    // CHECKOUT DATE
+    // ===============================================
+
+    const checkoutDate =
+      new Date(
+        booking.check_out
+      );
+
+
+    checkoutDate.setHours(
+      0,
+      0,
+      0,
+      0
+    );
+
+
+    // ===============================================
+    // CUSTOMER CAN CANCEL ONLY
+    // BEFORE CHECKOUT DATE
+    // ===============================================
+
+    return (
+      today < checkoutDate
+    );
+
+  };
+
 
   // =====================================================
   // FILTER BOOKINGS
   // =====================================================
 
   const filteredBookings =
-    bookings.filter((booking) => {
+    bookings.filter(
+      (booking) => {
 
-      const status =
-        String(
-          booking.booking_status || ""
-        ).toLowerCase();
+        const status =
+          String(
+            booking.booking_status || ""
+          ).trim().toLowerCase();
 
-      // ===============================================
-      // ALL
-      // ===============================================
 
-      if (filter === "all") {
+        // =============================================
+        // ALL BOOKINGS
+        // =============================================
+
+        if (
+          filter === "all"
+        ) {
+
+          return true;
+
+        }
+
+
+        // =============================================
+        // UPCOMING
+        // =============================================
+
+        if (
+          filter === "upcoming"
+        ) {
+
+          // Cancelled cannot be upcoming
+
+          if (
+            status === "cancelled"
+          ) {
+
+            return false;
+
+          }
+
+
+          // Checked out cannot be upcoming
+
+          if (
+            status === "checked_out"
+          ) {
+
+            return false;
+
+          }
+
+
+          if (
+            !booking.check_in
+          ) {
+
+            return false;
+
+          }
+
+
+          const checkInDate =
+            new Date(
+              booking.check_in
+            );
+
+
+          const today =
+            new Date();
+
+
+          today.setHours(
+            0,
+            0,
+            0,
+            0
+          );
+
+
+          checkInDate.setHours(
+            0,
+            0,
+            0,
+            0
+          );
+
+
+          return (
+            checkInDate >= today
+          );
+
+        }
+
+
+        // =============================================
+        // CHECKED OUT
+        // =============================================
+
+        if (
+          filter === "checked_out"
+        ) {
+
+          return (
+            status === "checked_out"
+          );
+
+        }
+
+
+        // =============================================
+        // CANCELLED
+        // =============================================
+
+        if (
+          filter === "cancelled"
+        ) {
+
+          return (
+            status === "cancelled"
+          );
+
+        }
+
 
         return true;
 
       }
+    );
 
-      // ===============================================
-      // UPCOMING
-      // ===============================================
-
-      if (filter === "upcoming") {
-
-        return (
-          booking.check_in &&
-          new Date(booking.check_in) >=
-            new Date() &&
-          status !== "cancelled"
-        );
-
-      }
-
-      // ===============================================
-      // COMPLETED
-      // ===============================================
-
-      if (filter === "completed") {
-
-        return status === "completed";
-
-      }
-
-      // ===============================================
-      // CANCELLED
-      // ===============================================
-
-      if (filter === "cancelled") {
-
-        return status === "cancelled";
-
-      }
-
-      return true;
-
-    });
 
   // =====================================================
   // FORMAT DATE
   // =====================================================
 
-  const formatDate = (date) => {
+  const formatDate = (
+    date
+  ) => {
 
     if (!date) {
 
@@ -269,8 +516,10 @@ function CustomerBookings() {
 
     }
 
+
     const parsedDate =
       new Date(date);
+
 
     if (
       Number.isNaN(
@@ -282,39 +531,57 @@ function CustomerBookings() {
 
     }
 
+
     return parsedDate.toLocaleDateString(
       "en-IN",
       {
+
         day: "2-digit",
+
         month: "short",
+
         year: "numeric",
+
       }
     );
 
   };
 
+
   // =====================================================
   // FORMAT CURRENCY
   // =====================================================
 
-  const formatCurrency = (amount) => {
+  const formatCurrency = (
+    amount
+  ) => {
 
     return `₹${Number(
       amount || 0
-    ).toLocaleString("en-IN")}`;
+    ).toLocaleString(
+      "en-IN"
+    )}`;
 
   };
+
 
   // =====================================================
   // GET STATUS CLASS
   // =====================================================
 
-  const getStatusClass = (status) => {
+  const getStatusClass = (
+    status
+  ) => {
 
     const normalizedStatus =
       String(
         status || ""
-      ).toLowerCase();
+      ).trim().toLowerCase();
+
+
+    // ===============================================
+    // CANCELLED
+    // ===============================================
 
     if (
       normalizedStatus ===
@@ -325,51 +592,156 @@ function CustomerBookings() {
 
     }
 
+
+    // ===============================================
+    // CHECKED OUT
+    // ===============================================
+
     if (
       normalizedStatus ===
-      "completed"
+      "checked_out"
     ) {
 
       return "completed";
 
     }
 
+
+    // ===============================================
+    // CONFIRMED
+    // ===============================================
+
     if (
       normalizedStatus ===
-      "upcoming"
+      "confirmed"
     ) {
 
       return "upcoming";
 
     }
 
+
     return "confirmed";
 
   };
+
 
   // =====================================================
   // GET DISPLAY STATUS
   // =====================================================
 
-  const getDisplayStatus = (booking) => {
+  const getDisplayStatus = (
+    booking
+  ) => {
 
     const status =
       String(
         booking.booking_status || ""
-      ).toLowerCase();
+      ).trim().toLowerCase();
 
-    if (status) {
 
-      return (
-        status.charAt(0).toUpperCase() +
-        status.slice(1)
-      );
+    // ===============================================
+    // CHECKED OUT
+    // ===============================================
+
+    if (
+      status ===
+      "checked_out"
+    ) {
+
+      return "Checked Out";
 
     }
+
+
+    // ===============================================
+    // CANCELLED
+    // ===============================================
+
+    if (
+      status ===
+      "cancelled"
+    ) {
+
+      return "Cancelled";
+
+    }
+
+
+    // ===============================================
+    // CONFIRMED
+    // ===============================================
+
+    if (
+      status ===
+      "confirmed"
+    ) {
+
+      return "Confirmed";
+
+    }
+
 
     return "Confirmed";
 
   };
+
+
+  // =====================================================
+  // OPEN BOOKING DETAILS
+  // =====================================================
+
+  const handleViewBooking = (
+    booking
+  ) => {
+
+    navigate(
+      `/customer/bookings/${booking.id}`
+    );
+
+  };
+
+
+  // =====================================================
+  // CANCEL BOOKING
+  // =====================================================
+
+  const handleCancelBooking = (
+    booking
+  ) => {
+
+    // ===============================================
+    // SAFETY CHECK
+    // ===============================================
+
+    if (
+      !canCancelBooking(
+        booking
+      )
+    ) {
+
+      alert(
+        "This reservation can no longer be cancelled."
+      );
+
+      return;
+
+    }
+
+
+    // ===============================================
+    // OPEN DETAILS PAGE
+    //
+    // The actual cancellation and refund will
+    // happen from CustomerBookingDetails.jsx
+    // ===============================================
+
+    navigate(
+      `/customer/bookings/${booking.id}?cancel=true`
+    );
+
+  };
+
 
   // =====================================================
   // LOADING
@@ -379,17 +751,27 @@ function CustomerBookings() {
 
     return (
 
-      <div className="customer-bookings-layout">
+      <div
+        className="customer-bookings-layout"
+      >
 
         <CustomerSidebar />
 
-        <div className="customer-main">
+
+        <div
+          className="customer-main"
+        >
 
           <CustomerTopbar />
 
-          <main className="customer-bookings-content">
 
-            <div className="customer-message">
+          <main
+            className="customer-bookings-content"
+          >
+
+            <div
+              className="customer-message"
+            >
 
               Loading your bookings...
 
@@ -405,13 +787,17 @@ function CustomerBookings() {
 
   }
 
+
   // =====================================================
   // MAIN JSX
   // =====================================================
 
   return (
 
-    <div className="customer-bookings-layout">
+    <div
+      className="customer-bookings-layout"
+    >
+
 
       {/* =================================================
           SIDEBAR
@@ -424,7 +810,10 @@ function CustomerBookings() {
           MAIN
       ================================================= */}
 
-      <div className="customer-main">
+      <div
+        className="customer-main"
+      >
+
 
         {/* =================================================
             TOPBAR
@@ -437,19 +826,26 @@ function CustomerBookings() {
             CONTENT
         ================================================= */}
 
-        <main className="customer-bookings-content">
+        <main
+          className="customer-bookings-content"
+        >
+
 
           {/* =================================================
               HEADER
           ================================================= */}
 
-          <div className="customer-bookings-header">
+          <div
+            className="customer-bookings-header"
+          >
+
 
             <div>
 
               <h1>
                 My Bookings
               </h1>
+
 
               <p>
 
@@ -465,14 +861,16 @@ function CustomerBookings() {
 
 
             {/* =================================================
-                BOOK A ROOM BUTTON
+                BOOK A ROOM
             ================================================= */}
 
             <button
               className="customer-new-booking-btn"
               type="button"
               onClick={() =>
-                navigate("/customer/rooms")
+                navigate(
+                  "/customer/rooms"
+                )
               }
             >
 
@@ -481,6 +879,7 @@ function CustomerBookings() {
               Book a Room
 
             </button>
+
 
           </div>
 
@@ -491,7 +890,9 @@ function CustomerBookings() {
 
           {error && (
 
-            <div className="customer-message error">
+            <div
+              className="customer-message error"
+            >
 
               {error}
 
@@ -504,25 +905,34 @@ function CustomerBookings() {
               BOOKING SUMMARY
           ================================================= */}
 
-          <div className="customer-booking-summary">
+          <div
+            className="customer-booking-summary"
+          >
+
 
             {/* =================================================
                 TOTAL BOOKINGS
             ================================================= */}
 
-            <div className="customer-booking-summary-card">
+            <div
+              className="customer-booking-summary-card"
+            >
 
-              <div className="customer-booking-summary-icon blue">
+              <div
+                className="customer-booking-summary-icon blue"
+              >
 
                 <FaCalendarAlt />
 
               </div>
+
 
               <div>
 
                 <span>
                   Total Bookings
                 </span>
+
 
                 <strong>
                   {statistics.totalBookings || 0}
@@ -537,19 +947,25 @@ function CustomerBookings() {
                 UPCOMING
             ================================================= */}
 
-            <div className="customer-booking-summary-card">
+            <div
+              className="customer-booking-summary-card"
+            >
 
-              <div className="customer-booking-summary-icon orange">
+              <div
+                className="customer-booking-summary-icon orange"
+              >
 
                 <FaClock />
 
               </div>
+
 
               <div>
 
                 <span>
                   Upcoming
                 </span>
+
 
                 <strong>
                   {statistics.upcoming || 0}
@@ -561,25 +977,42 @@ function CustomerBookings() {
 
 
             {/* =================================================
-                COMPLETED
+                CHECKED OUT
             ================================================= */}
 
-            <div className="customer-booking-summary-card">
+            <div
+              className="customer-booking-summary-card"
+            >
 
-              <div className="customer-booking-summary-icon green">
+              <div
+                className="customer-booking-summary-icon green"
+              >
 
                 <FaCheckCircle />
 
               </div>
 
+
               <div>
 
                 <span>
-                  Completed
+                  Checked Out
                 </span>
 
+
                 <strong>
-                  {statistics.completed || 0}
+
+                  {
+                    bookings.filter(
+                      (booking) =>
+                        String(
+                          booking.booking_status ||
+                          ""
+                        ).trim().toLowerCase() ===
+                        "checked_out"
+                    ).length
+                  }
+
                 </strong>
 
               </div>
@@ -591,19 +1024,25 @@ function CustomerBookings() {
                 CANCELLED
             ================================================= */}
 
-            <div className="customer-booking-summary-card">
+            <div
+              className="customer-booking-summary-card"
+            >
 
-              <div className="customer-booking-summary-icon red">
+              <div
+                className="customer-booking-summary-icon red"
+              >
 
                 <FaTimes />
 
               </div>
+
 
               <div>
 
                 <span>
                   Cancelled
                 </span>
+
 
                 <strong>
                   {statistics.cancelled || 0}
@@ -613,6 +1052,7 @@ function CustomerBookings() {
 
             </div>
 
+
           </div>
 
 
@@ -620,19 +1060,26 @@ function CustomerBookings() {
               BOOKINGS CARD
           ================================================= */}
 
-          <div className="customer-bookings-card">
+          <div
+            className="customer-bookings-card"
+          >
+
 
             {/* =================================================
                 HEADER
             ================================================= */}
 
-            <div className="customer-bookings-card-header">
+            <div
+              className="customer-bookings-card-header"
+            >
+
 
               <div>
 
                 <h2>
                   All Reservations
                 </h2>
+
 
                 <p>
                   Your recent and previous hotel bookings
@@ -649,7 +1096,9 @@ function CustomerBookings() {
                 className="customer-booking-filter"
                 value={filter}
                 onChange={(e) =>
-                  setFilter(e.target.value)
+                  setFilter(
+                    e.target.value
+                  )
                 }
               >
 
@@ -657,19 +1106,23 @@ function CustomerBookings() {
                   All Bookings
                 </option>
 
+
                 <option value="upcoming">
                   Upcoming
                 </option>
 
-                <option value="completed">
-                  Completed
+
+                <option value="checked_out">
+                  Checked Out
                 </option>
+
 
                 <option value="cancelled">
                   Cancelled
                 </option>
 
               </select>
+
 
             </div>
 
@@ -678,7 +1131,10 @@ function CustomerBookings() {
                 BOOKING LIST
             ================================================= */}
 
-            <div className="customer-booking-list">
+            <div
+              className="customer-booking-list"
+            >
+
 
               {/* =================================================
                   NO BOOKINGS
@@ -686,7 +1142,9 @@ function CustomerBookings() {
 
               {filteredBookings.length === 0 && (
 
-                <div className="customer-message">
+                <div
+                  className="customer-message"
+                >
 
                   <FaBed
                     style={{
@@ -694,6 +1152,7 @@ function CustomerBookings() {
                       marginBottom: "15px",
                     }}
                   />
+
 
                   <p>
 
@@ -715,208 +1174,281 @@ function CustomerBookings() {
               ================================================= */}
 
               {filteredBookings.map(
-                (booking) => (
+                (booking) => {
 
-                  <div
-                    className="customer-booking-item"
-                    key={booking.id}
-                  >
+                  const canCancel =
+                    canCancelBooking(
+                      booking
+                    );
 
-                    {/* =================================================
-                        ROOM
-                    ================================================= */}
 
-                    <div className="customer-booking-room">
+                  return (
 
-                      <div className="customer-booking-room-icon">
+                    <div
+                      className="customer-booking-item"
+                      key={
+                        booking.id
+                      }
+                    >
 
-                        <FaBed />
+
+                      {/* =================================================
+                          ROOM
+                      ================================================= */}
+
+                      <div
+                        className="customer-booking-room"
+                      >
+
+                        <div
+                          className="customer-booking-room-icon"
+                        >
+
+                          <FaBed />
+
+                        </div>
+
+
+                        <div>
+
+                          <h3>
+
+                            {
+                              booking.room_type ||
+                              "Room"
+                            }
+
+                          </h3>
+
+
+                          <span>
+
+                            Room{" "}
+
+                            {
+                              booking.room_number ||
+                              "-"
+                            }
+
+                          </span>
+
+                        </div>
 
                       </div>
 
-                      <div>
 
-                        <h3>
+                      {/* =================================================
+                          CHECK IN
+                      ================================================= */}
 
-                          {booking.room_type ||
-                            "Room"}
-
-                        </h3>
+                      <div
+                        className="customer-booking-info"
+                      >
 
                         <span>
 
-                          Room{" "}
+                          <FaCalendarAlt />
 
-                          {booking.room_number ||
-                            "-"}
+                          Check In
+
+                        </span>
+
+
+                        <strong>
+
+                          {
+                            formatDate(
+                              booking.check_in
+                            )
+                          }
+
+                        </strong>
+
+                      </div>
+
+
+                      {/* =================================================
+                          CHECK OUT
+                      ================================================= */}
+
+                      <div
+                        className="customer-booking-info"
+                      >
+
+                        <span>
+
+                          <FaCalendarAlt />
+
+                          Check Out
+
+                        </span>
+
+
+                        <strong>
+
+                          {
+                            formatDate(
+                              booking.check_out
+                            )
+                          }
+
+                        </strong>
+
+                      </div>
+
+
+                      {/* =================================================
+                          GUESTS
+                      ================================================= */}
+
+                      <div
+                        className="customer-booking-info"
+                      >
+
+                        <span>
+
+                          <FaUsers />
+
+                          Guests
+
+                        </span>
+
+
+                        <strong>
+
+                          {
+                            (
+                              Number(
+                                booking.adults
+                              ) || 0
+                            ) +
+                            (
+                              Number(
+                                booking.children
+                              ) || 0
+                            )
+                          }{" "}
+
+                          Guests
+
+                        </strong>
+
+                      </div>
+
+
+                      {/* =================================================
+                          PRICE
+                      ================================================= */}
+
+                      <div
+                        className="customer-booking-price"
+                      >
+
+                        <span>
+                          Total
+                        </span>
+
+
+                        <strong>
+
+                          {
+                            formatCurrency(
+                              booking.total_amount
+                            )
+                          }
+
+                        </strong>
+
+                      </div>
+
+
+                      {/* =================================================
+                          STATUS
+                      ================================================= */}
+
+                      <div>
+
+                        <span
+                          className={
+                            `customer-booking-status ${getStatusClass(
+                              booking.booking_status
+                            )}`
+                          }
+                        >
+
+                          {
+                            getDisplayStatus(
+                              booking
+                            )
+                          }
 
                         </span>
 
                       </div>
 
-                    </div>
 
+                      {/* =================================================
+                          ACTIONS
+                      ================================================= */}
 
-                    {/* =================================================
-                        CHECK IN
-                    ================================================= */}
-
-                    <div className="customer-booking-info">
-
-                      <span>
-
-                        <FaCalendarAlt />
-
-                        Check In
-
-                      </span>
-
-                      <strong>
-
-                        {formatDate(
-                          booking.check_in
-                        )}
-
-                      </strong>
-
-                    </div>
-
-
-                    {/* =================================================
-                        CHECK OUT
-                    ================================================= */}
-
-                    <div className="customer-booking-info">
-
-                      <span>
-
-                        <FaCalendarAlt />
-
-                        Check Out
-
-                      </span>
-
-                      <strong>
-
-                        {formatDate(
-                          booking.check_out
-                        )}
-
-                      </strong>
-
-                    </div>
-
-
-                    {/* =================================================
-                        GUESTS
-                    ================================================= */}
-
-                    <div className="customer-booking-info">
-
-                      <span>
-
-                        <FaUsers />
-
-                        Guests
-
-                      </span>
-
-                      <strong>
-
-                        {(
-                          Number(
-                            booking.adults
-                          ) || 0
-                        ) +
-                          (
-                            Number(
-                              booking.children
-                            ) || 0
-                          )}{" "}
-
-                        Guests
-
-                      </strong>
-
-                    </div>
-
-
-                    {/* =================================================
-                        PRICE
-                    ================================================= */}
-
-                    <div className="customer-booking-price">
-
-                      <span>
-                        Total
-                      </span>
-
-                      <strong>
-
-                        {formatCurrency(
-                          booking.total_amount
-                        )}
-
-                      </strong>
-
-                    </div>
-
-
-                    {/* =================================================
-                        STATUS
-                    ================================================= */}
-
-                    <div>
-
-                      <span
-                        className={`customer-booking-status ${getStatusClass(
-                          booking.booking_status
-                        )}`}
+                      <div
+                        className="customer-booking-actions"
                       >
 
-                        {getDisplayStatus(
-                          booking
-                        )}
 
-                      </span>
+                        {/* =================================================
+                            VIEW
+                        ================================================= */}
+
+                        <button
+                          type="button"
+                          className="customer-booking-action"
+                          onClick={() =>
+                            handleViewBooking(
+                              booking
+                            )
+                          }
+                        >
+
+                          <FaEye />
+
+                          View
+
+                        </button>
+
+
+                        {/* =================================================
+                            CANCEL
+                        ================================================= */}
+
+                        </div>
+
 
                     </div>
 
+                  );
 
-                    {/* =================================================
-                        VIEW
-                    ================================================= */}
-
-                    <button
-  type="button"
-  className="customer-booking-action"
-  onClick={() =>
-    navigate(
-      `/customer/confirm-payment/${booking.id}`
-    )
-  }
->
-  <FaEye />
-  View
-</button>
-
-                  </div>
-
-                )
+                }
               )}
+
 
             </div>
 
+
           </div>
+
 
         </main>
 
+
       </div>
+
 
     </div>
 
   );
 
 }
+
 
 export default CustomerBookings;

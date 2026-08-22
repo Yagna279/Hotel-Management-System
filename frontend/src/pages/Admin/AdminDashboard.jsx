@@ -313,46 +313,46 @@ function AdminDashboard() {
 
 
   // =====================================================
-  // DISPLAY STATUS
-  // =====================================================
+// DISPLAY STATUS
+// =====================================================
 
-  const getDisplayStatus = (status) => {
+const getDisplayStatus = (status) => {
 
-    if (!status) {
+  if (!status) {
+    return "Pending";
+  }
 
-      return "Pending";
-
-    }
-
-
-    const normalizedStatus =
-      String(status)
-        .toLowerCase();
+  const normalizedStatus =
+    String(status)
+      .toLowerCase()
+      .trim();
 
 
-    if (
-      normalizedStatus ===
-      "checked_in"
-    ) {
+  // CHECKED IN
 
-      return "Checked In";
-
-    }
+  if (normalizedStatus === "checked_in") {
+    return "Checked In";
+  }
 
 
-    return (
+  // CHECKED OUT
 
-      String(status)
-        .charAt(0)
-        .toUpperCase() +
+  if (normalizedStatus === "checked_out") {
+    return "Checked Out";
+  }
 
-      String(status)
-        .slice(1)
 
-    );
+  // OTHER STATUSES
 
-  };
+  return (
+    String(status)
+      .replace(/_/g, " ")
+      .replace(/\b\w/g, (letter) =>
+        letter.toUpperCase()
+      )
+  );
 
+};
 
   // =====================================================
   // LOADING

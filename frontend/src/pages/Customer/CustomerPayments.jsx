@@ -11,10 +11,16 @@ import {
   FaCheckCircle,
   FaClock,
   FaTimesCircle,
-  FaDownload,
   FaEye,
+  FaFileInvoice,
+  FaDownload,
   FaArrowUp,
   FaExclamationCircle,
+  FaTimes,
+  FaShieldAlt,
+  FaCalendarAlt,
+  FaBed,
+  FaMoneyBillWave,
 } from "react-icons/fa";
 
 import "./CustomerPayments.css";
@@ -30,26 +36,44 @@ function CustomerPayments() {
   // STATE
   // =====================================================
 
-  const [payments, setPayments] = useState([]);
+  const [payments, setPayments] =
+    useState([]);
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] =
+    useState(true);
 
-  const [error, setError] = useState("");
+  const [error, setError] =
+    useState("");
 
-  const [filter, setFilter] = useState("All Payments");
+  const [filter, setFilter] =
+    useState("All Payments");
+
+  const [selectedPayment, setSelectedPayment] =
+    useState(null);
+
+  const [showPaymentModal, setShowPaymentModal] =
+    useState(false);
+
+  const [paymentMethod, setPaymentMethod] =
+    useState("Card");
+
+  const [processingPayment, setProcessingPayment] =
+    useState(false);
+
+  const [paymentError, setPaymentError] =
+    useState("");
+
+  const [paymentSuccess, setPaymentSuccess] =
+    useState("");
 
 
   // =====================================================
-  // GET LOGGED-IN CUSTOMER
+  // GET CUSTOMER ID
   // =====================================================
 
   const getCustomerId = () => {
 
     try {
-
-      // -----------------------------------------------
-      // Try "user"
-      // -----------------------------------------------
 
       const user =
         JSON.parse(
@@ -60,10 +84,6 @@ function CustomerPayments() {
         return user.id;
       }
 
-      // -----------------------------------------------
-      // Try "customer"
-      // -----------------------------------------------
-
       const customer =
         JSON.parse(
           localStorage.getItem("customer")
@@ -72,10 +92,6 @@ function CustomerPayments() {
       if (customer?.id) {
         return customer.id;
       }
-
-      // -----------------------------------------------
-      // Try "loggedInUser"
-      // -----------------------------------------------
 
       const loggedInUser =
         JSON.parse(
@@ -86,27 +102,16 @@ function CustomerPayments() {
         return loggedInUser.id;
       }
 
-      // -----------------------------------------------
-      // Try direct customer ID
-      // -----------------------------------------------
-
-      const customerId =
-        localStorage.getItem("customer_id");
-
-      if (customerId) {
-        return customerId;
-      }
-
-      // -----------------------------------------------
-      // No customer found
-      // -----------------------------------------------
-
-      return null;
+      return (
+        localStorage.getItem(
+          "customer_id"
+        ) || null
+      );
 
     } catch (error) {
 
       console.error(
-        "Error reading customer from localStorage:",
+        "Customer ID error:",
         error
       );
 
@@ -118,113 +123,87 @@ function CustomerPayments() {
 
 
   // =====================================================
-  // FETCH CUSTOMER PAYMENTS
+  // FETCH PAYMENTS
   // =====================================================
+
+  const fetchPayments = async () => {
+
+    try {
+
+      setLoading(true);
+
+      setError("");
+
+      const customerId =
+        getCustomerId();
+
+      if (!customerId) {
+
+        throw new Error(
+          "Customer information not found. Please login again."
+        );
+
+      }
+
+      const response =
+        await fetch(
+          `http://localhost:5000/api/customer-payments/${customerId}`
+        );
+
+      const data =
+        await response.json();
+
+      if (!response.ok) {
+
+        throw new Error(
+          data.message ||
+          "Failed to load payments."
+        );
+
+      }
+
+      setPayments(
+        data.payments || []
+      );
+
+    } catch (error) {
+
+      console.error(
+        "Customer payments error:",
+        error
+      );
+
+      setError(
+        error.message ||
+        "Unable to load payments."
+      );
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
+  };
+
 
   useEffect(() => {
 
-    const fetchCustomerPayments =
-      async () => {
-
-        try {
-
-          setLoading(true);
-
-          setError("");
-
-          // ---------------------------------------------
-          // GET CUSTOMER ID
-          // ---------------------------------------------
-
-          const customerId =
-            getCustomerId();
-
-          if (!customerId) {
-
-            throw new Error(
-              "Customer information not found. Please login again."
-            );
-
-          }
-
-          // ---------------------------------------------
-          // API REQUEST
-          // ---------------------------------------------
-
-          const response =
-            await fetch(
-              `http://localhost:5000/api/customer-payments/${customerId}`
-            );
-
-          // ---------------------------------------------
-          // RESPONSE
-          // ---------------------------------------------
-
-          const data =
-            await response.json();
-
-          console.log(
-            "Customer payments:",
-            data
-          );
-
-          // ---------------------------------------------
-          // API ERROR
-          // ---------------------------------------------
-
-          if (!response.ok) {
-
-            throw new Error(
-              data.message ||
-              "Failed to load payments."
-            );
-
-          }
-
-          // ---------------------------------------------
-          // STORE PAYMENTS
-          // ---------------------------------------------
-
-          setPayments(
-            data.payments || []
-          );
-
-        } catch (error) {
-
-          console.error(
-            "Customer payments error:",
-            error
-          );
-
-          setError(
-            error.message ||
-            "Unable to load payments."
-          );
-
-        } finally {
-
-          setLoading(false);
-
-        }
-
-      };
-
-    fetchCustomerPayments();
+    fetchPayments();
 
   }, []);
 
 
   // =====================================================
-  // FORMAT CURRENCY
+  // CURRENCY
   // =====================================================
 
   const formatCurrency =
     (amount) => {
 
-      const value =
-        Number(amount) || 0;
-
-      return `₹${value.toLocaleString(
+      return `₹${(
+        Number(amount) || 0
+      ).toLocaleString(
         "en-IN"
       )}`;
 
@@ -232,7 +211,7 @@ function CustomerPayments() {
 
 
   // =====================================================
-  // FORMAT DATE
+  // DATE
   // =====================================================
 
   const formatDate =
@@ -242,18 +221,18 @@ function CustomerPayments() {
         return "-";
       }
 
-      const parsedDate =
+      const parsed =
         new Date(date);
 
       if (
         Number.isNaN(
-          parsedDate.getTime()
+          parsed.getTime()
         )
       ) {
         return "-";
       }
 
-      return parsedDate.toLocaleDateString(
+      return parsed.toLocaleDateString(
         "en-IN",
         {
           day: "2-digit",
@@ -266,7 +245,7 @@ function CustomerPayments() {
 
 
   // =====================================================
-  // NORMALIZE PAYMENT STATUS
+  // STATUS
   // =====================================================
 
   const getPaymentStatus =
@@ -274,7 +253,6 @@ function CustomerPayments() {
 
       return String(
         payment.payment_status ||
-        payment.status ||
         ""
       )
         .toLowerCase()
@@ -284,22 +262,15 @@ function CustomerPayments() {
 
 
   // =====================================================
-  // NORMALIZE PAYMENT AMOUNT
+  // AMOUNT
   // =====================================================
 
   const getPaymentAmount =
     (payment) => {
 
       return (
-        Number(
-          payment.amount
-        ) ||
-        Number(
-          payment.payment_amount
-        ) ||
-        Number(
-          payment.total_amount
-        ) ||
+        Number(payment.amount) ||
+        Number(payment.total_amount) ||
         0
       );
 
@@ -307,7 +278,7 @@ function CustomerPayments() {
 
 
   // =====================================================
-  // NORMALIZE PAYMENT METHOD
+  // METHOD
   // =====================================================
 
   const getPaymentMethod =
@@ -315,8 +286,6 @@ function CustomerPayments() {
 
       return (
         payment.payment_method ||
-        payment.method ||
-        payment.payment_type ||
         "Not specified"
       );
 
@@ -324,101 +293,122 @@ function CustomerPayments() {
 
 
   // =====================================================
-  // PAYMENT TYPE
+  // STATUS UI
   // =====================================================
 
-  const getPaymentType =
+  const getStatusDisplay =
     (payment) => {
 
+      const status =
+        getPaymentStatus(
+          payment
+        );
+
       if (
-        payment.payment_type
+        [
+          "completed",
+          "paid",
+          "success",
+          "successful",
+        ].includes(status)
       ) {
 
-        return payment.payment_type;
+        return {
+          className: "completed",
+          icon: <FaCheckCircle />,
+          label: "Completed",
+        };
 
       }
 
       if (
-        payment.service_id ||
-        payment.service_name
+        [
+          "pending",
+          "unpaid",
+          "processing",
+        ].includes(status)
       ) {
 
-        return "Additional service";
+        return {
+          className: "pending",
+          icon: <FaClock />,
+          label: "Pending",
+        };
 
       }
 
-      return "Room booking";
+      if (
+        [
+          "refunded",
+          "refund",
+        ].includes(status)
+      ) {
+
+        return {
+          className: "refunded",
+          icon: <FaArrowUp />,
+          label: "Refunded",
+        };
+
+      }
+
+      if (
+        [
+          "failed",
+          "cancelled",
+          "canceled",
+        ].includes(status)
+      ) {
+
+        return {
+          className: "failed",
+          icon: <FaTimesCircle />,
+          label:
+            status === "failed"
+              ? "Failed"
+              : "Cancelled",
+        };
+
+      }
+
+      return {
+        className: "pending",
+        icon: <FaExclamationCircle />,
+        label: "Unknown",
+      };
 
     };
 
 
   // =====================================================
-  // BOOKING INFORMATION
+  // BOOKING TITLE
   // =====================================================
 
   const getBookingTitle =
     (payment) => {
-
-      // -----------------------------------------------
-      // Room information
-      // -----------------------------------------------
 
       if (
         payment.room_number &&
         payment.room_type
       ) {
 
-        return `${payment.room_number} - ${payment.room_type}`;
+        return `${payment.room_number} • ${payment.room_type}`;
 
       }
 
-      // -----------------------------------------------
-      // Service information
-      // -----------------------------------------------
-
-      if (
-        payment.service_name
-      ) {
-
-        return payment.service_name;
-
-      }
-
-      // -----------------------------------------------
-      // Booking ID
-      // -----------------------------------------------
-
-      if (
-        payment.booking_id
-      ) {
+      if (payment.booking_id) {
 
         return `Booking #${payment.booking_id}`;
 
       }
 
-      return "Hotel Payment";
+      return "Hotel Booking";
 
     };
 
 
   // =====================================================
-  // PAYMENT DATE
-  // =====================================================
-
-  const getPaymentDate =
-    (payment) => {
-
-      return (
-        payment.payment_date ||
-        payment.paid_at ||
-        payment.created_at
-      );
-
-    };
-
-
-  // =====================================================
-  // SUMMARY CALCULATIONS
+  // SUMMARY
   // =====================================================
 
   const totalSpent =
@@ -430,34 +420,28 @@ function CustomerPayments() {
             payment
           );
 
-        const amount =
-          getPaymentAmount(
-            payment
-          );
-
-        // ---------------------------------------------
-        // Refunds are not counted as spending
-        // ---------------------------------------------
-
         if (
-          status === "refunded" ||
-          status === "refund"
+          [
+            "refunded",
+            "refund",
+          ].includes(status)
         ) {
 
           return total;
 
         }
 
-        return total + amount;
+        return (
+          total +
+          getPaymentAmount(
+            payment
+          )
+        );
 
       },
       0
     );
 
-
-  // =====================================================
-  // COMPLETED PAYMENTS
-  // =====================================================
 
   const completedAmount =
     payments.reduce(
@@ -469,10 +453,12 @@ function CustomerPayments() {
           );
 
         if (
-          status === "completed" ||
-          status === "paid" ||
-          status === "success" ||
-          status === "successful"
+          [
+            "completed",
+            "paid",
+            "success",
+            "successful",
+          ].includes(status)
         ) {
 
           return (
@@ -490,10 +476,6 @@ function CustomerPayments() {
       0
     );
 
-
-  // =====================================================
-  // PENDING PAYMENTS
-  // =====================================================
 
   const pendingAmount =
     payments.reduce(
@@ -505,9 +487,11 @@ function CustomerPayments() {
           );
 
         if (
-          status === "pending" ||
-          status === "unpaid" ||
-          status === "processing"
+          [
+            "pending",
+            "unpaid",
+            "processing",
+          ].includes(status)
         ) {
 
           return (
@@ -525,10 +509,6 @@ function CustomerPayments() {
       0
     );
 
-
-  // =====================================================
-  // REFUNDS
-  // =====================================================
 
   const refundAmount =
     payments.reduce(
@@ -540,8 +520,10 @@ function CustomerPayments() {
           );
 
         if (
-          status === "refunded" ||
-          status === "refund"
+          [
+            "refunded",
+            "refund",
+          ].includes(status)
         ) {
 
           return (
@@ -561,7 +543,7 @@ function CustomerPayments() {
 
 
   // =====================================================
-  // FILTER PAYMENTS
+  // FILTER
   // =====================================================
 
   const filteredPayments =
@@ -576,21 +558,19 @@ function CustomerPayments() {
         if (
           filter === "All Payments"
         ) {
-
           return true;
-
         }
 
         if (
           filter === "Completed"
         ) {
 
-          return (
-            status === "completed" ||
-            status === "paid" ||
-            status === "success" ||
-            status === "successful"
-          );
+          return [
+            "completed",
+            "paid",
+            "success",
+            "successful",
+          ].includes(status);
 
         }
 
@@ -598,11 +578,11 @@ function CustomerPayments() {
           filter === "Pending"
         ) {
 
-          return (
-            status === "pending" ||
-            status === "unpaid" ||
-            status === "processing"
-          );
+          return [
+            "pending",
+            "unpaid",
+            "processing",
+          ].includes(status);
 
         }
 
@@ -610,10 +590,10 @@ function CustomerPayments() {
           filter === "Refunded"
         ) {
 
-          return (
-            status === "refunded" ||
-            status === "refund"
-          );
+          return [
+            "refunded",
+            "refund",
+          ].includes(status);
 
         }
 
@@ -624,176 +604,301 @@ function CustomerPayments() {
 
 
   // =====================================================
-  // PAYMENT STATUS UI
-  // =====================================================
-
-  const getStatusDisplay =
-    (payment) => {
-
-      const status =
-        getPaymentStatus(
-          payment
-        );
-
-      // -----------------------------------------------
-      // COMPLETED
-      // -----------------------------------------------
-
-      if (
-        status === "completed" ||
-        status === "paid" ||
-        status === "success" ||
-        status === "successful"
-      ) {
-
-        return {
-
-          className:
-            "completed",
-
-          icon:
-            <FaCheckCircle />,
-
-          label:
-            "Completed",
-
-        };
-
-      }
-
-      // -----------------------------------------------
-      // PENDING
-      // -----------------------------------------------
-
-      if (
-        status === "pending" ||
-        status === "unpaid" ||
-        status === "processing"
-      ) {
-
-        return {
-
-          className:
-            "pending",
-
-          icon:
-            <FaClock />,
-
-          label:
-            "Pending",
-
-        };
-
-      }
-
-      // -----------------------------------------------
-      // REFUNDED
-      // -----------------------------------------------
-
-      if (
-        status === "refunded" ||
-        status === "refund"
-      ) {
-
-        return {
-
-          className:
-            "refunded",
-
-          icon:
-            <FaCheckCircle />,
-
-          label:
-            "Refunded",
-
-        };
-
-      }
-
-      // -----------------------------------------------
-      // FAILED / CANCELLED
-      // -----------------------------------------------
-
-      if (
-        status === "failed" ||
-        status === "cancelled" ||
-        status === "canceled"
-      ) {
-
-        return {
-
-          className:
-            "failed",
-
-          icon:
-            <FaTimesCircle />,
-
-          label:
-            status === "failed"
-              ? "Failed"
-              : "Cancelled",
-
-        };
-
-      }
-
-      // -----------------------------------------------
-      // DEFAULT
-      // -----------------------------------------------
-
-      return {
-
-        className:
-          "pending",
-
-        icon:
-          <FaExclamationCircle />,
-
-        label:
-          payment.payment_status ||
-          payment.status ||
-          "Unknown",
-
-      };
-
-    };
-
-
-  // =====================================================
-  // VIEW PAYMENT
+  // VIEW INVOICE
   // =====================================================
 
   const handleViewPayment =
     (payment) => {
 
-      console.log(
-        "View payment:",
+      setSelectedPayment(
         payment
       );
-
-      // -------------------------------------------------
-      // You can later navigate to a payment details page
-      // -------------------------------------------------
 
     };
 
 
   // =====================================================
-  // DOWNLOAD RECEIPT
+  // CLOSE INVOICE
+  // =====================================================
+
+  const closeInvoice =
+    () => {
+
+      setSelectedPayment(
+        null
+      );
+
+    };
+
+
+  // =====================================================
+  // OPEN PAYMENT MODAL
+  // =====================================================
+
+  const handlePayNow =
+    (payment) => {
+
+      setSelectedPayment(
+        payment
+      );
+
+      setPaymentMethod(
+        "Card"
+      );
+
+      setPaymentError("");
+
+      setPaymentSuccess("");
+
+      setShowPaymentModal(
+        true
+      );
+
+    };
+
+
+  // =====================================================
+  // CLOSE PAYMENT MODAL
+  // =====================================================
+
+  const closePaymentModal =
+    () => {
+
+      if (
+        processingPayment
+      ) {
+        return;
+      }
+
+      setShowPaymentModal(
+        false
+      );
+
+      setPaymentError("");
+
+      setPaymentSuccess("");
+
+    };
+
+
+  // =====================================================
+  // CONFIRM PAYMENT
+  // =====================================================
+
+  const handleConfirmPayment =
+    async () => {
+
+      if (
+        !selectedPayment
+      ) {
+        return;
+      }
+
+      try {
+
+        setProcessingPayment(
+          true
+        );
+
+        setPaymentError("");
+
+        setPaymentSuccess("");
+
+        const customerId =
+          getCustomerId();
+
+        if (!customerId) {
+
+          throw new Error(
+            "Customer information not found."
+          );
+
+        }
+
+        const response =
+          await fetch(
+            "http://localhost:5000/api/customer-payments",
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json",
+              },
+
+              body: JSON.stringify({
+                customer_id:
+                  customerId,
+
+                booking_id:
+                  selectedPayment.booking_id,
+
+                amount:
+                  getPaymentAmount(
+                    selectedPayment
+                  ),
+
+                payment_method:
+                  paymentMethod,
+              }),
+            }
+          );
+
+        const data =
+          await response.json();
+
+        if (!response.ok) {
+
+          throw new Error(
+            data.message ||
+            "Payment failed."
+          );
+
+        }
+
+        setPaymentSuccess(
+          "Payment completed successfully."
+        );
+
+        // Refresh payments
+        await fetchPayments();
+
+        // Keep invoice available
+        if (
+          data.payment
+        ) {
+
+          setSelectedPayment(
+            (previous) => ({
+              ...previous,
+              ...data.payment,
+              payment_status:
+                "completed",
+            })
+          );
+
+        }
+
+        setTimeout(() => {
+
+          setShowPaymentModal(
+            false
+          );
+
+          setPaymentSuccess("");
+
+        }, 1400);
+
+      } catch (error) {
+
+        console.error(
+          "Payment error:",
+          error
+        );
+
+        setPaymentError(
+          error.message ||
+          "Payment failed."
+        );
+
+      } finally {
+
+        setProcessingPayment(
+          false
+        );
+
+      }
+
+    };
+
+
+  // =====================================================
+  // PRINT / DOWNLOAD INVOICE
   // =====================================================
 
   const handleDownloadReceipt =
     (payment) => {
 
-      console.log(
-        "Download receipt:",
-        payment
+      const invoice =
+        payment.invoice_number ||
+        `INV${String(
+          payment.id
+        ).padStart(4, "0")}`;
+
+      const content = `
+HOTEL MANAGEMENT SYSTEM
+PAYMENT INVOICE
+================================
+
+Invoice Number: ${invoice}
+Booking ID: #${payment.booking_id || "-"}
+Payment Date: ${formatDate(
+        payment.paid_at
+      )}
+
+Customer:
+${payment.customer_name || "Hotel Guest"}
+
+Room:
+${getBookingTitle(payment)}
+
+Check-in:
+${formatDate(payment.check_in)}
+
+Check-out:
+${formatDate(payment.check_out)}
+
+Payment Method:
+${getPaymentMethod(payment)}
+
+Payment Status:
+Completed
+
+Amount:
+${formatCurrency(
+        getPaymentAmount(payment)
+      )}
+
+================================
+Thank you for staying with us.
+      `;
+
+      const blob =
+        new Blob(
+          [content],
+          {
+            type: "text/plain",
+          }
+        );
+
+      const url =
+        URL.createObjectURL(
+          blob
+        );
+
+      const link =
+        document.createElement(
+          "a"
+        );
+
+      link.href = url;
+
+      link.download =
+        `${invoice}.txt`;
+
+      document.body.appendChild(
+        link
       );
 
-      // -------------------------------------------------
-      // Receipt download can be connected to your
-      // backend later.
-      // -------------------------------------------------
+      link.click();
+
+      document.body.removeChild(
+        link
+      );
+
+      URL.revokeObjectURL(
+        url
+      );
 
     };
 
@@ -806,21 +911,29 @@ function CustomerPayments() {
 
     return (
 
-      <div className="customer-main">
+      <div className="customer-payments-layout">
 
         <CustomerSidebar />
 
-        <CustomerTopbar />
+        <div className="customer-main">
 
-        <main className="customer-payments-page">
+          <CustomerTopbar />
 
-          <div className="customer-message">
+          <main className="customer-payments-page">
 
-            Loading payments...
+            <div className="customer-payments-loading">
 
-          </div>
+              <div className="payment-loader"></div>
 
-        </main>
+              <p>
+                Loading your payments...
+              </p>
+
+            </div>
+
+          </main>
+
+        </div>
 
       </div>
 
@@ -837,21 +950,42 @@ function CustomerPayments() {
 
     return (
 
-      <div className="customer-main">
+      <div className="customer-payments-layout">
 
         <CustomerSidebar />
 
-        <CustomerTopbar />
+        <div className="customer-main">
 
-        <main className="customer-payments-page">
+          <CustomerTopbar />
 
-          <div className="customer-message error">
+          <main className="customer-payments-page">
 
-            {error}
+            <div className="customer-payments-error">
 
-          </div>
+              <FaExclamationCircle />
 
-        </main>
+              <h2>
+                Unable to load payments
+              </h2>
+
+              <p>
+                {error}
+              </p>
+
+              <button
+                type="button"
+                onClick={
+                  fetchPayments
+                }
+              >
+                Try Again
+              </button>
+
+            </div>
+
+          </main>
+
+        </div>
 
       </div>
 
@@ -861,89 +995,66 @@ function CustomerPayments() {
 
 
   // =====================================================
-  // JSX
+  // MAIN JSX
   // =====================================================
 
   return (
 
-    <>
-
-      {/* =================================================
-          CUSTOMER SIDEBAR
-      ================================================= */}
+    <div className="customer-payments-layout">
 
       <CustomerSidebar />
 
-
-      {/* =================================================
-          CUSTOMER MAIN
-      ================================================= */}
-
       <div className="customer-main">
-
-        {/* =================================================
-            TOPBAR
-        ================================================= */}
 
         <CustomerTopbar />
 
-
-        {/* =================================================
-            PAYMENTS PAGE
-        ================================================= */}
-
         <main className="customer-payments-page">
 
-
           {/* =================================================
-              PAGE HEADER
+              HEADER
           ================================================= */}
 
-          <div className="customer-payments-header">
+          <section className="customer-payments-hero">
 
             <div>
 
-              <span className="customer-payments-label">
-                PAYMENT MANAGEMENT
+              <span className="customer-payments-eyebrow">
+                FINANCIAL OVERVIEW
               </span>
 
               <h1>
-                My Payments
+                Payments & Invoices
               </h1>
 
               <p>
-                View and manage your hotel payment history.
+                Manage your hotel payments,
+                invoices and transaction history
+                in one place.
               </p>
 
             </div>
 
-          </div>
+            <div className="customer-payments-hero-icon">
+              <FaFileInvoice />
+            </div>
+
+          </section>
 
 
           {/* =================================================
-              PAYMENT SUMMARY
+              SUMMARY
           ================================================= */}
 
-          <div className="customer-payment-summary">
-
-
-            {/* =================================================
-                TOTAL SPENT
-            ================================================= */}
+          <section className="customer-payment-summary">
 
             <div className="customer-payment-summary-card">
 
               <div className="customer-payment-summary-icon blue">
-
-                <FaCreditCard />
-
+                <FaMoneyBillWave />
               </div>
 
               <div>
-
-                <span>
-                  Total Spent
-                </span>
+                <span>Total Spent</span>
 
                 <strong>
                   {formatCurrency(
@@ -952,31 +1063,21 @@ function CustomerPayments() {
                 </strong>
 
                 <small>
-                  All payments
+                  All transactions
                 </small>
-
               </div>
 
             </div>
 
 
-            {/* =================================================
-                COMPLETED
-            ================================================= */}
-
             <div className="customer-payment-summary-card">
 
               <div className="customer-payment-summary-icon green">
-
                 <FaCheckCircle />
-
               </div>
 
               <div>
-
-                <span>
-                  Completed
-                </span>
+                <span>Completed</span>
 
                 <strong>
                   {formatCurrency(
@@ -987,29 +1088,19 @@ function CustomerPayments() {
                 <small>
                   Successful payments
                 </small>
-
               </div>
 
             </div>
 
 
-            {/* =================================================
-                PENDING
-            ================================================= */}
-
             <div className="customer-payment-summary-card">
 
               <div className="customer-payment-summary-icon orange">
-
                 <FaClock />
-
               </div>
 
               <div>
-
-                <span>
-                  Pending
-                </span>
+                <span>Pending</span>
 
                 <strong>
                   {formatCurrency(
@@ -1020,29 +1111,19 @@ function CustomerPayments() {
                 <small>
                   Awaiting payment
                 </small>
-
               </div>
 
             </div>
 
 
-            {/* =================================================
-                REFUNDS
-            ================================================= */}
-
             <div className="customer-payment-summary-card">
 
               <div className="customer-payment-summary-icon purple">
-
                 <FaArrowUp />
-
               </div>
 
               <div>
-
-                <span>
-                  Refunds
-                </span>
+                <span>Refunds</span>
 
                 <strong>
                   {formatCurrency(
@@ -1051,45 +1132,46 @@ function CustomerPayments() {
                 </strong>
 
                 <small>
-                  Total refunds
+                  Returned payments
                 </small>
-
               </div>
 
             </div>
 
-          </div>
+          </section>
 
 
           {/* =================================================
-              PAYMENT HISTORY
+              HISTORY
           ================================================= */}
 
-          <div className="customer-payments-card">
-
-
-            {/* =================================================
-                CARD HEADER
-            ================================================= */}
+          <section className="customer-payments-card">
 
             <div className="customer-payments-card-header">
 
               <div>
 
-                <h2>
-                  Payment History
-                </h2>
+                <div className="payment-card-title">
 
-                <p>
-                  Your recent transactions
-                </p>
+                  <div className="payment-title-icon">
+                    <FaCreditCard />
+                  </div>
+
+                  <div>
+
+                    <h2>
+                      Payment History
+                    </h2>
+
+                    <p>
+                      View your transactions and invoices
+                    </p>
+
+                  </div>
+
+                </div>
 
               </div>
-
-
-              {/* =================================================
-                  FILTER
-              ================================================= */}
 
               <select
                 className="customer-payment-filter"
@@ -1101,19 +1183,19 @@ function CustomerPayments() {
                 }
               >
 
-                <option value="All Payments">
+                <option>
                   All Payments
                 </option>
 
-                <option value="Completed">
+                <option>
                   Completed
                 </option>
 
-                <option value="Pending">
+                <option>
                   Pending
                 </option>
 
-                <option value="Refunded">
+                <option>
                   Refunded
                 </option>
 
@@ -1123,7 +1205,7 @@ function CustomerPayments() {
 
 
             {/* =================================================
-                PAYMENT TABLE
+                TABLE
             ================================================= */}
 
             <div className="customer-payment-table-wrapper">
@@ -1134,138 +1216,71 @@ function CustomerPayments() {
 
                   <tr>
 
-                    <th>
-                      Transaction
-                    </th>
+                    <th>Invoice</th>
 
-                    <th>
-                      Booking
-                    </th>
+                    <th>Booking</th>
 
-                    <th>
-                      Date
-                    </th>
+                    <th>Date</th>
 
-                    <th>
-                      Amount
-                    </th>
+                    <th>Amount</th>
 
-                    <th>
-                      Method
-                    </th>
+                    <th>Payment Type</th>
 
-                    <th>
-                      Status
-                    </th>
+                    <th>Status</th>
 
-                    <th>
-                      Action
-                    </th>
+                    
 
                   </tr>
 
                 </thead>
 
-
                 <tbody>
 
-
-                  {/* =================================================
-                      PAYMENT DATA FROM DATABASE
-                  ================================================= */}
-
                   {filteredPayments.map(
-                    (payment, index) => {
+                    (payment) => {
 
                       const status =
                         getStatusDisplay(
                           payment
                         );
 
-                      const amount =
-                        getPaymentAmount(
-                          payment
-                        );
+                      const invoice =
+                        payment.invoice_number ||
+                        `INV${String(
+                          payment.id
+                        ).padStart(4, "0")}`;
 
-                      const paymentDate =
-                        getPaymentDate(
-                          payment
-                        );
-
-                      const paymentMethod =
-                        getPaymentMethod(
-                          payment
-                        );
-
-                      const paymentType =
-                        getPaymentType(
-                          payment
-                        );
-
-                      const bookingTitle =
-                        getBookingTitle(
-                          payment
-                        );
-
+                      const isPending =
+                        status.className ===
+                        "pending";
 
                       return (
 
                         <tr
                           key={
-                            payment.id ||
-                            payment.payment_id ||
-                            index
+                            payment.id
                           }
                         >
 
-
-                          {/* =================================================
-                              TRANSACTION
-                          ================================================= */}
+                          {/* INVOICE */}
 
                           <td>
 
-                            <div className="customer-transaction-cell">
+                            <div className="payment-invoice-cell">
 
-                              <div
-                                className={`customer-transaction-icon ${
-                                  status.className ===
-                                  "refunded"
-                                    ? "refund"
-                                    : ""
-                                }`}
-                              >
-
-                                {status.className ===
-                                "refunded"
-                                  ? (
-                                    <FaArrowUp />
-                                  )
-                                  : (
-                                    <FaCreditCard />
-                                  )}
-
+                              <div className="invoice-icon">
+                                <FaFileInvoice />
                               </div>
-
 
                               <div>
 
                                 <strong>
-
-                                  {payment.transaction_id ||
-                                    payment.transaction_reference ||
-                                    payment.payment_number ||
-                                    payment.id
-                                      ? `#${payment.transaction_id ||
-                                          payment.transaction_reference ||
-                                          payment.payment_number ||
-                                          payment.id}`
-                                      : "#PAYMENT"}
-
+                                  {invoice}
                                 </strong>
 
                                 <span>
-                                  {paymentType}
+                                  Payment #
+                                  {payment.id}
                                 </span>
 
                               </div>
@@ -1275,28 +1290,21 @@ function CustomerPayments() {
                           </td>
 
 
-                          {/* =================================================
-                              BOOKING
-                          ================================================= */}
+                          {/* BOOKING */}
 
                           <td>
 
                             <div className="customer-booking-cell">
 
                               <strong>
-                                {bookingTitle}
+                                {getBookingTitle(
+                                  payment
+                                )}
                               </strong>
 
                               <span>
-
-                                {payment.booking_id
-                                  ? `Booking #${payment.booking_id}`
-                                  : payment.check_in
-                                    ? `Check-in ${formatDate(
-                                        payment.check_in
-                                      )}`
-                                    : "Hotel booking"}
-
+                                Booking #
+                                {payment.booking_id}
                               </span>
 
                             </div>
@@ -1304,66 +1312,61 @@ function CustomerPayments() {
                           </td>
 
 
-                          {/* =================================================
-                              DATE
-                          ================================================= */}
+                          {/* DATE */}
 
                           <td>
 
-                            {formatDate(
-                              paymentDate
-                            )}
+                            <div className="payment-date-cell">
+
+                              <FaCalendarAlt />
+
+                              <span>
+                                {formatDate(
+                                  payment.paid_at ||
+                                  payment.created_at
+                                )}
+                              </span>
+
+                            </div>
 
                           </td>
 
 
-                          {/* =================================================
-                              AMOUNT
-                          ================================================= */}
+                          {/* AMOUNT */}
 
                           <td>
 
-                            <strong
-                              className={`payment-amount ${
-                                status.className ===
-                                "refunded"
-                                  ? "refund-amount"
-                                  : ""
-                              }`}
-                            >
+                            <strong className="payment-amount">
 
-                              {status.className ===
-                              "refunded"
-                                ? `+ ${formatCurrency(
-                                    amount
-                                  )}`
-                                : formatCurrency(
-                                    amount
-                                  )}
+                              {formatCurrency(
+                                getPaymentAmount(
+                                  payment
+                                )
+                              )}
 
                             </strong>
 
                           </td>
 
 
-                          {/* =================================================
-                              METHOD
-                          ================================================= */}
+                          {/* METHOD */}
 
                           <td>
 
                             <span className="payment-method">
 
-                              {paymentMethod}
+                              <FaCreditCard />
+
+                              {getPaymentMethod(
+                                payment
+                              )}
 
                             </span>
 
                           </td>
 
 
-                          {/* =================================================
-                              STATUS
-                          ================================================= */}
+                          {/* STATUS */}
 
                           <td>
 
@@ -1377,52 +1380,12 @@ function CustomerPayments() {
 
                             </span>
 
-                          </td>
+                          
 
 
-                          {/* =================================================
-                              ACTION
-                          ================================================= */}
+                          
 
-                          <td>
-
-                            <div className="payment-actions">
-
-
-                              {/* VIEW */}
-
-                              <button
-                                type="button"
-                                title="View Payment"
-                                onClick={() =>
-                                  handleViewPayment(
-                                    payment
-                                  )
-                                }
-                              >
-
-                                <FaEye />
-
-                              </button>
-
-
-                              {/* DOWNLOAD */}
-
-                              <button
-                                type="button"
-                                title="Download Receipt"
-                                onClick={() =>
-                                  handleDownloadReceipt(
-                                    payment
-                                  )
-                                }
-                              >
-
-                                <FaDownload />
-
-                              </button>
-
-                            </div>
+                            
 
                           </td>
 
@@ -1433,32 +1396,26 @@ function CustomerPayments() {
                     }
                   )}
 
-
                 </tbody>
 
               </table>
 
 
-              {/* =================================================
-                  NO PAYMENTS
-              ================================================= */}
-
               {filteredPayments.length === 0 && (
 
                 <div className="customer-no-payments">
 
-                  <FaCreditCard />
+                  <div className="empty-payment-icon">
+                    <FaCreditCard />
+                  </div>
 
                   <h2>
                     No Payments Found
                   </h2>
 
                   <p>
-
-                    {filter === "All Payments"
-                      ? "You do not have any payment transactions yet."
-                      : `You do not have any ${filter.toLowerCase()} transactions.`}
-
+                    There are no transactions
+                    matching this filter.
                   </p>
 
                 </div>
@@ -1467,13 +1424,405 @@ function CustomerPayments() {
 
             </div>
 
-          </div>
+          </section>
 
         </main>
 
       </div>
 
-    </>
+
+      {/* =====================================================
+          INVOICE MODAL
+      ===================================================== */}
+
+      {selectedPayment &&
+        !showPaymentModal && (
+
+        <div
+          className="payment-modal-overlay"
+          onClick={
+            closeInvoice
+          }
+        >
+
+          <div
+            className="invoice-modal"
+            onClick={(e) =>
+              e.stopPropagation()
+            }
+          >
+
+            <button
+              type="button"
+              className="invoice-close"
+              onClick={
+                closeInvoice
+              }
+            >
+              <FaTimes />
+            </button>
+
+
+            <div className="invoice-header">
+
+              <div>
+
+                <span>
+                  HOTEL MANAGEMENT SYSTEM
+                </span>
+
+                <h2>
+                  Payment Invoice
+                </h2>
+
+              </div>
+
+              <div className="invoice-logo">
+                <FaFileInvoice />
+              </div>
+
+            </div>
+
+
+            <div className="invoice-number">
+
+              <span>
+                Invoice Number
+              </span>
+
+              <strong>
+                {selectedPayment.invoice_number ||
+                  `INV${String(
+                    selectedPayment.id
+                  ).padStart(4, "0")}`}
+              </strong>
+
+            </div>
+
+
+            <div className="invoice-grid">
+
+              <div>
+
+                <span>Booking</span>
+
+                <strong>
+                  #{selectedPayment.booking_id}
+                </strong>
+
+              </div>
+
+              <div>
+
+                <span>Payment Date</span>
+
+                <strong>
+                  {formatDate(
+                    selectedPayment.paid_at
+                  )}
+                </strong>
+
+              </div>
+
+              <div>
+
+                <span>Room</span>
+
+                <strong>
+                  {getBookingTitle(
+                    selectedPayment
+                  )}
+                </strong>
+
+              </div>
+
+              <div>
+
+                <span>Payment Type</span>
+
+                <strong>
+                  {getPaymentMethod(
+                    selectedPayment
+                  )}
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            <div className="invoice-total">
+
+              <div>
+
+                <span>
+                  Amount Paid
+                </span>
+
+                <strong>
+                  {formatCurrency(
+                    getPaymentAmount(
+                      selectedPayment
+                    )
+                  )}
+                </strong>
+
+              </div>
+
+              <span className="invoice-completed">
+                <FaCheckCircle />
+                Completed
+              </span>
+
+            </div>
+
+
+            <div className="invoice-footer">
+
+              <FaShieldAlt />
+
+              <span>
+                This payment has been securely
+                recorded in our system.
+              </span>
+
+            </div>
+
+
+            <button
+              type="button"
+              className="invoice-download-btn"
+              onClick={() =>
+                handleDownloadReceipt(
+                  selectedPayment
+                )
+              }
+            >
+
+              <FaDownload />
+
+              Download Invoice
+
+            </button>
+
+          </div>
+
+        </div>
+
+      )}
+
+
+      {/* =====================================================
+          PAYMENT MODAL
+      ===================================================== */}
+
+      {showPaymentModal &&
+        selectedPayment && (
+
+        <div
+          className="payment-modal-overlay"
+          onClick={
+            closePaymentModal
+          }
+        >
+
+          <div
+            className="payment-form-modal"
+            onClick={(e) =>
+              e.stopPropagation()
+            }
+          >
+
+            <button
+              type="button"
+              className="invoice-close"
+              onClick={
+                closePaymentModal
+              }
+            >
+              <FaTimes />
+            </button>
+
+
+            <div className="payment-form-header">
+
+              <div className="payment-form-icon">
+                <FaCreditCard />
+              </div>
+
+              <div>
+
+                <h2>
+                  Complete Payment
+                </h2>
+
+                <p>
+                  Secure payment for Booking #
+                  {selectedPayment.booking_id}
+                </p>
+
+              </div>
+
+            </div>
+
+
+            {/* AMOUNT */}
+
+            <div className="payment-amount-box">
+
+              <span>
+                Amount to Pay
+              </span>
+
+              <strong>
+                {formatCurrency(
+                  getPaymentAmount(
+                    selectedPayment
+                  )
+                )}
+              </strong>
+
+            </div>
+
+
+            {/* PAYMENT TYPE */}
+
+            <div className="payment-form-group">
+
+              <label>
+                Payment Type
+              </label>
+
+              <div className="payment-method-options">
+
+                {[
+                  {
+                    name: "Card",
+                    icon: <FaCreditCard />,
+                  },
+                  {
+                    name: "UPI",
+                    icon: <FaMoneyBillWave />,
+                  },
+                  {
+                    name: "Net Banking",
+                    icon: <FaCreditCard />,
+                  },
+                  {
+                    name: "Cash",
+                    icon: <FaMoneyBillWave />,
+                  },
+                ].map(
+                  (method) => (
+
+                    <button
+                      type="button"
+                      key={
+                        method.name
+                      }
+                      className={
+                        paymentMethod ===
+                        method.name
+                          ? "selected"
+                          : ""
+                      }
+                      onClick={() =>
+                        setPaymentMethod(
+                          method.name
+                        )
+                      }
+                    >
+
+                      {method.icon}
+
+                      <span>
+                        {method.name}
+                      </span>
+
+                    </button>
+
+                  )
+                )}
+
+              </div>
+
+            </div>
+
+
+            {paymentError && (
+
+              <div className="payment-form-error">
+
+                <FaExclamationCircle />
+
+                {paymentError}
+
+              </div>
+
+            )}
+
+
+            {paymentSuccess && (
+
+              <div className="payment-form-success">
+
+                <FaCheckCircle />
+
+                {paymentSuccess}
+
+              </div>
+
+            )}
+
+
+            <div className="payment-security">
+
+              <FaShieldAlt />
+
+              <div>
+
+                <strong>
+                  Secure Payment
+                </strong>
+
+                <span>
+                  Your payment information is
+                  securely processed.
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <button
+              type="button"
+              className="confirm-payment-btn"
+              disabled={
+                processingPayment
+              }
+              onClick={
+                handleConfirmPayment
+              }
+            >
+
+              {processingPayment
+                ? "Processing Payment..."
+                : `Confirm Payment • ${formatCurrency(
+                    getPaymentAmount(
+                      selectedPayment
+                    )
+                  )}`}
+
+            </button>
+
+          </div>
+
+        </div>
+
+      )}
+
+    </div>
 
   );
 

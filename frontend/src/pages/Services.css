@@ -347,63 +347,107 @@
 
 
 /* =====================================================
-   MOBILE
+   MOBILE - HORIZONTAL SERVICE CARD SWIPE
 ===================================================== */
 
 @media (max-width: 768px) {
 
   .services {
     padding: 70px 0;
+    overflow: hidden;
   }
 
+  /* ================================
+     SERVICES HEADER
+  ================================ */
 
   .services .services-header {
     width: calc(100% - 40px);
-
     margin-bottom: 40px;
   }
 
+  .services .services-tag {
+    padding: 7px 16px;
+    font-size: 12px;
+  }
+
+  .services .services-header h2 {
+    font-size: 30px;
+    line-height: 1.25;
+    margin-bottom: 16px !important;
+  }
+
+  .services .services-header p {
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* ================================
+     HORIZONTAL SERVICE CAROUSEL
+  ================================ */
 
   .services .services-grid {
     width: calc(100% - 40px);
 
-    grid-template-columns: 1fr;
+    display: flex !important;
 
     gap: 20px;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    box-sizing: border-box;
+
+    /* Smooth horizontal swipe */
+    scroll-behavior: smooth;
+
+    /* Snap one card at a time */
+    scroll-snap-type: x mandatory;
+
+    /* Hide scrollbar */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    padding-bottom: 10px;
   }
 
-
-  .services .services-tag {
-    padding: 7px 16px;
-
-    font-size: 12px;
+  /* Chrome / Safari scrollbar */
+  .services .services-grid::-webkit-scrollbar {
+    display: none;
   }
 
-
-  .services .services-header h2 {
-    font-size: 30px;
-
-    line-height: 1.25;
-
-    margin-bottom: 16px !important;
-  }
-
-
-  .services .services-header p {
-    font-size: 16px;
-
-    line-height: 1.7;
-  }
-
+  /* ================================
+     SERVICE CARD
+  ================================ */
 
   .services .service-card {
+
+    /* One card visible at a time */
+    flex: 0 0 100%;
+
+    width: 100%;
+    min-width: 100%;
+
+    box-sizing: border-box;
+
     min-height: auto;
 
     padding: 28px 22px;
 
     border-radius: 18px;
+
+    /* Snap card into position */
+    scroll-snap-align: start;
+
+    scroll-snap-stop: always;
+
+    /* Prevent flex shrinking */
+    flex-shrink: 0;
   }
 
+  /* ================================
+     SERVICE ICON
+  ================================ */
 
   .services .service-icon {
     width: 70px;
@@ -417,6 +461,9 @@
     margin-bottom: 22px;
   }
 
+  /* ================================
+     SERVICE TITLE
+  ================================ */
 
   .services .service-card h3 {
     font-size: 22px;
@@ -424,6 +471,9 @@
     margin-bottom: 12px !important;
   }
 
+  /* ================================
+     SERVICE DESCRIPTION
+  ================================ */
 
   .services .service-card p {
     font-size: 15px;
@@ -443,50 +493,40 @@
     padding: 60px 0;
   }
 
-
   .services .services-header {
     width: calc(100% - 30px);
-
     margin-bottom: 35px;
   }
 
-
-  .services .services-grid {
-    width: calc(100% - 30px);
-
-    gap: 18px;
-  }
-
-
   .services .services-tag {
     padding: 6px 14px;
-
     font-size: 11px;
   }
 
-
   .services .services-header h2 {
     font-size: 26px;
-
     line-height: 1.25;
   }
 
-
   .services .services-header p {
     font-size: 15px;
-
     line-height: 1.7;
   }
 
+  /* Keep horizontal swipe */
+  .services .services-grid {
+    width: calc(100% - 30px);
+    gap: 18px;
+  }
 
   .services .service-card {
-    min-height: auto;
+    flex: 0 0 100%;
+    min-width: 100%;
 
     padding: 24px 18px;
 
     border-radius: 16px;
   }
-
 
   .services .service-icon {
     width: 65px;
@@ -500,11 +540,9 @@
     margin-bottom: 20px;
   }
 
-
   .services .service-card h3 {
     font-size: 20px;
   }
-
 
   .services .service-card p {
     font-size: 14px;
@@ -522,18 +560,18 @@
     width: calc(100% - 24px);
   }
 
-
   .services .services-grid {
     width: calc(100% - 24px);
   }
 
+  .services .service-card {
+    flex: 0 0 100%;
+    min-width: 100%;
+
+    padding: 22px 15px;
+  }
 
   .services .services-header h2 {
     font-size: 24px;
-  }
-
-
-  .services .service-card {
-    padding: 22px 15px;
   }
 }

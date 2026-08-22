@@ -14,11 +14,11 @@ import {
   FaDoorOpen,
   FaTools,
   FaTimes,
+  FaTrash,
 } from "react-icons/fa";
 
 
 function Rooms() {
-
 
   // =====================================================
   // ROOMS
@@ -57,6 +57,14 @@ function Rooms() {
 
 
   const [saving, setSaving] =
+    useState(false);
+
+
+  // =====================================================
+  // DELETE ROOM
+  // =====================================================
+
+  const [deleting, setDeleting] =
     useState(false);
 
 
@@ -325,6 +333,96 @@ function Rooms() {
     } finally {
 
       setSaving(false);
+
+    }
+
+  };
+
+
+  // =====================================================
+  // DELETE ROOM
+  // =====================================================
+
+  const handleDeleteRoom = async () => {
+
+    if (!selectedRoom) {
+
+      return;
+
+    }
+
+
+    const confirmed =
+      window.confirm(
+        `Are you sure you want to delete Room ${selectedRoom.room_number}?\n\nThis action cannot be undone.`
+      );
+
+
+    if (!confirmed) {
+
+      return;
+
+    }
+
+
+    try {
+
+      setDeleting(true);
+
+
+      const response =
+        await fetch(
+          `http://localhost:5000/api/rooms/${selectedRoom.id}`,
+          {
+
+            method: "DELETE",
+
+          }
+        );
+
+
+      const data =
+        await response.json();
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          data.message ||
+          "Failed to delete room"
+        );
+
+      }
+
+
+      alert(
+        "Room deleted successfully!"
+      );
+
+
+      handleCloseEdit();
+
+
+      await fetchRooms();
+
+
+    } catch (error) {
+
+      console.error(
+        "ERROR DELETING ROOM:",
+        error
+      );
+
+
+      alert(
+        error.message ||
+        "Failed to delete room"
+      );
+
+
+    } finally {
+
+      setDeleting(false);
 
     }
 
@@ -1029,6 +1127,7 @@ function Rooms() {
                   handleCloseEdit
                 }
                 type="button"
+                disabled={saving || deleting}
               >
 
                 <FaTimes />
@@ -1064,6 +1163,7 @@ function Rooms() {
                     handleChange
                   }
                   required
+                  disabled={deleting}
                 />
 
               </div>
@@ -1088,6 +1188,7 @@ function Rooms() {
                     handleChange
                   }
                   required
+                  disabled={deleting}
                 />
 
               </div>
@@ -1113,6 +1214,7 @@ function Rooms() {
                   }
                   min="0"
                   required
+                  disabled={deleting}
                 />
 
               </div>
@@ -1136,6 +1238,7 @@ function Rooms() {
                     handleChange
                   }
                   required
+                  disabled={deleting}
                 >
 
                   <option value="available">
@@ -1157,10 +1260,39 @@ function Rooms() {
               </div>
 
 
-              {/* ACTIONS */}
+              {/* =================================================
+                  ACTIONS
+              ================================================= */}
 
               <div className="room-modal-actions">
 
+
+                {/* DELETE */}
+
+                <button
+                  type="button"
+                  className="delete-room-btn"
+                  onClick={
+                    handleDeleteRoom
+                  }
+                  disabled={
+                    saving ||
+                    deleting
+                  }
+                >
+
+                  <FaTrash />
+
+                  {
+                    deleting
+                      ? "Deleting..."
+                      : "Delete Room"
+                  }
+
+                </button>
+
+
+                {/* CANCEL */}
 
                 <button
                   type="button"
@@ -1168,7 +1300,10 @@ function Rooms() {
                   onClick={
                     handleCloseEdit
                   }
-                  disabled={saving}
+                  disabled={
+                    saving ||
+                    deleting
+                  }
                 >
 
                   Cancel
@@ -1176,10 +1311,15 @@ function Rooms() {
                 </button>
 
 
+                {/* SAVE */}
+
                 <button
                   type="submit"
                   className="save-room-btn"
-                  disabled={saving}
+                  disabled={
+                    saving ||
+                    deleting
+                  }
                 >
 
                   {
@@ -1240,6 +1380,7 @@ function Rooms() {
                   handleCloseAdd
                 }
                 type="button"
+                disabled={adding}
               >
 
                 <FaTimes />

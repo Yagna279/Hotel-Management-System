@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import CustomerSidebar from "./CustomerSidebar";
 import CustomerTopbar from "./CustomerTopbar";
 
@@ -6,102 +6,24 @@ import {
   FaBell,
   FaLock,
   FaEnvelope,
-  FaSave,
   FaKey,
 } from "react-icons/fa";
+
+import { useNavigate } from "react-router-dom";
 
 import "./CustomerSettings.css";
 
 function CustomerSettings() {
 
-  // =====================================================
-  // SETTINGS STATE
-  // =====================================================
-
-  const [settings, setSettings] = useState({
-    emailNotifications: true,
-    bookingNotifications: true,
-    promotionalEmails: false,
-  });
-
-  // =====================================================
-  // PASSWORD STATE
-  // =====================================================
-
-  const [passwordData, setPasswordData] = useState({
-    currentPassword: "",
-    newPassword: "",
-    confirmPassword: "",
-  });
-
-  // =====================================================
-  // HANDLE SETTINGS CHANGE
-  // =====================================================
-
-  const handleSettingChange = (e) => {
-    const { name, checked } = e.target;
-
-    setSettings({
-      ...settings,
-      [name]: checked,
-    });
-  };
-
-  // =====================================================
-  // HANDLE PASSWORD CHANGE
-  // =====================================================
-
-  const handlePasswordChange = (e) => {
-    setPasswordData({
-      ...passwordData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  // =====================================================
-  // SAVE SETTINGS
-  // =====================================================
-
-  const handleSaveSettings = () => {
-    alert("Settings saved successfully!");
-  };
+  const navigate = useNavigate();
 
   // =====================================================
   // CHANGE PASSWORD
   // =====================================================
 
-  const handleChangePassword = (e) => {
-    e.preventDefault();
-
-    if (
-      !passwordData.currentPassword ||
-      !passwordData.newPassword ||
-      !passwordData.confirmPassword
-    ) {
-      alert("Please fill all password fields.");
-      return;
-    }
-
-    if (
-      passwordData.newPassword !==
-      passwordData.confirmPassword
-    ) {
-      alert("New password and confirm password do not match.");
-      return;
-    }
-
-    alert("Password changed successfully!");
-
-    setPasswordData({
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-    });
+  const handleChangePassword = () => {
+    navigate("/forgot-password");
   };
-
-  // =====================================================
-  // RETURN
-  // =====================================================
 
   return (
     <>
@@ -157,8 +79,6 @@ function CustomerSettings() {
 
           <div className="settings-card">
 
-            {/* CARD HEADER */}
-
             <div className="settings-card-header">
 
               <div className="settings-header-icon blue">
@@ -180,13 +100,11 @@ function CustomerSettings() {
             </div>
 
 
-            {/* SETTINGS OPTIONS */}
+            {/* =================================================
+                EMAIL NOTIFICATIONS
+            ================================================= */}
 
             <div className="settings-options">
-
-              {/* =================================================
-                  EMAIL NOTIFICATIONS
-              ================================================= */}
 
               <div className="settings-option">
 
@@ -211,9 +129,7 @@ function CustomerSettings() {
 
                   <input
                     type="checkbox"
-                    name="emailNotifications"
-                    checked={settings.emailNotifications}
-                    onChange={handleSettingChange}
+                    defaultChecked
                   />
 
                   <span className="settings-slider"></span>
@@ -249,9 +165,7 @@ function CustomerSettings() {
 
                   <input
                     type="checkbox"
-                    name="bookingNotifications"
-                    checked={settings.bookingNotifications}
-                    onChange={handleSettingChange}
+                    defaultChecked
                   />
 
                   <span className="settings-slider"></span>
@@ -287,9 +201,6 @@ function CustomerSettings() {
 
                   <input
                     type="checkbox"
-                    name="promotionalEmails"
-                    checked={settings.promotionalEmails}
-                    onChange={handleSettingChange}
                   />
 
                   <span className="settings-slider"></span>
@@ -304,12 +215,10 @@ function CustomerSettings() {
 
 
           {/* =================================================
-              SECURITY / PASSWORD
+              SECURITY
           ================================================= */}
 
           <div className="settings-card">
-
-            {/* CARD HEADER */}
 
             <div className="settings-card-header">
 
@@ -324,7 +233,7 @@ function CustomerSettings() {
                 </h2>
 
                 <p>
-                  Update your account password
+                  Manage your account password
                 </p>
 
               </div>
@@ -332,125 +241,31 @@ function CustomerSettings() {
             </div>
 
 
-            {/* PASSWORD FORM */}
+            {/* =================================================
+                CHANGE PASSWORD
+            ================================================= */}
 
-            <form
-              className="password-form"
-              onSubmit={handleChangePassword}
+            <div
+              style={{
+                padding: "30px",
+                display: "flex",
+                justifyContent: "flex-start",
+              }}
             >
-
-              {/* =================================================
-                  CURRENT PASSWORD
-              ================================================= */}
-
-              <div className="password-form-group">
-
-                <label>
-                  Current Password
-                </label>
-
-                <div className="password-input">
-
-                  <FaLock />
-
-                  <input
-                    type="password"
-                    name="currentPassword"
-                    value={passwordData.currentPassword}
-                    onChange={handlePasswordChange}
-                    placeholder="Enter current password"
-                  />
-
-                </div>
-
-              </div>
-
-
-              {/* =================================================
-                  NEW PASSWORD
-              ================================================= */}
-
-              <div className="password-form-group">
-
-                <label>
-                  New Password
-                </label>
-
-                <div className="password-input">
-
-                  <FaKey />
-
-                  <input
-                    type="password"
-                    name="newPassword"
-                    value={passwordData.newPassword}
-                    onChange={handlePasswordChange}
-                    placeholder="Enter new password"
-                  />
-
-                </div>
-
-              </div>
-
-
-              {/* =================================================
-                  CONFIRM PASSWORD
-              ================================================= */}
-
-              <div className="password-form-group">
-
-                <label>
-                  Confirm New Password
-                </label>
-
-                <div className="password-input">
-
-                  <FaKey />
-
-                  <input
-                    type="password"
-                    name="confirmPassword"
-                    value={passwordData.confirmPassword}
-                    onChange={handlePasswordChange}
-                    placeholder="Confirm new password"
-                  />
-
-                </div>
-
-              </div>
-
-
-              {/* =================================================
-                  CHANGE PASSWORD BUTTON
-              ================================================= */}
 
               <button
-                type="submit"
+                type="button"
                 className="change-password-btn"
+                onClick={handleChangePassword}
               >
-                <FaLock />
+
+                <FaKey />
+
                 Change Password
+
               </button>
 
-            </form>
-
-          </div>
-
-
-          {/* =================================================
-              SAVE SETTINGS
-          ================================================= */}
-
-          <div className="settings-save-section">
-
-            <button
-              type="button"
-              className="settings-save-btn"
-              onClick={handleSaveSettings}
-            >
-              <FaSave />
-              Save Settings
-            </button>
+            </div>
 
           </div>
 

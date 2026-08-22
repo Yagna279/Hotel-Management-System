@@ -3,11 +3,13 @@
 ===================================================== */
 
 .customer-services-page {
-  min-height: calc(100vh - 78px);
-  padding: 32px 35px 45px;
-  background: #f5f7fb;
+  width: 100%;
+  min-height: calc(100vh - 72px);
+  padding: 38px 42px 60px;
+  background: #f8fafc;
   box-sizing: border-box;
 }
+
 
 /* =====================================================
    PAGE HEADER
@@ -15,145 +17,185 @@
 
 .customer-services-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 25px;
+
+  width: 100%;
+  max-width: 1400px;
+
+  margin: 0 auto 28px;
 }
 
 .customer-services-label {
-  display: inline-block;
-  margin-bottom: 7px;
+  display: inline-flex;
+  align-items: center;
 
-  color: #17376e;
-  font-size: 10px;
+  margin-bottom: 9px;
+
+  color: #2563eb;
+
+  font-size: 12px;
   font-weight: 800;
-  letter-spacing: 1.4px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
 }
 
 .customer-services-header h1 {
-  margin: 0;
+  margin: 0 0 8px;
 
-  color: #17376e;
-  font-size: 30px;
-  font-weight: 800;
+  color: #0f172a;
+
+  font-size: clamp(28px, 3vw, 36px);
+  font-weight: 750;
   line-height: 1.2;
+  letter-spacing: -0.6px;
 }
 
 .customer-services-header p {
-  margin: 8px 0 0;
+  margin: 0;
 
-  color: #7b8799;
-  font-size: 14px;
+  color: #64748b;
+
+  font-size: 15px;
+  line-height: 1.7;
 }
 
+
 /* =====================================================
-   INFO BANNER
+   INFORMATION BANNER
 ===================================================== */
 
 .customer-services-info {
   display: flex;
   align-items: center;
-
   gap: 18px;
 
-  padding: 20px 23px;
+  width: 100%;
+  max-width: 1400px;
 
-  margin-bottom: 28px;
+  margin: 0 auto 36px;
+  padding: 20px 24px;
 
-  background: #ffffff;
+  background:
+    linear-gradient(
+      135deg,
+      #eff6ff 0%,
+      #f8fbff 100%
+    );
 
-  border: 1px solid #e8edf4;
-
+  border: 1px solid #dbeafe;
   border-radius: 16px;
 
-  box-shadow: 0 5px 18px rgba(30, 55, 90, 0.05);
+  box-shadow:
+    0 5px 18px rgba(15, 23, 42, 0.04);
+
+  box-sizing: border-box;
 }
 
 .services-info-icon {
-  width: 52px;
-  height: 52px;
+  width: 50px;
+  height: 50px;
 
-  min-width: 52px;
+  flex-shrink: 0;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  border-radius: 13px;
+  border-radius: 14px;
 
-  background: #eaf0ff;
+  background: #dbeafe;
+  color: #2563eb;
 
-  color: #17376e;
-
-  font-size: 21px;
+  font-size: 20px;
 }
 
 .customer-services-info h3 {
-  margin: 0;
+  margin: 0 0 4px;
 
-  color: #243b62;
+  color: #1e3a8a;
 
   font-size: 15px;
   font-weight: 700;
 }
 
 .customer-services-info p {
-  margin: 5px 0 0;
+  margin: 0;
 
-  color: #7d8899;
+  color: #64748b;
 
   font-size: 13px;
-
-  line-height: 1.5;
+  line-height: 1.6;
 }
+
+
+/* =====================================================
+   SERVICES SECTION
+===================================================== */
+
+.customer-services-section {
+  width: 100%;
+  max-width: 1400px;
+
+  margin: 0 auto;
+}
+
 
 /* =====================================================
    SECTION TITLE
 ===================================================== */
 
-.customer-services-section {
-  width: 100%;
-}
-
 .customer-section-title {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
 
-  margin-bottom: 18px;
+  gap: 20px;
+
+  margin-bottom: 22px;
 }
 
 .customer-section-title h2 {
-  margin: 0;
+  margin: 0 0 5px;
 
-  color: #243b62;
+  color: #0f172a;
 
-  font-size: 19px;
+  font-size: 21px;
   font-weight: 750;
+  letter-spacing: -0.2px;
 }
 
 .customer-section-title p {
-  margin: 5px 0 0;
+  margin: 0;
 
-  color: #8a95a6;
+  color: #64748b;
 
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .service-count {
-  padding: 7px 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 85px;
+
+  padding: 8px 13px;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
 
   background: #ffffff;
 
-  border: 1px solid #e5eaf1;
+  color: #475569;
 
-  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
 
-  color: #657287;
-
-  font-size: 11px;
-  font-weight: 600;
+  box-shadow:
+    0 2px 8px rgba(15, 23, 42, 0.04);
 }
+
 
 /* =====================================================
    SERVICES GRID
@@ -162,29 +204,39 @@
 .customer-services-grid {
   display: grid;
 
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
 
-  gap: 20px;
+  gap: 22px;
 }
+
 
 /* =====================================================
    SERVICE CARD
 ===================================================== */
 
 .customer-service-card {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
   min-width: 0;
+  min-height: 300px;
+
+  padding: 24px;
 
   background: #ffffff;
 
-  border: 1px solid #e8edf4;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
 
-  border-radius: 17px;
-
-  padding: 21px;
+  box-shadow:
+    0 4px 14px rgba(15, 23, 42, 0.045);
 
   box-sizing: border-box;
 
-  box-shadow: 0 5px 18px rgba(30, 55, 90, 0.045);
+  overflow: hidden;
 
   transition:
     transform 0.25s ease,
@@ -192,99 +244,213 @@
     border-color 0.25s ease;
 }
 
-.customer-service-card:hover {
-  transform: translateY(-4px);
+.customer-service-card::before {
+  content: "";
 
-  border-color: #dbe3ef;
+  position: absolute;
 
-  box-shadow: 0 12px 28px rgba(30, 55, 90, 0.09);
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 3px;
+
+  background: linear-gradient(
+    90deg,
+    #2563eb,
+    #60a5fa
+  );
+
+  opacity: 0;
+
+  transition: opacity 0.25s ease;
 }
+
+.customer-service-card:hover {
+  transform: translateY(-5px);
+
+  border-color: #dbeafe;
+
+  box-shadow:
+    0 18px 38px rgba(15, 23, 42, 0.10);
+}
+
+.customer-service-card:hover::before {
+  opacity: 1;
+}
+
 
 /* =====================================================
    SERVICE ICON
 ===================================================== */
 
 .customer-service-icon {
-  width: 53px;
-  height: 53px;
+  width: 58px;
+  height: 58px;
+
+  flex-shrink: 0;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  border-radius: 14px;
+  margin-bottom: 19px;
 
-  margin-bottom: 17px;
+  border-radius: 16px;
 
-  font-size: 21px;
+  font-size: 22px;
+
+  transition:
+    transform 0.25s ease;
 }
 
-/* Icon colors */
-
-.customer-service-icon.blue {
-  background: #eaf0ff;
-  color: #2563eb;
+.customer-service-card:hover
+.customer-service-icon {
+  transform: scale(1.06);
 }
 
-.customer-service-icon.green {
-  background: #e8f8ef;
-  color: #16a34a;
-}
+
+/* =====================================================
+   ICON COLORS
+===================================================== */
 
 .customer-service-icon.orange {
-  background: #fff3df;
-  color: #f59e0b;
+  background: #fff7ed;
+  color: #ea580c;
 }
 
 .customer-service-icon.purple {
-  background: #f1e9ff;
-  color: #7c3aed;
+  background: #faf5ff;
+  color: #9333ea;
+}
+
+.customer-service-icon.blue {
+  background: #eff6ff;
+  color: #2563eb;
 }
 
 .customer-service-icon.red {
-  background: #ffe9e9;
+  background: #fef2f2;
   color: #dc2626;
 }
 
 .customer-service-icon.cyan {
-  background: #e5f8fb;
+  background: #ecfeff;
   color: #0891b2;
 }
 
-.customer-service-icon.yellow {
-  background: #fff8dc;
-  color: #ca8a04;
+.customer-service-icon.green {
+  background: #f0fdf4;
+  color: #16a34a;
 }
 
-.customer-service-icon.pink {
-  background: #ffeaf3;
-  color: #db2777;
-}
 
 /* =====================================================
    SERVICE CONTENT
 ===================================================== */
 
-.customer-service-content h3 {
+.customer-service-content {
+  display: flex;
+  flex-direction: column;
+
+  flex: 1;
+  min-width: 0;
+}
+
+
+/* =====================================================
+   TITLE ROW
+===================================================== */
+
+.customer-service-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  margin-bottom: 9px;
+}
+
+.customer-service-title-row h3 {
   margin: 0;
 
-  color: #243b62;
+  color: #0f172a;
 
-  font-size: 15px;
-  font-weight: 700;
+  font-size: 17px;
+  font-weight: 750;
+  line-height: 1.35;
+
+  word-break: break-word;
 }
 
-.customer-service-content p {
-  min-height: 60px;
+.customer-service-category {
+  flex-shrink: 0;
 
-  margin: 8px 0 18px;
+  padding: 5px 9px;
 
-  color: #7d8899;
+  border-radius: 7px;
 
-  font-size: 12px;
+  background: #f1f5f9;
 
-  line-height: 1.6;
+  color: #64748b;
+
+  font-size: 10px;
+  font-weight: 750;
+
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
+
+
+/* =====================================================
+   SERVICE DESCRIPTION
+===================================================== */
+
+.customer-service-content > p {
+  margin: 0;
+
+  min-height: 46px;
+
+  color: #64748b;
+
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+
+/* =====================================================
+   SERVICE AVAILABILITY
+===================================================== */
+
+.customer-service-availability {
+  display: inline-flex;
+  align-items: center;
+
+  align-self: flex-start;
+
+  gap: 7px;
+
+  margin-top: 15px;
+  padding: 7px 10px;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+
+  background: #f8fafc;
+
+  color: #64748b;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.customer-service-availability svg {
+  color: #2563eb;
+
+  font-size: 11px;
+}
+
 
 /* =====================================================
    SERVICE FOOTER
@@ -292,132 +458,1387 @@
 
 .customer-service-footer {
   display: flex;
-
   align-items: center;
   justify-content: space-between;
 
-  gap: 10px;
+  gap: 15px;
 
-  padding-top: 14px;
-
-  border-top: 1px solid #edf1f6;
+  margin-top: auto;
+  padding-top: 22px;
 }
 
-.customer-service-price {
-  color: #17376e;
-
-  font-size: 12px;
-
-  font-weight: 700;
-
-  white-space: nowrap;
-}
 
 /* =====================================================
-   REQUEST BUTTON
+   PRICE
+===================================================== */
+
+.customer-service-price {
+  color: #0f172a;
+
+  font-size: 20px;
+  font-weight: 800;
+
+  letter-spacing: -0.3px;
+}
+
+.customer-service-price::after {
+  content: " / unit";
+
+  color: #94a3b8;
+
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+
+/* =====================================================
+   PROFESSIONAL REQUEST BUTTON
 ===================================================== */
 
 .customer-service-button {
-  display: flex;
+  position: relative;
 
+  display: inline-flex;
   align-items: center;
   justify-content: center;
 
-  gap: 7px;
+  gap: 9px;
 
-  height: 34px;
+  min-width: 118px;
+  height: 42px;
 
-  padding: 0 12px;
+  padding: 0 16px;
+
+  border: 1px solid #2563eb;
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb 0%,
+      #1d4ed8 100%
+    );
+
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 750;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 5px 12px rgba(37, 99, 235, 0.20);
+
+  overflow: hidden;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.customer-service-button::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: -100%;
+
+  width: 70%;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.20),
+      transparent
+    );
+
+  transform: skewX(-20deg);
+
+  transition: left 0.5s ease;
+}
+
+.customer-service-button:hover {
+  transform: translateY(-2px);
+
+  background:
+    linear-gradient(
+      135deg,
+      #1d4ed8 0%,
+      #1e40af 100%
+    );
+
+  box-shadow:
+    0 9px 20px rgba(37, 99, 235, 0.28);
+}
+
+.customer-service-button:hover::before {
+  left: 130%;
+}
+
+.customer-service-button:active {
+  transform: translateY(0);
+
+  box-shadow:
+    0 4px 10px rgba(37, 99, 235, 0.20);
+}
+
+.customer-service-button svg {
+  font-size: 10px;
+
+  transition:
+    transform 0.2s ease;
+}
+
+.customer-service-button:hover svg {
+  transform: translateX(3px);
+}
+
+
+/* =====================================================
+   EMPTY STATE
+===================================================== */
+
+.customer-services-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 300px;
+
+  padding: 40px;
+
+  background: #ffffff;
+
+  border: 1px dashed #cbd5e1;
+  border-radius: 18px;
+
+  text-align: center;
+}
+
+.customer-services-empty > svg {
+  margin-bottom: 16px;
+
+  color: #94a3b8;
+
+  font-size: 40px;
+}
+
+.customer-services-empty h2 {
+  margin: 0 0 7px;
+
+  color: #334155;
+
+  font-size: 19px;
+}
+
+.customer-services-empty p {
+  margin: 0;
+
+  color: #64748b;
+
+  font-size: 13px;
+}
+
+
+/* =====================================================
+   LOADING PAGE
+===================================================== */
+
+.customer-services-loading {
+  min-height: 60vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  color: #64748b;
+}
+
+.customer-services-loading p {
+  margin: 18px 0 0;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.services-loader {
+  width: 42px;
+  height: 42px;
+
+  border: 4px solid #dbeafe;
+  border-top-color: #2563eb;
+
+  border-radius: 50%;
+
+  animation:
+    customerServicesSpin 0.8s linear infinite;
+}
+
+@keyframes customerServicesSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =====================================================
+   ERROR PAGE
+===================================================== */
+
+.customer-services-error {
+  min-height: 55vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 40px;
+
+  text-align: center;
+}
+
+.customer-services-error > svg {
+  margin-bottom: 18px;
+
+  color: #dc2626;
+
+  font-size: 42px;
+}
+
+.customer-services-error h2 {
+  margin: 0 0 8px;
+
+  color: #0f172a;
+
+  font-size: 22px;
+}
+
+.customer-services-error p {
+  max-width: 500px;
+
+  margin: 0 0 22px;
+
+  color: #64748b;
+
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.customer-services-error button {
+  height: 44px;
+
+  padding: 0 22px;
 
   border: none;
+  border-radius: 10px;
 
-  border-radius: 8px;
+  background: #2563eb;
 
-  background: #17376e;
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 5px 15px rgba(37, 99, 235, 0.20);
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.customer-services-error button:hover {
+  background: #1d4ed8;
+
+  transform: translateY(-2px);
+}
+
+
+/* =====================================================
+   SERVICE REQUEST MODAL OVERLAY
+===================================================== */
+
+.service-request-overlay {
+  position: fixed;
+  inset: 0;
+
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background:
+    rgba(15, 23, 42, 0.68);
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  box-sizing: border-box;
+
+  animation:
+    serviceOverlayIn 0.2s ease;
+}
+
+@keyframes serviceOverlayIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+.service-request-modal {
+  position: relative;
+
+  width: min(570px, 100%);
+
+  max-height: 92vh;
+
+  overflow-y: auto;
+
+  padding: 32px;
+
+  background: #ffffff;
+
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 22px;
+
+  box-shadow:
+    0 30px 90px rgba(15, 23, 42, 0.28);
+
+  box-sizing: border-box;
+
+  animation:
+    serviceModalIn 0.25s ease;
+}
+
+@keyframes serviceModalIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+/* =====================================================
+   CUSTOM SCROLLBAR
+===================================================== */
+
+.service-request-modal::-webkit-scrollbar {
+  width: 7px;
+}
+
+.service-request-modal::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.service-request-modal::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 20px;
+}
+
+.service-request-modal::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+
+/* =====================================================
+   MODAL CLOSE BUTTON
+===================================================== */
+
+.service-request-close {
+  position: absolute;
+
+  top: 18px;
+  right: 18px;
+
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+
+  background: #f8fafc;
+
+  color: #64748b;
+
+  font-size: 13px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.service-request-close:hover {
+  background: #f1f5f9;
+
+  color: #0f172a;
+
+  transform: rotate(4deg);
+}
+
+.service-request-close:disabled {
+  opacity: 0.5;
+
+  cursor: not-allowed;
+}
+
+
+/* =====================================================
+   MODAL HEADER
+===================================================== */
+
+.service-request-header {
+  display: flex;
+  align-items: center;
+
+  gap: 16px;
+
+  padding-right: 50px;
+
+  margin-bottom: 24px;
+}
+
+.service-request-icon {
+  width: 58px;
+  height: 58px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 16px;
+
+  font-size: 22px;
+}
+
+.service-request-icon.orange {
+  background: #fff7ed;
+  color: #ea580c;
+}
+
+.service-request-icon.purple {
+  background: #faf5ff;
+  color: #9333ea;
+}
+
+.service-request-icon.blue {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.service-request-icon.red {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.service-request-icon.cyan {
+  background: #ecfeff;
+  color: #0891b2;
+}
+
+.service-request-icon.green {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+
+.service-request-header h2 {
+  margin: 0 0 4px;
+
+  color: #0f172a;
+
+  font-size: 23px;
+  font-weight: 800;
+
+  letter-spacing: -0.3px;
+}
+
+.service-request-header p {
+  margin: 0;
+
+  color: #64748b;
+
+  font-size: 13px;
+}
+
+
+/* =====================================================
+   SERVICE INFORMATION CARD
+===================================================== */
+
+.service-request-info {
+  display: flex;
+  flex-direction: column;
+
+  gap: 6px;
+
+  margin-bottom: 22px;
+  padding: 17px 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f8fafc,
+      #f1f5f9
+    );
+
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.service-request-info strong {
+  color: #0f172a;
+
+  font-size: 15px;
+  font-weight: 750;
+}
+
+.service-request-info span {
+  color: #64748b;
+
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.service-request-info span:last-child {
+  margin-top: 4px;
+
+  color: #2563eb;
+
+  font-weight: 700;
+}
+
+
+/* =====================================================
+   FORM GROUP
+===================================================== */
+
+.service-request-group {
+  margin-bottom: 20px;
+}
+
+.service-request-group label {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  margin-bottom: 9px;
+
+  color: #334155;
+
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.service-request-group label svg {
+  color: #64748b;
+
+  font-size: 12px;
+}
+
+
+/* =====================================================
+   SELECT + INPUT
+===================================================== */
+
+.service-request-group select,
+.service-request-group input {
+  width: 100%;
+  height: 48px;
+
+  padding: 0 14px;
+
+  border: 1px solid #cbd5e1;
+  border-radius: 11px;
+
+  outline: none;
+
+  background: #ffffff;
+
+  color: #0f172a;
+
+  font-family: inherit;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  box-sizing: border-box;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.service-request-group select {
+  cursor: pointer;
+}
+
+.service-request-group input {
+  appearance: textfield;
+}
+
+.service-request-group input::-webkit-inner-spin-button,
+.service-request-group input::-webkit-outer-spin-button {
+  opacity: 1;
+}
+
+.service-request-group select:hover,
+.service-request-group input:hover {
+  border-color: #94a3b8;
+}
+
+.service-request-group select:focus,
+.service-request-group input:focus {
+  border-color: #2563eb;
+
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.10);
+
+  background: #fbfdff;
+}
+
+.service-request-group select:disabled,
+.service-request-group input:disabled {
+  background: #f8fafc;
+
+  color: #94a3b8;
+
+  cursor: not-allowed;
+}
+
+
+/* =====================================================
+   LOADING BOOKINGS
+===================================================== */
+
+.service-request-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 48px;
+
+  padding: 12px 14px;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 11px;
+
+  background: #f8fafc;
+
+  color: #64748b;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+/* =====================================================
+   NO BOOKING
+===================================================== */
+
+.service-request-no-booking {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 12px;
+
+  padding: 15px;
+
+  border: 1px solid #fed7aa;
+  border-radius: 12px;
+
+  background: #fff7ed;
+
+  color: #c2410c;
+}
+
+.service-request-no-booking > svg {
+  flex-shrink: 0;
+
+  margin-top: 2px;
+
+  font-size: 15px;
+}
+
+.service-request-no-booking div {
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.service-request-no-booking strong {
+  color: #9a3412;
+
+  font-size: 13px;
+}
+
+.service-request-no-booking span {
+  color: #9a3412;
+
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+
+/* =====================================================
+   SELECTED BOOKING INFORMATION
+===================================================== */
+
+.service-request-selected-booking {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 10px;
+
+  margin-top: -4px;
+  margin-bottom: 22px;
+
+  padding: 14px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 13px;
+}
+
+.service-request-selected-booking > div {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  min-width: 0;
+
+  padding: 9px;
+
+  border-radius: 9px;
+
+  background: #ffffff;
+
+  color: #475569;
+
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.service-request-selected-booking svg {
+  flex-shrink: 0;
+
+  color: #2563eb;
+
+  font-size: 11px;
+}
+
+.service-request-selected-booking span {
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/* =====================================================
+   ERROR MESSAGE
+===================================================== */
+
+.service-request-error {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 9px;
+
+  margin-bottom: 18px;
+  padding: 12px 14px;
+
+  border: 1px solid #fecaca;
+  border-radius: 11px;
+
+  background: #fef2f2;
+
+  color: #b91c1c;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  line-height: 1.5;
+}
+
+.service-request-error svg {
+  flex-shrink: 0;
+
+  margin-top: 2px;
+}
+
+
+/* =====================================================
+   SUCCESS MESSAGE
+===================================================== */
+
+.service-request-success {
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  margin-bottom: 18px;
+  padding: 12px 14px;
+
+  border: 1px solid #bbf7d0;
+  border-radius: 11px;
+
+  background: #f0fdf4;
+
+  color: #15803d;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.service-request-success svg {
+  flex-shrink: 0;
+}
+
+
+/* =====================================================
+   MODAL ACTIONS
+===================================================== */
+
+.service-request-actions {
+  display: grid;
+
+  grid-template-columns:
+    0.8fr 1.4fr;
+
+  gap: 12px;
+
+  margin-top: 8px;
+  padding-top: 5px;
+}
+
+
+/* =====================================================
+   CANCEL BUTTON
+===================================================== */
+
+.service-request-cancel {
+  height: 48px;
+
+  border: 1px solid #cbd5e1;
+  border-radius: 11px;
+
+  background: #ffffff;
+
+  color: #475569;
+
+  font-family: inherit;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.service-request-cancel:hover:not(:disabled) {
+  background: #f8fafc;
+
+  border-color: #94a3b8;
+
+  color: #334155;
+
+  transform: translateY(-1px);
+}
+
+
+/* =====================================================
+   PROFESSIONAL SUBMIT BUTTON
+===================================================== */
+
+.service-request-submit {
+  position: relative;
+
+  height: 48px;
+
+  border: none;
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb 0%,
+      #1d4ed8 100%
+    );
 
   color: #ffffff;
 
   font-family: inherit;
 
-  font-size: 11px;
-
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 750;
 
   cursor: pointer;
 
-  transition: 0.2s ease;
+  box-shadow:
+    0 7px 18px rgba(37, 99, 235, 0.22);
+
+  overflow: hidden;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
 }
 
-.customer-service-button svg {
-  font-size: 9px;
+.service-request-submit::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: -100%;
+
+  width: 70%;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.22),
+      transparent
+    );
+
+  transform: skewX(-20deg);
+
+  transition: left 0.5s ease;
 }
 
-.customer-service-button:hover {
-  background: #102c5a;
+.service-request-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
 
-  transform: translateX(2px);
+  box-shadow:
+    0 10px 25px rgba(37, 99, 235, 0.30);
 }
+
+.service-request-submit:hover:not(:disabled)::before {
+  left: 135%;
+}
+
+.service-request-submit:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.service-request-submit:disabled,
+.service-request-cancel:disabled {
+  opacity: 0.55;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
 
 /* =====================================================
-   LARGE TABLET
+   RESPONSIVE — LARGE TABLET
 ===================================================== */
 
-@media (max-width: 1200px) {
-  .customer-services-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
+@media (max-width: 1100px) {
 
-/* =====================================================
-   TABLET
-===================================================== */
-
-@media (max-width: 950px) {
   .customer-services-page {
-    padding: 28px 25px 40px;
+    padding: 32px 28px 50px;
   }
 
   .customer-services-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
   }
+
 }
 
+
 /* =====================================================
-   MOBILE
+   RESPONSIVE — TABLET
+===================================================== */
+
+@media (max-width: 768px) {
+
+  .customer-services-page {
+    padding: 28px 20px 45px;
+  }
+
+
+  .customer-services-header {
+    margin-bottom: 24px;
+  }
+
+
+  .customer-services-header h1 {
+    font-size: 29px;
+  }
+
+
+  .customer-services-info {
+    padding: 17px;
+  }
+
+
+  .customer-services-grid {
+    grid-template-columns: 1fr;
+
+    gap: 17px;
+  }
+
+
+  .customer-service-card {
+    min-height: 0;
+
+    padding: 21px;
+  }
+
+
+  .service-request-overlay {
+    padding: 18px;
+  }
+
+
+  .service-request-modal {
+    padding: 27px;
+  }
+
+}
+
+
+/* =====================================================
+   RESPONSIVE — MOBILE
 ===================================================== */
 
 @media (max-width: 600px) {
+
   .customer-services-page {
-    padding: 22px 16px 35px;
+    padding: 22px 14px 35px;
   }
 
-  .customer-services-header h1 {
-    font-size: 24px;
+
+  .customer-services-header {
+    margin-bottom: 20px;
   }
+
+
+  .customer-services-label {
+    font-size: 10px;
+  }
+
+
+  .customer-services-header h1 {
+    font-size: 26px;
+
+    letter-spacing: -0.4px;
+  }
+
 
   .customer-services-header p {
     font-size: 13px;
   }
 
+
   .customer-services-info {
     align-items: flex-start;
-    padding: 17px;
+
+    gap: 13px;
+
+    padding: 15px;
+
+    border-radius: 13px;
   }
 
-  .customer-services-grid {
-    grid-template-columns: 1fr;
-    gap: 15px;
+
+  .services-info-icon {
+    width: 43px;
+    height: 43px;
+
+    border-radius: 11px;
+
+    font-size: 17px;
   }
+
+
+  .customer-services-info h3 {
+    font-size: 13px;
+  }
+
+
+  .customer-services-info p {
+    font-size: 11px;
+  }
+
 
   .customer-section-title {
     align-items: flex-start;
+    flex-direction: column;
+
+    gap: 10px;
   }
+
+
+  .customer-section-title h2 {
+    font-size: 19px;
+  }
+
 
   .service-count {
-    display: none;
+    min-width: auto;
+
+    padding: 7px 11px;
   }
 
-  .customer-service-content p {
-    min-height: auto;
+
+  .customer-service-card {
+    padding: 19px;
+
+    border-radius: 16px;
   }
+
+
+  .customer-service-title-row {
+    flex-direction: column;
+
+    align-items: flex-start;
+  }
+
+
+  .customer-service-title-row h3 {
+    font-size: 16px;
+  }
+
+
+  .customer-service-content > p {
+    min-height: 0;
+
+    font-size: 12px;
+  }
+
+
+  .customer-service-footer {
+    align-items: flex-end;
+  }
+
+
+  .customer-service-price {
+    font-size: 18px;
+  }
+
+
+  .customer-service-button {
+    min-width: 108px;
+
+    height: 40px;
+
+    padding: 0 13px;
+  }
+
+
+  /* MODAL */
+
+  .service-request-overlay {
+    align-items: flex-end;
+
+    padding: 10px;
+  }
+
+
+  .service-request-modal {
+    width: 100%;
+
+    max-height: 94vh;
+
+    padding: 22px;
+
+    border-radius: 20px 20px 16px 16px;
+  }
+
+
+  .service-request-header {
+    gap: 12px;
+
+    margin-bottom: 20px;
+  }
+
+
+  .service-request-icon {
+    width: 49px;
+    height: 49px;
+
+    border-radius: 13px;
+
+    font-size: 19px;
+  }
+
+
+  .service-request-header h2 {
+    font-size: 20px;
+  }
+
+
+  .service-request-header p {
+    font-size: 12px;
+  }
+
+
+  .service-request-info {
+    padding: 14px;
+  }
+
+
+  .service-request-selected-booking {
+    grid-template-columns: 1fr;
+
+    gap: 7px;
+  }
+
+
+  .service-request-actions {
+    grid-template-columns: 1fr;
+  }
+
+
+  .service-request-cancel {
+    order: 2;
+  }
+
+
+  .service-request-submit {
+    order: 1;
+  }
+
+}
+
+
+/* =====================================================
+   VERY SMALL MOBILE
+===================================================== */
+
+@media (max-width: 400px) {
+
+  .customer-services-page {
+    padding-left: 11px;
+    padding-right: 11px;
+  }
+
+
+  .customer-service-card {
+    padding: 17px;
+  }
+
+
+  .customer-service-footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+
+  .customer-service-button {
+    width: 100%;
+  }
+
+
+  .service-request-modal {
+    padding: 19px;
+  }
+
+
+  .service-request-close {
+    top: 14px;
+    right: 14px;
+  }
+
+}
+
+
+/* =====================================================
+   ACCESSIBILITY
+===================================================== */
+
+.customer-service-button:focus-visible,
+.service-request-submit:focus-visible,
+.service-request-cancel:focus-visible,
+.service-request-close:focus-visible,
+.customer-services-error button:focus-visible,
+.service-request-group select:focus-visible,
+.service-request-group input:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.25);
+
+  outline-offset: 2px;
+}
+
+
+/* =====================================================
+   REDUCED MOTION
+===================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .customer-service-card,
+  .customer-service-icon,
+  .customer-service-button,
+  .service-request-submit,
+  .service-request-cancel,
+  .service-request-close {
+    transition: none;
+  }
+
+  .services-loader {
+    animation: none;
+  }
+
+  .service-request-overlay,
+  .service-request-modal {
+    animation: none;
+  }
+
 }

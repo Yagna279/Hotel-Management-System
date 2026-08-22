@@ -3,10 +3,11 @@ import express from "express";
 import {
   createCustomerBooking,
   getCustomerBookings,
+  getCustomerBookingDetails,
+  cancelCustomerBooking,
 } from "../../controllers/CustomerControllers/customerBookingController.js";
 
-const router =
-  express.Router();
+const router = express.Router();
 
 // =====================================================
 // CREATE BOOKING
@@ -26,6 +27,26 @@ router.post(
 router.get(
   "/:customerId",
   getCustomerBookings
+);
+
+// =====================================================
+// GET SINGLE BOOKING DETAILS
+// GET /api/customer-bookings/:customerId/:bookingId
+// =====================================================
+
+router.get(
+  "/:customerId/:bookingId",
+  getCustomerBookingDetails
+);
+
+// =====================================================
+// CANCEL CUSTOMER BOOKING
+// PUT /api/customer-bookings/:customerId/:bookingId/cancel
+// =====================================================
+
+router.put(
+  "/:customerId/:bookingId/cancel",
+  cancelCustomerBooking
 );
 
 export default router;

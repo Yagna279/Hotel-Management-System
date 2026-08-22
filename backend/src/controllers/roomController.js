@@ -30,6 +30,7 @@ export const getRooms = async (req, res) => {
     res.status(500).json({
       message: error.message,
     });
+
   }
 };
 
@@ -56,7 +57,9 @@ export const createRoom = async (req, res) => {
     );
 
 
-    // Validate data
+    // =====================================================
+    // VALIDATE DATA
+    // =====================================================
 
     if (
       !room_number ||
@@ -73,7 +76,9 @@ export const createRoom = async (req, res) => {
     }
 
 
-    // Check duplicate room number
+    // =====================================================
+    // CHECK DUPLICATE ROOM NUMBER
+    // =====================================================
 
     const existingRoom =
       await pool.query(
@@ -96,7 +101,9 @@ export const createRoom = async (req, res) => {
     }
 
 
-    // Insert room
+    // =====================================================
+    // INSERT ROOM
+    // =====================================================
 
     const result =
       await pool.query(
@@ -182,7 +189,9 @@ export const updateRoom = async (req, res) => {
     } = req.body;
 
 
-    // Validate
+    // =====================================================
+    // VALIDATE
+    // =====================================================
 
     if (
       !room_number ||
@@ -201,8 +210,10 @@ export const updateRoom = async (req, res) => {
     }
 
 
-    // Check duplicate room number
-    // excluding current room
+    // =====================================================
+    // CHECK DUPLICATE ROOM NUMBER
+    // EXCLUDING CURRENT ROOM
+    // =====================================================
 
     const existingRoom =
       await pool.query(
@@ -231,7 +242,9 @@ export const updateRoom = async (req, res) => {
     }
 
 
-    // Update room
+    // =====================================================
+    // UPDATE ROOM
+    // =====================================================
 
     const result =
       await pool.query(
@@ -300,6 +313,147 @@ export const updateRoom = async (req, res) => {
     res.status(500).json({
 
       message:
+        error.message,
+
+    });
+
+  }
+
+};
+
+
+// =====================================================
+// DELETE ROOM
+// =====================================================
+
+export const deleteRoom = async (req, res) => {
+
+  try {
+
+    const { id } = req.params;
+
+
+    // =====================================================
+    // CHECK ROOM ID
+    // =====================================================
+
+    if (!id) {
+
+      return res.status(400).json({
+
+        message:
+          "Room ID is required",
+
+      });
+
+    }
+
+
+    // =====================================================
+    // CHECK WHETHER ROOM EXISTS
+    // =====================================================
+
+    const existingRoom =
+      await pool.query(
+        `
+        SELECT
+          id,
+          room_number,
+          room_type
+        FROM rooms
+        WHERE id = $1
+        `,
+        [id]
+      );
+
+
+    if (existingRoom.rows.length === 0) {
+
+      return res.status(404).json({
+
+        message:
+          "Room not found",
+
+      });
+
+    }
+
+
+    // =====================================================
+    // DELETE ROOM
+    // =====================================================
+
+    const result =
+      await pool.query(
+        `
+        DELETE FROM rooms
+        WHERE id = $1
+        RETURNING
+          id,
+          room_number,
+          room_type
+        `,
+        [id]
+      );
+
+
+    console.log(
+      "ROOM DELETED:",
+      result.rows[0]
+    );
+
+
+    // =====================================================
+    // SUCCESS RESPONSE
+    // =====================================================
+
+    res.status(200).json({
+
+      message:
+        "Room deleted successfully",
+
+      room:
+        result.rows[0],
+
+    });
+
+
+  } catch (error) {
+
+    console.error(
+      "ERROR DELETING ROOM:",
+      error
+    );
+
+
+    // =====================================================
+    // FOREIGN KEY ERROR
+    // =====================================================
+
+    if (
+      error.code === "23503"
+    ) {
+
+      return res.status(409).json({
+
+        message:
+          "This room cannot be deleted because it is linked to existing bookings. Please handle the related booking first.",
+
+      });
+
+    }
+
+
+    // =====================================================
+    // GENERAL ERROR
+    // =====================================================
+
+    res.status(500).json({
+
+      message:
+        "Failed to delete room",
+
+      error:
         error.message,
 
     });

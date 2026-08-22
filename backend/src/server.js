@@ -40,10 +40,10 @@ import customerBookingRoutes from "./routes/CustomerRoutes/customerBookingRoutes
 
 // Customer Rooms
 import customerRoomsRoutes from "./routes/CustomerRoutes/customerRoomsRoutes.js";
-
+import customerServiceRoutes from "./routes/customerRoutes/customerServiceRoutes.js";
 // Customer Payments
 import customerPaymentRoutes from "./routes/CustomerRoutes/customerPaymentRoutes.js";
-
+import customerAccountRoutes from "./routes/CustomerRoutes/customerAccountRoutes.js";
 
 // =====================================================
 // LOAD ENVIRONMENT VARIABLES
@@ -399,7 +399,10 @@ app.use(
   customerRoomsRoutes
 );
 
-
+app.use(
+  "/api/customer-services",
+  customerServiceRoutes
+);
 // =====================================================
 // CUSTOMER PAYMENT ROUTES
 // =====================================================
@@ -414,7 +417,10 @@ app.use(
   customerPaymentRoutes
 );
 
-
+app.use(
+  "/api/customer/account",
+  customerAccountRoutes
+);
 // =====================================================
 // API 404 ROUTE
 // =====================================================

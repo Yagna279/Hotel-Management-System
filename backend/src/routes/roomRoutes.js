@@ -4,6 +4,7 @@ import {
   getRooms,
   createRoom,
   updateRoom,
+  deleteRoom,
 } from "../controllers/roomController.js";
 
 const router = express.Router();
@@ -11,7 +12,6 @@ const router = express.Router();
 
 // =====================================================
 // GET ALL ROOMS
-// GET /api/rooms
 // =====================================================
 
 router.get(
@@ -21,8 +21,7 @@ router.get(
 
 
 // =====================================================
-// ADD ROOM
-// POST /api/rooms
+// ADD NEW ROOM
 // =====================================================
 
 router.post(
@@ -33,12 +32,21 @@ router.post(
 
 // =====================================================
 // UPDATE ROOM
-// PUT /api/rooms/:id
 // =====================================================
 
 router.put(
   "/:id",
   updateRoom
+);
+
+
+// =====================================================
+// DELETE ROOM
+// =====================================================
+
+router.delete(
+  "/:id",
+  deleteRoom
 );
 
 

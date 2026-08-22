@@ -1,112 +1,190 @@
 import pool from "../../config/db.js";
 
 // =====================================================
-// CREATE CUSTOMER BOOKING
+// HELPER - CALCULATE NUMBER OF NIGHTS
 // =====================================================
 
-export const createCustomerBooking = async (req, res) => {
+const calculateNights = (checkIn, checkOut) => {
+  const start = new Date(checkIn);
+  const end = new Date(checkOut);
 
-  const client = await pool.connect();
+  start.setHours(0, 0, 0, 0);
+  end.setHours(0, 0, 0, 0);
+
+  const difference =
+    end.getTime() - start.getTime();
+
+  const nights = Math.ceil(
+    difference / (1000 * 60 * 60 * 24)
+  );
+
+  return nights > 0 ? nights : 0;
+};
+
+
+// =====================================================
+// HELPER - GET DATE ONLY
+//
+// Converts a date/timestamp into YYYY-MM-DD.
+// This prevents time and timezone issues when checking
+// whether a booking is upcoming.
+// =====================================================
+
+const getDateOnly = (value) => {
+  if (!value) {
+    return null;
+  }
+
+  // PostgreSQL DATE values can arrive as strings such as:
+  // 2026-08-25
+  //
+  // If it is already a date string, use only the date
+  // portion instead of converting through UTC.
+
+  if (typeof value === "string") {
+    const match =
+      value.match(/^(\d{4}-\d{2}-\d{2})/);
+
+    if (match) {
+      return match[1];
+    }
+  }
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return null;
+  }
+
+  const year =
+    date.getFullYear();
+
+  const month =
+    String(
+      date.getMonth() + 1
+    ).padStart(2, "0");
+
+  const day =
+    String(
+      date.getDate()
+    ).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+};
+
+
+// =====================================================
+// HELPER - GET TODAY DATE
+// =====================================================
+
+const getTodayDate = () => {
+  const today = new Date();
+
+  const year =
+    today.getFullYear();
+
+  const month =
+    String(
+      today.getMonth() + 1
+    ).padStart(2, "0");
+
+  const day =
+    String(
+      today.getDate()
+    ).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+};
+
+
+// =====================================================
+// CREATE CUSTOMER BOOKING
+// POST /api/customer-bookings
+// =====================================================
+
+export const createCustomerBooking = async (
+  req,
+  res
+) => {
+  const client =
+    await pool.connect();
 
   try {
-
     const {
-      customer_id,
-      room_id,
-      check_in,
-      check_out,
+      customerId,
+      roomId,
+      checkIn,
+      checkOut,
       adults,
       children,
-      special_request,
+      paymentMethod,
+      specialRequest,
+      services,
     } = req.body;
 
-    // ===================================================
+    // =================================================
     // VALIDATION
-    // ===================================================
+    // =================================================
 
-    if (
-      !customer_id ||
-      !room_id ||
-      !check_in ||
-      !check_out
-    ) {
-
+    if (!customerId) {
       return res.status(400).json({
         success: false,
         message:
-          "Customer, room, check-in and check-out are required.",
+          "Customer ID is required.",
       });
-
     }
 
-    const adultCount =
-      Number(adults) || 1;
-
-    const childCount =
-      Number(children) || 0;
-
-    if (adultCount < 1) {
-
+    if (!roomId) {
       return res.status(400).json({
         success: false,
         message:
-          "At least one adult is required.",
+          "Room ID is required.",
       });
-
     }
 
-    if (childCount < 0) {
-
+    if (!checkIn || !checkOut) {
       return res.status(400).json({
         success: false,
         message:
-          "Children cannot be negative.",
+          "Check-in and check-out dates are required.",
       });
-
     }
 
-    // ===================================================
-    // DATE VALIDATION
-    // ===================================================
-
-    const checkInDate =
-      new Date(check_in);
-
-    const checkOutDate =
-      new Date(check_out);
-
-    if (
-      Number.isNaN(checkInDate.getTime()) ||
-      Number.isNaN(checkOutDate.getTime())
-    ) {
-
+    if (!paymentMethod) {
       return res.status(400).json({
         success: false,
         message:
-          "Invalid booking dates.",
+          "Payment method is required.",
       });
-
     }
 
-    if (checkOutDate <= checkInDate) {
+    // =================================================
+    // CALCULATE NIGHTS
+    // =================================================
 
+    const nights =
+      calculateNights(
+        checkIn,
+        checkOut
+      );
+
+    if (nights <= 0) {
       return res.status(400).json({
         success: false,
         message:
-          "Check-out must be after check-in.",
+          "Check-out date must be after check-in date.",
       });
-
     }
 
-    // ===================================================
+    // =================================================
     // START TRANSACTION
-    // ===================================================
+    // =================================================
 
     await client.query("BEGIN");
 
-    // ===================================================
+    // =================================================
     // CHECK CUSTOMER
-    // ===================================================
+    // =================================================
 
     const customerResult =
       await client.query(
@@ -119,27 +197,29 @@ export const createCustomerBooking = async (req, res) => {
         FROM customers
         WHERE id = $1
         `,
-        [customer_id]
+        [customerId]
       );
 
-    if (customerResult.rows.length === 0) {
-
-      await client.query("ROLLBACK");
+    if (
+      customerResult.rows.length === 0
+    ) {
+      await client.query(
+        "ROLLBACK"
+      );
 
       return res.status(404).json({
         success: false,
         message:
           "Customer not found.",
       });
-
     }
 
     const customer =
       customerResult.rows[0];
 
-    // ===================================================
+    // =================================================
     // CHECK ROOM
-    // ===================================================
+    // =================================================
 
     const roomResult =
       await client.query(
@@ -154,127 +234,271 @@ export const createCustomerBooking = async (req, res) => {
         WHERE id = $1
         FOR UPDATE
         `,
-        [room_id]
+        [roomId]
       );
 
-    if (roomResult.rows.length === 0) {
-
-      await client.query("ROLLBACK");
+    if (
+      roomResult.rows.length === 0
+    ) {
+      await client.query(
+        "ROLLBACK"
+      );
 
       return res.status(404).json({
         success: false,
         message:
           "Room not found.",
       });
-
     }
 
     const room =
       roomResult.rows[0];
 
-    // ===================================================
+    // =================================================
     // CHECK ROOM STATUS
-    // ===================================================
+    // =================================================
+
+    const roomStatus =
+      String(
+        room.status || ""
+      )
+        .toLowerCase()
+        .trim();
 
     if (
-      String(room.status || "").toLowerCase() !==
+      roomStatus !==
       "available"
     ) {
+      await client.query(
+        "ROLLBACK"
+      );
 
-      await client.query("ROLLBACK");
-
-      return res.status(400).json({
+      return res.status(409).json({
         success: false,
         message:
           "This room is currently not available.",
       });
-
     }
 
-    // ===================================================
-    // CHECK EXISTING BOOKING
-    // ===================================================
+    // =================================================
+    // ROOM PRICE
+    // =================================================
 
-    const existingBookingResult =
+    const roomPricePerNight =
+      Number(
+        room.price_per_night
+      ) || 0;
+
+    if (
+      roomPricePerNight <= 0
+    ) {
+      await client.query(
+        "ROLLBACK"
+      );
+
+      return res.status(400).json({
+        success: false,
+        message:
+          "Room price is invalid or missing.",
+      });
+    }
+
+    // =================================================
+    // CHECK ROOM AVAILABILITY
+    // =================================================
+
+    const availabilityResult =
       await client.query(
         `
-        SELECT id
+        SELECT
+          id
         FROM bookings
         WHERE room_id = $1
-          AND LOWER(
-            COALESCE(
-              booking_status,
-              'confirmed'
-            )
-          ) NOT IN (
+
+          AND booking_status NOT IN (
             'cancelled',
-            'completed'
+            'checked_out'
           )
+
           AND check_in < $3
           AND check_out > $2
-        LIMIT 1
         `,
         [
-          room_id,
-          check_in,
-          check_out,
+          roomId,
+          checkIn,
+          checkOut,
         ]
       );
 
     if (
-      existingBookingResult.rows.length > 0
+      availabilityResult.rows.length > 0
     ) {
-
-      await client.query("ROLLBACK");
+      await client.query(
+        "ROLLBACK"
+      );
 
       return res.status(409).json({
         success: false,
         message:
           "This room is already booked for the selected dates.",
       });
-
     }
 
-    // ===================================================
-    // CALCULATE NIGHTS
-    // ===================================================
+    // =================================================
+    // CALCULATE ROOM TOTAL
+    // =================================================
 
-    const millisecondsPerDay =
-      1000 * 60 * 60 * 24;
+    const roomTotal =
+      roomPricePerNight *
+      nights;
 
-    const nights =
-      Math.ceil(
-        (
-          checkOutDate.getTime() -
-          checkInDate.getTime()
-        ) / millisecondsPerDay
+    // =================================================
+    // CALCULATE SERVICE TOTAL
+    // =================================================
+
+    let serviceTotal = 0;
+
+    const selectedServices = [];
+
+    if (
+      Array.isArray(services) &&
+      services.length > 0
+    ) {
+      for (
+        const service of services
+      ) {
+        const serviceId =
+          service.service_id ||
+          service.id;
+
+        const quantity =
+          Number(
+            service.quantity
+          ) || 1;
+
+        // ---------------------------------------------
+        // SKIP INVALID SERVICE
+        // ---------------------------------------------
+
+        if (!serviceId) {
+          continue;
+        }
+
+        if (quantity <= 0) {
+          continue;
+        }
+
+        // ---------------------------------------------
+        // GET SERVICE
+        // ---------------------------------------------
+
+        const serviceResult =
+          await client.query(
+            `
+            SELECT
+              id,
+              service_name,
+              price,
+              status
+            FROM services
+            WHERE id = $1
+            `,
+            [serviceId]
+          );
+
+        if (
+          serviceResult.rows.length === 0
+        ) {
+          await client.query(
+            "ROLLBACK"
+          );
+
+          return res.status(404).json({
+            success: false,
+            message:
+              `Service with ID ${serviceId} not found.`,
+          });
+        }
+
+        const serviceData =
+          serviceResult.rows[0];
+
+        // ---------------------------------------------
+        // SERVICE PRICE
+        // ---------------------------------------------
+
+        const servicePrice =
+          Number(
+            serviceData.price
+          ) || 0;
+
+        const serviceAmount =
+          servicePrice *
+          quantity;
+
+        serviceTotal +=
+          serviceAmount;
+
+        // ---------------------------------------------
+        // SAVE SERVICE
+        // ---------------------------------------------
+
+        selectedServices.push({
+          service_id:
+            serviceData.id,
+
+          service_name:
+            serviceData.service_name,
+
+          price:
+            servicePrice,
+
+          quantity:
+            quantity,
+
+          total:
+            serviceAmount,
+        });
+      }
+    }
+
+    // =================================================
+    // FINAL BOOKING TOTAL
+    // =================================================
+
+    const totalAmount =
+      roomTotal +
+      serviceTotal;
+
+    if (
+      totalAmount <= 0
+    ) {
+      await client.query(
+        "ROLLBACK"
       );
-
-    if (nights <= 0) {
-
-      await client.query("ROLLBACK");
 
       return res.status(400).json({
         success: false,
         message:
-          "Invalid number of nights.",
+          "Booking total amount must be greater than zero.",
       });
-
     }
 
-    // ===================================================
-    // CALCULATE TOTAL
-    // ===================================================
+    // =================================================
+    // NORMALIZE PAYMENT METHOD
+    // =================================================
 
-    const pricePerNight =
-      Number(room.price_per_night);
+    const normalizedPaymentMethod =
+      String(
+        paymentMethod
+      ).trim();
 
-    const totalAmount =
-      pricePerNight * nights;
-
-    // ===================================================
+    // =================================================
     // CREATE BOOKING
-    // ===================================================
+    //
+    // Room is paid immediately.
+    // Services remain pending.
+    // =================================================
 
     const bookingResult =
       await client.query(
@@ -301,30 +525,30 @@ export const createCustomerBooking = async (req, res) => {
           $6,
           $7,
           'confirmed',
-          'pending',
+          'paid',
           $8,
           CURRENT_TIMESTAMP
         )
         RETURNING *
         `,
         [
-          customer_id,
-          room_id,
-          check_in,
-          check_out,
-          adultCount,
-          childCount,
+          customerId,
+          roomId,
+          checkIn,
+          checkOut,
+          Number(adults) || 1,
+          Number(children) || 0,
           totalAmount,
-          special_request || null,
+          specialRequest || null,
         ]
       );
 
     const booking =
       bookingResult.rows[0];
 
-    // ===================================================
-    // CREATE PAYMENT RECORD
-    // ===================================================
+    // =================================================
+    // CREATE COMPLETED ROOM PAYMENT
+    // =================================================
 
     const paymentResult =
       await client.query(
@@ -340,82 +564,141 @@ export const createCustomerBooking = async (req, res) => {
           $1,
           $2,
           $3,
-          $4,
-          $5
+          'completed',
+          NOW()
         )
         RETURNING *
         `,
         [
           booking.id,
-          totalAmount,
-          "Pending",
-          "pending",
-          null,
+          roomTotal,
+          normalizedPaymentMethod,
         ]
       );
 
     const payment =
       paymentResult.rows[0];
 
-    // ===================================================
-    // UPDATE ROOM STATUS
-    // ===================================================
+    // =================================================
+    // INSERT BOOKING SERVICES
+    // =================================================
+
+    for (
+      const service of selectedServices
+    ) {
+      await client.query(
+        `
+        INSERT INTO booking_services (
+          booking_id,
+          service_id,
+          quantity
+        )
+        VALUES (
+          $1,
+          $2,
+          $3
+        )
+        `,
+        [
+          booking.id,
+          service.service_id,
+          service.quantity,
+        ]
+      );
+    }
+
+    // =================================================
+    // UPDATE ROOM
+    // =================================================
 
     await client.query(
       `
       UPDATE rooms
-      SET status = 'OCCUPIED'
+      SET status = 'Occupied'
       WHERE id = $1
       `,
-      [room_id]
+      [roomId]
     );
 
-    // ===================================================
+    // =================================================
     // COMMIT
-    // ===================================================
+    // =================================================
 
-    await client.query("COMMIT");
+    await client.query(
+      "COMMIT"
+    );
 
-    // ===================================================
+    // =================================================
+    // INVOICE NUMBER
+    // =================================================
+
+    const invoiceNumber =
+      `INV${String(
+        payment.id
+      ).padStart(4, "0")}`;
+
+    // =================================================
     // RESPONSE
-    // ===================================================
+    // =================================================
 
     return res.status(201).json({
-
       success: true,
 
       message:
-        "Room booked successfully.",
+        "Booking confirmed and room payment completed successfully.",
+
+      customer,
 
       booking,
 
-      payment,
+      payment: {
+        ...payment,
 
-      customer: {
-        id: customer.id,
-        full_name: customer.full_name,
-        email: customer.email,
-        phone: customer.phone,
+        amount:
+          Number(
+            payment.amount
+          ),
+
+        invoice_number:
+          invoiceNumber,
       },
 
-      room: {
-        id: room.id,
-        room_number: room.room_number,
-        room_type: room.room_type,
-        price_per_night:
-          room.price_per_night,
-      },
+      calculation: {
+        nights,
 
-      nights,
+        roomPricePerNight,
 
-      total_amount:
+        roomTotal,
+
+        serviceTotal,
+
         totalAmount,
 
+        paidNow:
+          roomTotal,
+
+        pendingServices:
+          serviceTotal,
+      },
+
+      services:
+        selectedServices,
     });
 
   } catch (error) {
 
-    await client.query("ROLLBACK");
+    try {
+      await client.query(
+        "ROLLBACK"
+      );
+    } catch (
+      rollbackError
+    ) {
+      console.error(
+        "Rollback error:",
+        rollbackError
+      );
+    }
 
     console.error(
       "Create customer booking error:",
@@ -423,54 +706,51 @@ export const createCustomerBooking = async (req, res) => {
     );
 
     return res.status(500).json({
-
       success: false,
 
       message:
-        "Failed to create booking.",
+        "Failed to create customer booking.",
 
       error:
         error.message,
-
     });
 
   } finally {
-
     client.release();
-
   }
-
 };
 
 
 // =====================================================
 // GET CUSTOMER BOOKINGS
+// GET /api/customer-bookings/:customerId
 // =====================================================
 
 export const getCustomerBookings = async (
   req,
   res
 ) => {
-
   try {
 
     const {
-      customerId
+      customerId,
     } = req.params;
 
-    if (!customerId) {
+    // =================================================
+    // CHECK CUSTOMER
+    // =================================================
 
+    if (!customerId) {
       return res.status(400).json({
         success: false,
         message:
           "Customer ID is required.",
       });
-
     }
 
-    // ===================================================
-    // CUSTOMER
-    // ===================================================
+    // =================================================
+    // GET CUSTOMER
+    // =================================================
 
     const customerResult =
       await pool.query(
@@ -489,101 +769,236 @@ export const getCustomerBookings = async (
     if (
       customerResult.rows.length === 0
     ) {
-
       return res.status(404).json({
         success: false,
         message:
           "Customer not found.",
       });
-
     }
 
-    // ===================================================
-    // BOOKINGS
-    // ===================================================
+    // =================================================
+    // GET BOOKINGS
+    // =================================================
 
     const bookingsResult =
       await pool.query(
         `
         SELECT
+
           b.id,
           b.customer_id,
           b.room_id,
-          r.room_number,
-          r.room_type,
-          r.price_per_night,
+
           b.check_in,
           b.check_out,
+
           b.adults,
           b.children,
+
           b.total_amount,
+
           b.booking_status,
           b.payment_status,
+
           b.special_request,
-          b.created_at
+          b.created_at,
+
+          r.room_number,
+          r.room_type,
+          r.price_per_night
+
         FROM bookings b
+
         LEFT JOIN rooms r
-          ON b.room_id = r.id
+          ON r.id = b.room_id
+
         WHERE b.customer_id = $1
-        ORDER BY b.created_at DESC
+
+        ORDER BY
+          b.created_at DESC
         `,
         [customerId]
       );
 
-    // ===================================================
-    // STATISTICS
-    // ===================================================
+    // =================================================
+    // FORMAT BOOKINGS
+    // =================================================
 
     const bookings =
-      bookingsResult.rows;
+      bookingsResult.rows.map(
+        (booking) => {
+
+          return {
+            ...booking,
+
+            total_amount:
+              Number(
+                booking.total_amount
+              ) || 0,
+
+            price_per_night:
+              Number(
+                booking.price_per_night
+              ) || 0,
+          };
+        }
+      );
+
+    // =================================================
+    // STATISTICS
+    // =================================================
 
     const totalBookings =
       bookings.length;
+
+
+    // =================================================
+    // TODAY
+    // =================================================
+
+    const today =
+      getTodayDate();
+
+
+    // =================================================
+    // UPCOMING BOOKINGS
+    //
+    // ONLY:
+    //
+    // booking_status = confirmed
+    //
+    // AND
+    //
+    // check-in date >= today
+    //
+    // This means:
+    //
+    // confirmed + today     = upcoming
+    // confirmed + future    = upcoming
+    // confirmed + past      = NOT upcoming
+    // checked_in            = NOT upcoming
+    // checked_out           = NOT upcoming
+    // completed             = NOT upcoming
+    // cancelled             = NOT upcoming
+    // rejected              = NOT upcoming
+    //
+    // =================================================
 
     const upcoming =
       bookings.filter(
         (booking) => {
 
+          // -------------------------------------------
+          // GET STATUS
+          // -------------------------------------------
+
           const status =
             String(
-              booking.booking_status || ""
-            ).toLowerCase();
+              booking.booking_status ||
+              ""
+            )
+              .toLowerCase()
+              .trim();
 
-          const checkIn =
-            new Date(
+          // -------------------------------------------
+          // ONLY CONFIRMED BOOKINGS
+          // -------------------------------------------
+
+          if (
+            status !== "confirmed"
+          ) {
+            return false;
+          }
+
+          // -------------------------------------------
+          // CHECK-IN REQUIRED
+          // -------------------------------------------
+
+          if (
+            !booking.check_in
+          ) {
+            return false;
+          }
+
+          // -------------------------------------------
+          // GET CHECK-IN DATE
+          // -------------------------------------------
+
+          const checkInDate =
+            getDateOnly(
               booking.check_in
             );
 
-          return (
-            checkIn >= new Date() &&
-            status !== "cancelled" &&
-            status !== "completed"
-          );
+          if (!checkInDate) {
+            return false;
+          }
 
+          // -------------------------------------------
+          // TODAY OR FUTURE
+          // -------------------------------------------
+
+          return (
+            checkInDate >= today
+          );
         }
       ).length;
 
+
+    // =================================================
+    // COMPLETED BOOKINGS
+    //
+    // checked_out OR completed
+    // =================================================
+
     const completed =
       bookings.filter(
-        (booking) =>
-          String(
-            booking.booking_status || ""
-          ).toLowerCase() ===
-          "completed"
+        (booking) => {
+
+          const status =
+            String(
+              booking.booking_status ||
+              ""
+            )
+              .toLowerCase()
+              .trim();
+
+          return (
+            status ===
+              "checked_out" ||
+            status ===
+              "completed"
+          );
+        }
       ).length;
+
+
+    // =================================================
+    // CANCELLED BOOKINGS
+    // =================================================
 
     const cancelled =
       bookings.filter(
-        (booking) =>
-          String(
-            booking.booking_status || ""
-          ).toLowerCase() ===
-          "cancelled"
+        (booking) => {
+
+          const status =
+            String(
+              booking.booking_status ||
+              ""
+            )
+              .toLowerCase()
+              .trim();
+
+          return (
+            status ===
+            "cancelled"
+          );
+        }
       ).length;
 
-    // ===================================================
+
+    // =================================================
     // RESPONSE
-    // ===================================================
+    // =================================================
 
     return res.status(200).json({
 
@@ -595,10 +1010,15 @@ export const getCustomerBookings = async (
       bookings,
 
       statistics: {
+
         totalBookings,
+
         upcoming,
+
         completed,
+
         cancelled,
+
       },
 
     });
@@ -621,7 +1041,824 @@ export const getCustomerBookings = async (
         error.message,
 
     });
+  }
+};
+
+
+// =====================================================
+// GET SINGLE CUSTOMER BOOKING DETAILS
+// GET /api/customer-bookings/:customerId/:bookingId
+// =====================================================
+
+export const getCustomerBookingDetails = async (
+  req,
+  res
+) => {
+
+  try {
+
+    const {
+      customerId,
+      bookingId,
+    } = req.params;
+
+    // =================================================
+    // VALIDATION
+    // =================================================
+
+    if (!customerId) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Customer ID is required.",
+      });
+    }
+
+    if (!bookingId) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Booking ID is required.",
+      });
+    }
+
+    // =================================================
+    // GET BOOKING
+    // =================================================
+
+    const bookingResult =
+      await pool.query(
+        `
+        SELECT
+
+          b.id,
+          b.customer_id,
+          b.room_id,
+
+          b.check_in,
+          b.check_out,
+
+          b.adults,
+          b.children,
+
+          b.total_amount,
+
+          b.booking_status,
+          b.payment_status,
+
+          b.special_request,
+          b.created_at,
+
+          r.room_number,
+          r.room_type,
+          r.price_per_night,
+
+          c.full_name AS customer_name,
+          c.email AS customer_email,
+          c.phone AS customer_phone,
+
+          p.payment_method,
+          p.payment_status AS latest_payment_status,
+          p.amount AS payment_amount,
+          p.paid_at,
+          p.id AS payment_id
+
+        FROM bookings b
+
+        LEFT JOIN rooms r
+          ON r.id = b.room_id
+
+        LEFT JOIN customers c
+          ON c.id = b.customer_id
+
+        LEFT JOIN LATERAL (
+
+          SELECT
+
+            id,
+            payment_method,
+            payment_status,
+            amount,
+            paid_at
+
+          FROM payments
+
+          WHERE booking_id = b.id
+
+          ORDER BY id DESC
+
+          LIMIT 1
+
+        ) p ON TRUE
+
+        WHERE b.id = $1
+          AND b.customer_id = $2
+
+        LIMIT 1
+        `,
+        [
+          bookingId,
+          customerId,
+        ]
+      );
+
+    // =================================================
+    // NOT FOUND
+    // =================================================
+
+    if (
+      bookingResult.rows.length === 0
+    ) {
+      return res.status(404).json({
+        success: false,
+        message:
+          "Booking not found for this customer.",
+      });
+    }
+
+    const booking =
+      bookingResult.rows[0];
+
+    // =================================================
+    // USE LATEST PAYMENT STATUS
+    // =================================================
+
+    if (
+      booking.latest_payment_status
+    ) {
+
+      booking.payment_status =
+        booking.latest_payment_status;
+
+    }
+
+    // =================================================
+    // GET SERVICES
+    // =================================================
+
+    const servicesResult =
+      await pool.query(
+        `
+        SELECT
+
+          bs.id,
+          bs.booking_id,
+          bs.service_id,
+          bs.quantity,
+          bs.requested_at,
+
+          s.service_name,
+          s.price,
+          s.description,
+          s.category,
+          s.availability,
+          s.status
+
+        FROM booking_services bs
+
+        LEFT JOIN services s
+          ON s.id = bs.service_id
+
+        WHERE bs.booking_id = $1
+
+        ORDER BY
+          bs.id ASC
+        `,
+        [bookingId]
+      );
+
+    // =================================================
+    // SERVICE DATA
+    // =================================================
+
+    booking.services =
+      servicesResult.rows.map(
+        (service) => {
+
+          const price =
+            Number(
+              service.price
+            ) || 0;
+
+          const quantity =
+            Number(
+              service.quantity
+            ) || 0;
+
+          return {
+
+            ...service,
+
+            price,
+
+            quantity,
+
+            total:
+              price *
+              quantity,
+
+          };
+        }
+      );
+
+    // =================================================
+    // SERVICE TOTAL
+    // =================================================
+
+    booking.service_total =
+      booking.services.reduce(
+        (
+          total,
+          service
+        ) => {
+
+          return (
+            total +
+            Number(
+              service.total || 0
+            )
+          );
+
+        },
+        0
+      );
+
+    // =================================================
+    // ROOM TOTAL
+    // =================================================
+
+    const roomTotal =
+      Number(
+        booking.total_amount || 0
+      ) -
+      Number(
+        booking.service_total || 0
+      );
+
+    booking.room_total =
+      roomTotal > 0
+        ? roomTotal
+        : 0;
+
+    // =================================================
+    // PAYMENT INFORMATION
+    // =================================================
+
+    if (
+      booking.payment_id
+    ) {
+
+      booking.payment = {
+
+        id:
+          booking.payment_id,
+
+        amount:
+          Number(
+            booking.payment_amount ||
+            0
+          ),
+
+        payment_method:
+          booking.payment_method,
+
+        payment_status:
+          booking.latest_payment_status,
+
+        paid_at:
+          booking.paid_at,
+
+        invoice_number:
+          `INV${String(
+            booking.payment_id
+          ).padStart(4, "0")}`,
+
+      };
+
+    } else {
+
+      booking.payment =
+        null;
+
+    }
+
+    // =================================================
+    // RESPONSE
+    // =================================================
+
+    return res.status(200).json({
+
+      success: true,
+
+      message:
+        "Booking details loaded successfully.",
+
+      booking,
+
+    });
+
+  } catch (error) {
+
+    console.error(
+      "Get customer booking details error:",
+      error
+    );
+
+    return res.status(500).json({
+
+      success: false,
+
+      message:
+        "Failed to load booking details.",
+
+      error:
+        error.message,
+
+    });
+  }
+};
+
+
+// =====================================================
+// CANCEL CUSTOMER BOOKING
+// PUT /api/customer-bookings/:customerId/:bookingId/cancel
+// =====================================================
+
+export const cancelCustomerBooking = async (
+  req,
+  res
+) => {
+
+  const client =
+    await pool.connect();
+
+  try {
+
+    const {
+      customerId,
+      bookingId,
+    } = req.params;
+
+    // =================================================
+    // VALIDATION
+    // =================================================
+
+    if (!customerId) {
+
+      return res.status(400).json({
+
+        success: false,
+
+        message:
+          "Customer ID is required.",
+
+      });
+    }
+
+    if (!bookingId) {
+
+      return res.status(400).json({
+
+        success: false,
+
+        message:
+          "Booking ID is required.",
+
+      });
+    }
+
+    // =================================================
+    // START TRANSACTION
+    // =================================================
+
+    await client.query(
+      "BEGIN"
+    );
+
+    // =================================================
+    // GET BOOKING
+    // =================================================
+
+    const bookingResult =
+      await client.query(
+        `
+        SELECT
+
+          b.*,
+
+          r.room_number
+
+        FROM bookings b
+
+        LEFT JOIN rooms r
+          ON r.id = b.room_id
+
+        WHERE b.id = $1
+          AND b.customer_id = $2
+
+        FOR UPDATE
+        `,
+        [
+          bookingId,
+          customerId,
+        ]
+      );
+
+    if (
+      bookingResult.rows.length === 0
+    ) {
+
+      await client.query(
+        "ROLLBACK"
+      );
+
+      return res.status(404).json({
+
+        success: false,
+
+        message:
+          "Booking not found for this customer.",
+
+      });
+    }
+
+    const booking =
+      bookingResult.rows[0];
+
+    // =================================================
+    // GET STATUS
+    // =================================================
+
+    const status =
+      String(
+        booking.booking_status ||
+        ""
+      )
+        .toLowerCase()
+        .trim();
+
+    // =================================================
+    // ALREADY CANCELLED
+    // =================================================
+
+    if (
+      status === "cancelled"
+    ) {
+
+      await client.query(
+        "ROLLBACK"
+      );
+
+      return res.status(400).json({
+
+        success: false,
+
+        message:
+          "This booking is already cancelled.",
+
+      });
+    }
+
+    // =================================================
+    // ALREADY CHECKED OUT
+    // =================================================
+
+    if (
+      status === "checked_out"
+    ) {
+
+      await client.query(
+        "ROLLBACK"
+      );
+
+      return res.status(400).json({
+
+        success: false,
+
+        message:
+          "This booking has already been checked out and cannot be cancelled.",
+
+      });
+    }
+
+    // =================================================
+    // ONLY CONFIRMED BOOKINGS
+    // =================================================
+
+    if (
+      status !== "confirmed"
+    ) {
+
+      await client.query(
+        "ROLLBACK"
+      );
+
+      return res.status(400).json({
+
+        success: false,
+
+        message:
+          "This booking cannot be cancelled.",
+
+      });
+    }
+
+    // =================================================
+    // CHECK CHECKOUT DATE
+    // =================================================
+
+    if (
+      !booking.check_out
+    ) {
+
+      await client.query(
+        "ROLLBACK"
+      );
+
+      return res.status(400).json({
+
+        success: false,
+
+        message:
+          "Checkout date is missing.",
+
+      });
+    }
+
+    // =================================================
+    // TODAY
+    // =================================================
+
+    const today =
+      new Date();
+
+    today.setHours(
+      0,
+      0,
+      0,
+      0
+    );
+
+    // =================================================
+    // CHECKOUT DATE
+    // =================================================
+
+    const checkoutDate =
+      new Date(
+        booking.check_out
+      );
+
+    checkoutDate.setHours(
+      0,
+      0,
+      0,
+      0
+    );
+
+    // =================================================
+    // CANNOT CANCEL AFTER CHECKOUT
+    // =================================================
+
+    if (
+      today >= checkoutDate
+    ) {
+
+      await client.query(
+        "ROLLBACK"
+      );
+
+      return res.status(400).json({
+
+        success: false,
+
+        message:
+          "This booking can no longer be cancelled because the checkout date has arrived.",
+
+      });
+    }
+
+    // =================================================
+    // UPDATE BOOKING
+    // =================================================
+
+    await client.query(
+      `
+      UPDATE bookings
+
+      SET
+        booking_status = 'cancelled'
+
+      WHERE id = $1
+        AND customer_id = $2
+      `,
+      [
+        bookingId,
+        customerId,
+      ]
+    );
+
+    // =================================================
+    // FIND LATEST PAYMENT
+    // =================================================
+
+    let paymentStatus =
+      "refund_pending";
+
+    let refundAmount = 0;
+
+    const paymentResult =
+      await client.query(
+        `
+        SELECT
+
+          id,
+          amount,
+          payment_status
+
+        FROM payments
+
+        WHERE booking_id = $1
+
+        ORDER BY id DESC
+
+        LIMIT 1
+        `,
+        [bookingId]
+      );
+
+    if (
+      paymentResult.rows.length > 0
+    ) {
+
+      const payment =
+        paymentResult.rows[0];
+
+      const currentPaymentStatus =
+        String(
+          payment.payment_status ||
+          ""
+        )
+          .toLowerCase()
+          .trim();
+
+      // =================================================
+      // COMPLETED PAYMENT
+      // =================================================
+
+      if (
+        currentPaymentStatus ===
+        "completed"
+      ) {
+
+        await client.query(
+          `
+          UPDATE payments
+
+          SET
+            payment_status = 'refund_pending'
+
+          WHERE id = $1
+          `,
+          [payment.id]
+        );
+
+        paymentStatus =
+          "refund_pending";
+
+        refundAmount =
+          Number(
+            payment.amount
+          ) || 0;
+
+      } else {
+
+        paymentStatus =
+          currentPaymentStatus ||
+          "refund_pending";
+
+        refundAmount =
+          Number(
+            payment.amount
+          ) || 0;
+
+      }
+    }
+
+    // =================================================
+    // UPDATE BOOKING PAYMENT STATUS
+    // =================================================
+
+    await client.query(
+      `
+      UPDATE bookings
+
+      SET
+        payment_status = $1
+
+      WHERE id = $2
+      `,
+      [
+        paymentStatus,
+        bookingId,
+      ]
+    );
+
+    // =================================================
+    // MAKE ROOM AVAILABLE
+    // =================================================
+
+    await client.query(
+      `
+      UPDATE rooms
+
+      SET
+        status = 'Available'
+
+      WHERE id = $1
+      `,
+      [booking.room_id]
+    );
+
+    // =================================================
+    // COMMIT
+    // =================================================
+
+    await client.query(
+      "COMMIT"
+    );
+
+    // =================================================
+    // RESPONSE
+    // =================================================
+
+    return res.status(200).json({
+
+      success: true,
+
+      message:
+        "Reservation cancelled successfully.",
+
+      refund_message:
+        paymentStatus ===
+        "refund_pending"
+
+          ? "Your room payment refund is pending and will be processed according to the hotel's refund policy."
+
+          : "No completed payment was found for this reservation.",
+
+      payment_status:
+        paymentStatus,
+
+      refund_amount:
+        refundAmount,
+
+      booking_id:
+        bookingId,
+
+      booking_status:
+        "cancelled",
+
+    });
+
+  } catch (error) {
+
+    try {
+
+      await client.query(
+        "ROLLBACK"
+      );
+
+    } catch (
+      rollbackError
+    ) {
+
+      console.error(
+        "Rollback error:",
+        rollbackError
+      );
+
+    }
+
+    console.error(
+      "Cancel customer booking error:",
+      error
+    );
+
+    return res.status(500).json({
+
+      success: false,
+
+      message:
+        "Failed to cancel booking.",
+
+      error:
+        error.message,
+
+    });
+
+  } finally {
+
+    client.release();
 
   }
-
 };

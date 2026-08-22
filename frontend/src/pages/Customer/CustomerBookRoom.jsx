@@ -16,9 +16,19 @@ import {
   FaCalendarAlt,
   FaUsers,
   FaArrowLeft,
+  FaCreditCard,
+  FaMobileAlt,
+  FaUniversity,
+  FaMoneyBillWave,
+  FaCheckCircle,
 } from "react-icons/fa";
 
 import "./CustomerBookRoom.css";
+
+
+// =====================================================
+// CUSTOMER BOOK ROOM
+// =====================================================
 
 function CustomerBookRoom() {
 
@@ -27,6 +37,7 @@ function CustomerBookRoom() {
 
   const { roomId } =
     useParams();
+
 
   // =====================================================
   // STATE
@@ -47,6 +58,11 @@ function CustomerBookRoom() {
   const [success, setSuccess] =
     useState("");
 
+
+  // =====================================================
+  // FORM
+  // =====================================================
+
   const [form, setForm] =
     useState({
 
@@ -60,7 +76,10 @@ function CustomerBookRoom() {
 
       special_request: "",
 
+      payment_method: "Card",
+
     });
+
 
   // =====================================================
   // LOAD ROOM
@@ -75,13 +94,18 @@ function CustomerBookRoom() {
 
           setLoading(true);
 
+          setError("");
+
+
           const response =
             await fetch(
               "http://localhost:5000/api/customer-rooms"
             );
 
+
           const data =
             await response.json();
+
 
           if (!response.ok) {
 
@@ -92,12 +116,14 @@ function CustomerBookRoom() {
 
           }
 
+
           const selectedRoom =
             (data.rooms || []).find(
               (item) =>
                 String(item.id) ===
                 String(roomId)
             );
+
 
           if (!selectedRoom) {
 
@@ -106,6 +132,7 @@ function CustomerBookRoom() {
             );
 
           }
+
 
           if (
             String(
@@ -120,6 +147,7 @@ function CustomerBookRoom() {
 
           }
 
+
           setRoom(
             selectedRoom
           );
@@ -130,6 +158,7 @@ function CustomerBookRoom() {
             "Load room error:",
             error
           );
+
 
           setError(
             error.message ||
@@ -144,9 +173,11 @@ function CustomerBookRoom() {
 
       };
 
+
     loadRoom();
 
   }, [roomId]);
+
 
   // =====================================================
   // FORM CHANGE
@@ -160,6 +191,7 @@ function CustomerBookRoom() {
         value,
       } = e.target;
 
+
       setForm(
         (previous) => ({
           ...previous,
@@ -168,6 +200,17 @@ function CustomerBookRoom() {
       );
 
     };
+
+
+  // =====================================================
+  // TODAY
+  // =====================================================
+
+  const today =
+    new Date()
+      .toISOString()
+      .split("T")[0];
+
 
   // =====================================================
   // CALCULATE NIGHTS
@@ -180,22 +223,28 @@ function CustomerBookRoom() {
         !form.check_in ||
         !form.check_out
       ) {
+
         return 0;
+
       }
+
 
       const checkIn =
         new Date(
-          form.check_in
+          `${form.check_in}T00:00:00`
         );
+
 
       const checkOut =
         new Date(
-          form.check_out
+          `${form.check_out}T00:00:00`
         );
 
+
       const difference =
-        checkOut -
-        checkIn;
+        checkOut.getTime() -
+        checkIn.getTime();
+
 
       const nights =
         Math.ceil(
@@ -208,21 +257,45 @@ function CustomerBookRoom() {
           )
         );
 
+
       return nights > 0
         ? nights
         : 0;
 
     };
 
+
   const nights =
     getNights();
+
+
+  // =====================================================
+  // TOTAL AMOUNT
+  // =====================================================
 
   const totalAmount =
     room
       ? Number(
-          room.price_per_night
+          room.price_per_night || 0
         ) * nights
       : 0;
+
+
+  // =====================================================
+  // FORMAT CURRENCY
+  // =====================================================
+
+  const formatCurrency =
+    (amount) => {
+
+      return `₹${Number(
+        amount || 0
+      ).toLocaleString(
+        "en-IN"
+      )}`;
+
+    };
+
 
   // =====================================================
   // SUBMIT BOOKING
@@ -233,16 +306,19 @@ function CustomerBookRoom() {
 
       e.preventDefault();
 
+
       setError("");
 
       setSuccess("");
 
-      // ================================================
+
+      // =================================================
       // CUSTOMER
-      // ================================================
+      // =================================================
 
       const storedUser =
         localStorage.getItem("user");
+
 
       if (!storedUser) {
 
@@ -254,7 +330,9 @@ function CustomerBookRoom() {
 
       }
 
+
       let user;
+
 
       try {
 
@@ -273,8 +351,10 @@ function CustomerBookRoom() {
 
       }
 
+
       const customerId =
         user?.id;
+
 
       if (!customerId) {
 
@@ -286,9 +366,10 @@ function CustomerBookRoom() {
 
       }
 
-      // ================================================
+
+      // =================================================
       // VALIDATION
-      // ================================================
+      // =================================================
 
       if (
         !form.check_in ||
@@ -303,7 +384,24 @@ function CustomerBookRoom() {
 
       }
 
-      if (nights <= 0) {
+
+      if (
+        form.check_in < today
+      ) {
+
+        setError(
+          "Check-in date cannot be before today."
+        );
+
+        return;
+
+      }
+
+
+      if (
+        form.check_out <=
+        form.check_in
+      ) {
 
         setError(
           "Check-out must be after check-in."
@@ -312,6 +410,7 @@ function CustomerBookRoom() {
         return;
 
       }
+
 
       if (
         Number(form.adults) < 1
@@ -325,13 +424,50 @@ function CustomerBookRoom() {
 
       }
 
-      // ================================================
+
+      if (
+        Number(form.children) < 0
+      ) {
+
+        setError(
+          "Children count cannot be negative."
+        );
+
+        return;
+
+      }
+
+
+      if (!form.payment_method) {
+
+        setError(
+          "Please select a payment method."
+        );
+
+        return;
+
+      }
+
+
+      if (nights <= 0) {
+
+        setError(
+          "Please select valid booking dates."
+        );
+
+        return;
+
+      }
+
+
+      // =================================================
       // SUBMIT
-      // ================================================
+      // =================================================
 
       try {
 
         setSubmitting(true);
+
 
         const response =
           await fetch(
@@ -347,16 +483,16 @@ function CustomerBookRoom() {
 
               body: JSON.stringify({
 
-                customer_id:
+                customerId:
                   customerId,
 
-                room_id:
+                roomId:
                   roomId,
 
-                check_in:
+                checkIn:
                   form.check_in,
 
-                check_out:
+                checkOut:
                   form.check_out,
 
                 adults:
@@ -369,21 +505,30 @@ function CustomerBookRoom() {
                     form.children
                   ),
 
-                special_request:
+                paymentMethod:
+                  form.payment_method,
+
+                specialRequest:
                   form.special_request,
+
+                services:
+                  [],
 
               }),
 
             }
           );
 
+
         const data =
           await response.json();
+
 
         console.log(
           "Booking response:",
           data
         );
+
 
         if (!response.ok) {
 
@@ -394,13 +539,19 @@ function CustomerBookRoom() {
 
         }
 
+
+        // =================================================
+        // SUCCESS
+        // =================================================
+
         setSuccess(
-          "Room booked successfully!"
+          "Booking and payment completed successfully!"
         );
 
-        // ============================================
-        // GO TO BOOKINGS PAGE
-        // ============================================
+
+        // =================================================
+        // REDIRECT
+        // =================================================
 
         setTimeout(
           () => {
@@ -413,6 +564,7 @@ function CustomerBookRoom() {
           1200
         );
 
+
       } catch (error) {
 
         console.error(
@@ -420,10 +572,12 @@ function CustomerBookRoom() {
           error
         );
 
+
         setError(
           error.message ||
           "Unable to complete booking."
         );
+
 
       } finally {
 
@@ -432,6 +586,7 @@ function CustomerBookRoom() {
       }
 
     };
+
 
   // =====================================================
   // LOADING
@@ -451,9 +606,13 @@ function CustomerBookRoom() {
 
           <main className="customer-book-room-content">
 
-            <div className="customer-message">
+            <div className="customer-book-room-loading">
 
-              Loading room...
+              <div className="customer-loading-spinner"></div>
+
+              <p>
+                Loading room details...
+              </p>
 
             </div>
 
@@ -467,8 +626,9 @@ function CustomerBookRoom() {
 
   }
 
+
   // =====================================================
-  // ERROR
+  // ERROR WITHOUT ROOM
   // =====================================================
 
   if (error && !room) {
@@ -485,23 +645,36 @@ function CustomerBookRoom() {
 
           <main className="customer-book-room-content">
 
-            <div className="customer-message error">
+            <div className="customer-book-room-error-page">
 
-              {error}
+              <div className="customer-book-room-error-icon">
+                ⚠️
+              </div>
+
+              <h2>
+                Unable to Load Room
+              </h2>
+
+              <p>
+                {error}
+              </p>
+
+              <button
+                type="button"
+                onClick={() =>
+                  navigate(
+                    "/customer/rooms"
+                  )
+                }
+              >
+
+                <FaArrowLeft />
+
+                Back to Rooms
+
+              </button>
 
             </div>
-
-            <button
-              type="button"
-              onClick={() =>
-                navigate(
-                  "/customer/rooms"
-                )
-              }
-            >
-              <FaArrowLeft />
-              Back to Rooms
-            </button>
 
           </main>
 
@@ -513,8 +686,9 @@ function CustomerBookRoom() {
 
   }
 
+
   // =====================================================
-  // JSX
+  // MAIN JSX
   // =====================================================
 
   return (
@@ -523,18 +697,24 @@ function CustomerBookRoom() {
 
       <CustomerSidebar />
 
+
       <div className="customer-main">
 
         <CustomerTopbar />
 
+
         <main className="customer-book-room-content">
 
-          {/* HEADER */}
+
+          {/* =================================================
+              PAGE HEADER
+          ================================================= */}
 
           <div className="customer-book-room-header">
 
             <button
               type="button"
+              className="customer-book-room-back"
               onClick={() =>
                 navigate(
                   "/customer/rooms"
@@ -544,265 +724,864 @@ function CustomerBookRoom() {
 
               <FaArrowLeft />
 
-              Back to Rooms
+              <span>
+                Back to Rooms
+              </span>
 
             </button>
 
-            <div>
+
+            <div className="customer-book-room-title">
+
+              <span className="customer-book-room-eyebrow">
+                RESERVATION
+              </span>
 
               <h1>
                 Book Your Room
               </h1>
 
               <p>
-                Complete your reservation details.
+                Complete your stay details and choose your preferred payment method.
               </p>
 
             </div>
 
           </div>
 
-          {/* ERROR */}
+
+          {/* =================================================
+              MESSAGES
+          ================================================= */}
 
           {error && (
 
-            <div className="customer-message error">
+            <div className="customer-book-room-alert error">
 
-              {error}
+              <span className="customer-alert-icon">
+                !
+              </span>
 
-            </div>
+              <div>
 
-          )}
+                <strong>
+                  Booking Error
+                </strong>
 
-          {/* SUCCESS */}
-
-          {success && (
-
-            <div className="customer-message success">
-
-              {success}
-
-            </div>
-
-          )}
-
-          <div className="customer-book-room-grid">
-
-            {/* ROOM */}
-
-            <div className="customer-book-room-card">
-
-              <div className="customer-book-room-icon">
-
-                <FaBed />
+                <p>
+                  {error}
+                </p>
 
               </div>
 
-              <h2>
-                {room.room_type}
-              </h2>
+            </div>
 
-              <p>
-                Room {room.room_number}
-              </p>
+          )}
 
-              <strong>
-                ₹
-                {Number(
-                  room.price_per_night
-                ).toLocaleString(
-                  "en-IN"
-                )}
-                {" "}
-                / night
-              </strong>
+
+          {success && (
+
+            <div className="customer-book-room-alert success">
+
+              <FaCheckCircle />
+
+              <div>
+
+                <strong>
+                  Booking Confirmed
+                </strong>
+
+                <p>
+                  {success}
+                </p>
+
+              </div>
 
             </div>
 
-            {/* FORM */}
+          )}
+
+
+          {/* =================================================
+              GRID
+          ================================================= */}
+
+          <div className="customer-book-room-grid">
+
+
+            {/* =================================================
+                ROOM PREVIEW
+            ================================================= */}
+
+            <aside className="customer-room-preview-card">
+
+              <div className="customer-room-preview-image">
+
+                <div className="customer-room-preview-image-overlay"></div>
+
+                <div className="customer-room-preview-image-content">
+
+                  <div className="customer-room-preview-icon">
+                    <FaBed />
+                  </div>
+
+                  <span>
+                    {room.room_type}
+                  </span>
+
+                </div>
+
+              </div>
+
+
+              <div className="customer-room-preview-body">
+
+                <div className="customer-room-preview-top">
+
+                  <div>
+
+                    <span className="customer-room-preview-label">
+                      ROOM {room.room_number}
+                    </span>
+
+                    <h2>
+                      {room.room_type}
+                    </h2>
+
+                  </div>
+
+
+                  <div className="customer-room-available-badge">
+
+                    <span></span>
+
+                    Available
+
+                  </div>
+
+                </div>
+
+
+                <div className="customer-room-price">
+
+                  <strong>
+                    {formatCurrency(
+                      room.price_per_night
+                    )}
+                  </strong>
+
+                  <span>
+                    / night
+                  </span>
+
+                </div>
+
+
+                <div className="customer-room-preview-divider"></div>
+
+
+                <div className="customer-room-preview-info">
+
+                  <div>
+
+                    <FaBed />
+
+                    <div>
+
+                      <span>
+                        Room
+                      </span>
+
+                      <strong>
+                        {room.room_number}
+                      </strong>
+
+                    </div>
+
+                  </div>
+
+
+                  <div>
+
+                    <FaCalendarAlt />
+
+                    <div>
+
+                      <span>
+                        Stay
+                      </span>
+
+                      <strong>
+                        {nights > 0
+                          ? `${nights} ${
+                              nights === 1
+                                ? "Night"
+                                : "Nights"
+                            }`
+                          : "Select dates"}
+                      </strong>
+
+                    </div>
+
+                  </div>
+
+
+                  <div>
+
+                    <FaUsers />
+
+                    <div>
+
+                      <span>
+                        Guests
+                      </span>
+
+                      <strong>
+                        {Number(form.adults) +
+                          Number(form.children)}
+                      </strong>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+
+                <div className="customer-room-preview-note">
+
+                  <span>
+                    ✓
+                  </span>
+
+                  <p>
+                    Payment is completed immediately when you confirm the booking.
+                  </p>
+
+                </div>
+
+              </div>
+
+            </aside>
+
+
+            {/* =================================================
+                FORM
+            ================================================= */}
 
             <form
               className="customer-booking-form"
               onSubmit={handleSubmit}
             >
 
-              <h2>
-                Reservation Details
-              </h2>
 
-              {/* DATES */}
+              {/* =================================================
+                  DATES
+              ================================================= */}
 
-              <div className="customer-booking-form-row">
+              <div className="customer-form-section">
 
-                <div className="customer-form-group">
+                <div className="customer-form-section-title">
 
-                  <label>
-                    <FaCalendarAlt />
-                    Check In
-                  </label>
+                  <div className="customer-form-section-number">
+                    01
+                  </div>
 
-                  <input
-                    type="date"
-                    name="check_in"
-                    value={
-                      form.check_in
-                    }
-                    min={
-                      new Date()
-                        .toISOString()
-                        .split("T")[0]
-                    }
-                    onChange={
-                      handleChange
-                    }
-                    required
-                  />
+                  <div>
+
+                    <h3>
+                      Stay Dates
+                    </h3>
+
+                    <p>
+                      When will you be staying with us?
+                    </p>
+
+                  </div>
 
                 </div>
 
+
+                <div className="customer-booking-form-row">
+
+                  <div className="customer-form-group">
+
+                    <label htmlFor="check_in">
+
+                      <FaCalendarAlt />
+
+                      Check In
+
+                    </label>
+
+                    <div className="customer-input-wrapper">
+
+                      <input
+                        id="check_in"
+                        type="date"
+                        name="check_in"
+                        value={
+                          form.check_in
+                        }
+                        min={today}
+                        onChange={
+                          handleChange
+                        }
+                        required
+                      />
+
+                    </div>
+
+                  </div>
+
+
+                  <div className="customer-form-group">
+
+                    <label htmlFor="check_out">
+
+                      <FaCalendarAlt />
+
+                      Check Out
+
+                    </label>
+
+                    <div className="customer-input-wrapper">
+
+                      <input
+                        id="check_out"
+                        type="date"
+                        name="check_out"
+                        value={
+                          form.check_out
+                        }
+                        min={
+                          form.check_in ||
+                          today
+                        }
+                        onChange={
+                          handleChange
+                        }
+                        required
+                      />
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              {/* =================================================
+                  GUESTS
+              ================================================= */}
+
+              <div className="customer-form-section">
+
+                <div className="customer-form-section-title">
+
+                  <div className="customer-form-section-number">
+                    02
+                  </div>
+
+                  <div>
+
+                    <h3>
+                      Guest Information
+                    </h3>
+
+                    <p>
+                      Tell us who will be staying in the room.
+                    </p>
+
+                  </div>
+
+                </div>
+
+
+                <div className="customer-booking-form-row">
+
+                  <div className="customer-form-group">
+
+                    <label htmlFor="adults">
+
+                      <FaUsers />
+
+                      Adults
+
+                    </label>
+
+                    <input
+                      id="adults"
+                      type="number"
+                      name="adults"
+                      min="1"
+                      value={
+                        form.adults
+                      }
+                      onChange={
+                        handleChange
+                      }
+                      required
+                    />
+
+                  </div>
+
+
+                  <div className="customer-form-group">
+
+                    <label htmlFor="children">
+
+                      <FaUsers />
+
+                      Children
+
+                    </label>
+
+                    <input
+                      id="children"
+                      type="number"
+                      name="children"
+                      min="0"
+                      value={
+                        form.children
+                      }
+                      onChange={
+                        handleChange
+                      }
+                    />
+
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              {/* =================================================
+                  SPECIAL REQUEST
+              ================================================= */}
+
+              <div className="customer-form-section">
+
+                <div className="customer-form-section-title">
+
+                  <div className="customer-form-section-number">
+                    03
+                  </div>
+
+                  <div>
+
+                    <h3>
+                      Special Request
+                    </h3>
+
+                    <p>
+                      Let us know if you need anything special.
+                    </p>
+
+                  </div>
+
+                </div>
+
+
                 <div className="customer-form-group">
 
-                  <label>
-                    <FaCalendarAlt />
-                    Check Out
+                  <label htmlFor="special_request">
+                    Special Request
                   </label>
 
-                  <input
-                    type="date"
-                    name="check_out"
+                  <textarea
+                    id="special_request"
+                    name="special_request"
                     value={
-                      form.check_out
-                    }
-                    min={
-                      form.check_in ||
-                      new Date()
-                        .toISOString()
-                        .split("T")[0]
+                      form.special_request
                     }
                     onChange={
                       handleChange
                     }
-                    required
+                    placeholder="Example: Early check-in, extra pillows, airport pickup..."
+                    rows="4"
                   />
 
                 </div>
 
               </div>
 
-              {/* GUESTS */}
 
-              <div className="customer-booking-form-row">
+              {/* =================================================
+                  PAYMENT
+              ================================================= */}
 
-                <div className="customer-form-group">
+              <div className="customer-form-section payment-section">
 
-                  <label>
-                    <FaUsers />
-                    Adults
-                  </label>
+                <div className="customer-form-section-title">
 
-                  <input
-                    type="number"
-                    name="adults"
-                    min="1"
-                    value={
-                      form.adults
-                    }
-                    onChange={
-                      handleChange
-                    }
-                    required
-                  />
+                  <div className="customer-form-section-number">
+                    04
+                  </div>
+
+                  <div>
+
+                    <h3>
+                      Payment Method
+                    </h3>
+
+                    <p>
+                      Your payment will be marked completed immediately.
+                    </p>
+
+                  </div>
 
                 </div>
 
-                <div className="customer-form-group">
 
-                  <label>
-                    <FaUsers />
-                    Children
+                <div className="customer-payment-method-grid">
+
+
+                  {/* CARD */}
+
+                  <label
+                    className={
+                      `customer-payment-method-card ${
+                        form.payment_method ===
+                        "Card"
+                          ? "selected"
+                          : ""
+                      }`
+                    }
+                  >
+
+                    <input
+                      type="radio"
+                      name="payment_method"
+                      value="Card"
+                      checked={
+                        form.payment_method ===
+                        "Card"
+                      }
+                      onChange={
+                        handleChange
+                      }
+                    />
+
+                    <div className="customer-payment-method-icon card-icon">
+
+                      <FaCreditCard />
+
+                    </div>
+
+                    <div className="customer-payment-method-content">
+
+                      <strong>
+                        Card
+                      </strong>
+
+                      <span>
+                        Credit or Debit Card
+                      </span>
+
+                    </div>
+
+                    {form.payment_method ===
+                      "Card" && (
+
+                      <div className="customer-payment-selected">
+                        <FaCheckCircle />
+                      </div>
+
+                    )}
+
                   </label>
 
-                  <input
-                    type="number"
-                    name="children"
-                    min="0"
-                    value={
-                      form.children
+
+                  {/* UPI */}
+
+                  <label
+                    className={
+                      `customer-payment-method-card ${
+                        form.payment_method ===
+                        "UPI"
+                          ? "selected"
+                          : ""
+                      }`
                     }
-                    onChange={
-                      handleChange
+                  >
+
+                    <input
+                      type="radio"
+                      name="payment_method"
+                      value="UPI"
+                      checked={
+                        form.payment_method ===
+                        "UPI"
+                      }
+                      onChange={
+                        handleChange
+                      }
+                    />
+
+                    <div className="customer-payment-method-icon upi-icon">
+
+                      <FaMobileAlt />
+
+                    </div>
+
+                    <div className="customer-payment-method-content">
+
+                      <strong>
+                        UPI
+                      </strong>
+
+                      <span>
+                        Google Pay, PhonePe, Paytm
+                      </span>
+
+                    </div>
+
+                    {form.payment_method ===
+                      "UPI" && (
+
+                      <div className="customer-payment-selected">
+                        <FaCheckCircle />
+                      </div>
+
+                    )}
+
+                  </label>
+
+
+                  {/* NET BANKING */}
+
+                  <label
+                    className={
+                      `customer-payment-method-card ${
+                        form.payment_method ===
+                        "Net Banking"
+                          ? "selected"
+                          : ""
+                      }`
                     }
-                  />
+                  >
+
+                    <input
+                      type="radio"
+                      name="payment_method"
+                      value="Net Banking"
+                      checked={
+                        form.payment_method ===
+                        "Net Banking"
+                      }
+                      onChange={
+                        handleChange
+                      }
+                    />
+
+                    <div className="customer-payment-method-icon bank-icon">
+
+                      <FaUniversity />
+
+                    </div>
+
+                    <div className="customer-payment-method-content">
+
+                      <strong>
+                        Net Banking
+                      </strong>
+
+                      <span>
+                        Pay through your bank
+                      </span>
+
+                    </div>
+
+                    {form.payment_method ===
+                      "Net Banking" && (
+
+                      <div className="customer-payment-selected">
+                        <FaCheckCircle />
+                      </div>
+
+                    )}
+
+                  </label>
+
+
+                  {/* CASH */}
+
+                  <label
+                    className={
+                      `customer-payment-method-card ${
+                        form.payment_method ===
+                        "Cash"
+                          ? "selected"
+                          : ""
+                      }`
+                    }
+                  >
+
+                    <input
+                      type="radio"
+                      name="payment_method"
+                      value="Cash"
+                      checked={
+                        form.payment_method ===
+                        "Cash"
+                      }
+                      onChange={
+                        handleChange
+                      }
+                    />
+
+                    <div className="customer-payment-method-icon cash-icon">
+
+                      <FaMoneyBillWave />
+
+                    </div>
+
+                    <div className="customer-payment-method-content">
+
+                      <strong>
+                        Cash
+                      </strong>
+
+                      <span>
+                        Pay at the hotel
+                      </span>
+
+                    </div>
+
+                    {form.payment_method ===
+                      "Cash" && (
+
+                      <div className="customer-payment-selected">
+                        <FaCheckCircle />
+                      </div>
+
+                    )}
+
+                  </label>
 
                 </div>
 
               </div>
 
-              {/* SPECIAL REQUEST */}
 
-              <div className="customer-form-group">
+              {/* =================================================
+                  SUMMARY
+              ================================================= */}
 
-                <label>
-                  Special Request
-                </label>
+              <div className="customer-booking-summary">
 
-                <textarea
-                  name="special_request"
-                  value={
-                    form.special_request
-                  }
-                  onChange={
-                    handleChange
-                  }
-                  placeholder="Any special requests?"
-                  rows="4"
-                />
+                <div className="customer-booking-summary-header">
 
-              </div>
+                  <div>
 
-              {/* SUMMARY */}
+                    <span>
+                      BOOKING SUMMARY
+                    </span>
 
-              <div className="customer-booking-total">
+                    <h3>
+                      Your Reservation
+                    </h3>
 
-                <div>
+                  </div>
+
+                </div>
+
+
+                <div className="customer-booking-summary-row">
 
                   <span>
-                    Nights
+                    Room
                   </span>
 
                   <strong>
-                    {nights}
+                    {room.room_type}
                   </strong>
 
                 </div>
 
-                <div>
+
+                <div className="customer-booking-summary-row">
+
+                  <span>
+                    Stay
+                  </span>
+
+                  <strong>
+                    {nights}{" "}
+                    {nights === 1
+                      ? "Night"
+                      : "Nights"}
+                  </strong>
+
+                </div>
+
+
+                <div className="customer-booking-summary-row">
 
                   <span>
                     Price per night
                   </span>
 
                   <strong>
-                    ₹
-                    {Number(
+                    {formatCurrency(
                       room.price_per_night
-                    ).toLocaleString(
-                      "en-IN"
                     )}
                   </strong>
 
                 </div>
 
-                <div>
+
+                <div className="customer-booking-summary-row">
 
                   <span>
-                    Total
+                    Payment Method
                   </span>
 
                   <strong>
-                    ₹
-                    {totalAmount.toLocaleString(
-                      "en-IN"
+                    {form.payment_method}
+                  </strong>
+
+                </div>
+
+
+                <div className="customer-booking-summary-row">
+
+                  <span>
+                    Payment Status
+                  </span>
+
+                  <strong>
+                    Completed
+                  </strong>
+
+                </div>
+
+
+                <div className="customer-booking-summary-divider"></div>
+
+
+                <div className="customer-booking-total-row">
+
+                  <div>
+
+                    <span>
+                      Total Amount
+                    </span>
+
+                    <small>
+                      Payment completed at booking
+                    </small>
+
+                  </div>
+
+
+                  <strong>
+                    {formatCurrency(
+                      totalAmount
                     )}
                   </strong>
 
@@ -810,7 +1589,10 @@ function CustomerBookRoom() {
 
               </div>
 
-              {/* SUBMIT */}
+
+              {/* =================================================
+                  CONFIRM BUTTON
+              ================================================= */}
 
               <button
                 type="submit"
@@ -820,11 +1602,35 @@ function CustomerBookRoom() {
                 className="customer-confirm-booking-btn"
               >
 
-                {submitting
-                  ? "Booking..."
-                  : "Confirm Booking"}
+                {submitting ? (
+
+                  <>
+                    <span className="customer-button-spinner"></span>
+
+                    Processing Payment...
+
+                  </>
+
+                ) : (
+
+                  <>
+
+                    <FaCheckCircle />
+
+                    Confirm Booking & Pay
+
+                  </>
+
+                )}
 
               </button>
+
+
+              <p className="customer-booking-secure-note">
+
+                🔒 Your payment is securely recorded with your reservation.
+
+              </p>
 
             </form>
 
@@ -839,5 +1645,6 @@ function CustomerBookRoom() {
   );
 
 }
+
 
 export default CustomerBookRoom;
